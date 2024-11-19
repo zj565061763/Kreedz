@@ -1,0 +1,87 @@
+[versions]
+
+androidCompileSdk = "34"
+androidTargetSdk = "34"
+androidMinSdk = "24"
+
+androidGradlePlugin = "8.7.2"
+kotlin = "2.0.21"
+ksp = "2.0.21-1.0.28"
+
+composeBom = "2024.11.00"
+
+lifecycle = "2.8.7"
+room = "2.6.1"
+
+googleService = "4.4.2"
+firebaseCrashlytics = "3.0.2"
+
+[libraries]
+
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui" }
+androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+
+androidx-activity-compose = "androidx.activity:activity-compose:1.9.3"
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
+
+junit = "junit:junit:4.13.2"
+androidx-test-ext-junit = "androidx.test.ext:junit:1.2.1"
+androidx-test-espresso-core = "androidx.test.espresso:espresso-core:3.6.1"
+
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
+
+squareup-okhttp = "com.squareup.okhttp3:okhttp:4.12.0"
+squareup-okhttp-logging = "com.squareup.okhttp3:logging-interceptor:4.12.0"
+squareup-retrofit = "com.squareup.retrofit2:retrofit:2.11.0"
+squareup-retrofit-converter-moshi = "com.squareup.retrofit2:converter-moshi:2.11.0"
+squareup-leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.12"
+
+firebase-bom = "com.google.firebase:firebase-bom:33.6.0"
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+
+didi-drouter-api = "io.github.didi:drouter-api:2.4.6"
+
+ext-coil = "io.coil-kt:coil-compose:2.7.0"
+ext-persistentCookieJar = "com.github.franmontiel:PersistentCookieJar:v1.0.1"
+
+
+sd-compose-active = "com.github.zj565061763:compose-active:1.2.5"
+sd-compose-systemui = "com.github.zj565061763:compose-systemui:1.1.2"
+sd-compose-tabContainer = "com.github.zj565061763:compose-tab-container:1.1.0"
+sd-compose-input = "com.github.zj565061763:compose-input:1.3.0-alpha05"
+sd-compose-webview = "com.github.zj565061763:compose-webview:1.0.0-beta05"
+sd-compose-refresh = "com.github.zj565061763:compose-refresh:1.1.0-beta01"
+sd-compose-layer = "com.github.zj565061763:compose-layer:1.5.0-beta03"
+sd-compose-constraintlayout = "com.github.zj565061763:compose-constraintlayout:1.0.1"
+sd-compose-wheelPicker = "com.github.zj565061763:compose-wheel-picker:1.0.0-rc01"
+sd-compose-annotated = "com.github.zj565061763:compose-annotated:1.1.0-beta05"
+sd-compose-paging = "com.github.zj565061763:compose-paging:1.0.0-alpha07"
+sd-compose-utils = "com.github.zj565061763:compose-utils:5189ef69a7"
+
+sd-ctx = "com.github.zj565061763:ctx:1.3.5"
+sd-lifecycle = "com.github.zj565061763:lifecycle:1.0.0"
+sd-coroutines = "com.github.zj565061763:coroutines:1.0.0-beta06"
+sd-retryKtx = "com.github.zj565061763:retry-ktx:1.2.6"
+sd-datastore = "com.github.zj565061763:datastore:1.2.2"
+sd-xlog = "com.github.zj565061763:xlog:1.1.0"
+sd-moshi = "com.github.zj565061763:moshi:1.0.0"
+sd-event = "com.github.zj565061763:event:1.8.5"
+sd-date = "com.github.zj565061763:date:1.0.1"
+
+[plugins]
+
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+googleServices = { id = "com.google.gms.google-services", version.ref = "googleService" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }

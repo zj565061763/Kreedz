@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "208100035274",
+    "project_id": "kreedz-f51a4",
+    "storage_bucket": "kreedz-f51a4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208100035274:android:555a62e49b5ccaf3f1c233",
+        "android_client_info": {
+          "package_name": "com.sd.android.kreedz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSf8Ug6HCxgz3Q4HWHknZuQS4MlYshWBA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
