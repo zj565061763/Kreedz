@@ -1,6 +1,7 @@
 # Kreedz
 
 This project is an Android app developed for the [Kreedz](https://kreedz.com/) website.
+You can download it from the [releases](https://github.com/zj565061763/Kreedz/releases) page and report any [issues](https://github.com/zj565061763/Kreedz/issues) if you encounter one.
 
 # Screenshots
 
