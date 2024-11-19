@@ -5,13 +5,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.placeCursorAtEnd
+import androidx.compose.foundation.text.input.TextObfuscationMode
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -34,10 +32,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import com.sd.android.kreedz.core.ui.AppTextColor
 import com.sd.android.kreedz.core.ui.AppTheme
+import com.sd.lib.compose.input.FSecureTextField
 import com.sd.lib.compose.input.FTextField
 import com.sd.lib.compose.input.FTextFieldIconClear
 
@@ -58,20 +55,11 @@ internal fun LoginInputView(
       focusRequesterUsername.requestFocus()
    }
 
-   ConstraintLayout(modifier = modifier.fillMaxWidth()) {
-      val (
-         refUsername, refPassword,
-         refForgot,
-         refLogin,
-      ) = createRefs()
-
+   Column(modifier = modifier.fillMaxWidth()) {
       InputUsernameView(
          state = usernameState,
          modifier = Modifier
-            .constrainAs(refUsername) {
-               width = Dimension.matchParent
-               top.linkTo(parent.top)
-            }
+            .fillMaxWidth()
             .focusRequester(focusRequesterUsername)
             .focusProperties { next = focusRequesterPassword }
       )
@@ -80,32 +68,27 @@ internal fun LoginInputView(
          state = passwordState,
          onDone = onClickLogin,
          modifier = Modifier
-            .constrainAs(refPassword) {
-               width = Dimension.matchParent
-               top.linkTo(refUsername.bottom, 16.dp)
-            }
+            .fillMaxWidth()
             .focusRequester(focusRequesterPassword)
+            .padding(top = 16.dp)
       )
 
       ForgotView(
          onClickForgotPassword = onClickForgotPassword,
          onClickForgotUsername = onClickForgotUsername,
          onClickRegister = onClickRegister,
-         modifier = Modifier.constrainAs(refForgot) {
-            top.linkTo(refPassword.bottom, 12.dp)
-            end.linkTo(parent.end)
-         },
+         modifier = Modifier
+            .align(Alignment.End)
+            .padding(top = 12.dp),
       )
 
       Button(
          onClick = onClickLogin,
          enabled = usernameState.text.isNotBlank() && passwordState.text.isNotEmpty(),
          modifier = Modifier
-            .constrainAs(refLogin) {
-               centerHorizontallyTo(parent)
-               top.linkTo(refForgot.bottom, 16.dp)
-            }
             .widthIn(160.dp)
+            .align(Alignment.CenterHorizontally)
+            .padding(top = 12.dp)
       ) {
          Text(text = "Login")
       }
@@ -144,9 +127,10 @@ private fun InputPasswordView(
 ) {
    var passwordVisible by remember { mutableStateOf(false) }
 
-   FTextField(
-      modifier = modifier.heightIn(56.dp),
+   FSecureTextField(
+      modifier = modifier,
       state = state,
+      textObfuscationMode = if (passwordVisible) TextObfuscationMode.Visible else TextObfuscationMode.RevealLastTyped,
       textStyle = TextStyle(
          fontSize = 16.sp,
          lineHeight = (1.5).em,
@@ -157,10 +141,6 @@ private fun InputPasswordView(
       ),
       onKeyboardAction = {
          onDone()
-      },
-      outputTransformation = if (passwordVisible) null else OutputTransformation {
-         replace(0, length, "*".repeat(length))
-         placeCursorAtEnd()
       },
       placeholder = {
          Text(text = "Enter your password...")
