@@ -42,20 +42,14 @@ internal class FirstInterceptor : AppApiInterceptor() {
       private fun Request.uuidRequest(): Request {
          return if (tag(RequestSession::class.java) == null) {
             newBuilder()
-               .tag(RequestSession::class.java, RequestSession(uuid = newUUID()))
+               .tag(
+                  type = RequestSession::class.java,
+                  tag = RequestSession(uuid = sUUID.incrementAndGet().toString())
+               )
                .build()
          } else {
             this
          }
-      }
-
-      private fun newUUID(): String {
-         val uuid = if (sUUID.compareAndSet(Int.MAX_VALUE, 0)) {
-            0
-         } else {
-            sUUID.incrementAndGet()
-         }
-         return uuid.toString()
       }
    }
 }
