@@ -1,7 +1,6 @@
 package com.sd.android.kreedz.feature.account.screen.recover
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.KeyboardOptions
@@ -92,9 +91,7 @@ private fun InputEmailView(
       trailingIcon = {
          FTextFieldIconClear(modifier = Modifier.padding(end = 8.dp))
       },
-      modifier = modifier
-         .heightIn(56.dp)
-         .focusRequester(focusRequester)
+      modifier = modifier.focusRequester(focusRequester)
    )
 }
 
