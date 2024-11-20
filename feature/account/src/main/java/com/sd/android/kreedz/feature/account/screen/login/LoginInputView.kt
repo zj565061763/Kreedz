@@ -10,13 +10,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.TextObfuscationMode
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -116,9 +120,12 @@ private fun InputPasswordView(
    state: TextFieldState,
    onKeyboardDone: () -> Unit,
 ) {
+   var passwordVisible by remember { mutableStateOf(false) }
+
    FSecureTextField(
       modifier = modifier,
       state = state,
+      textObfuscationMode = if (passwordVisible) TextObfuscationMode.Visible else TextObfuscationMode.RevealLastTyped,
       textStyle = TextStyle(
          fontSize = 16.sp,
          lineHeight = (1.5).em,
@@ -133,7 +140,16 @@ private fun InputPasswordView(
          Text(text = "Password")
       },
       trailingIcon = {
-         FTextFieldIconClear(modifier = Modifier.padding(end = 8.dp))
+         if (state.text.isNotEmpty()) {
+            TextButton(
+               onClick = { passwordVisible = !passwordVisible },
+            ) {
+               Text(
+                  text = if (passwordVisible) "hide" else "show",
+                  color = AppTextColor.small,
+               )
+            }
+         }
       },
    )
 }
