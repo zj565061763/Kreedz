@@ -25,7 +25,7 @@ internal class LoginVM : BaseViewModel<LoginVM.State, Any>(State()) {
             _repository.login(username = username, password = password)
          }.onSuccess {
             updateState {
-               it.copy(isLoginSucceed = true)
+               it.copy(isLoginSuccess = true)
             }
          }.onFailure { error ->
             sendEffect(error)
@@ -62,6 +62,6 @@ internal class LoginVM : BaseViewModel<LoginVM.State, Any>(State()) {
 
    data class State(
       val isLoggingIn: Boolean = false,
-      val isLoginSucceed: Boolean = false,
+      val isLoginSuccess: Boolean = false,
    )
 }

@@ -81,8 +81,8 @@ internal fun LoginScreen(
    }
 
    val onClickBackUpdated by rememberUpdatedState(onClickBack)
-   LaunchedEffect(state.isLoginSucceed) {
-      if (state.isLoginSucceed) {
+   if (state.isLoginSuccess) {
+      LaunchedEffect(Unit) {
          onClickBackUpdated()
       }
    }

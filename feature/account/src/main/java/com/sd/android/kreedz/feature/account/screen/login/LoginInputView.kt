@@ -146,7 +146,7 @@ private fun InputPasswordView(
          Text(text = "Enter your password")
       },
       trailingIcon = {
-         if (state.text.isNotBlank()) {
+         if (state.text.isNotEmpty()) {
             TextButton(
                onClick = { passwordVisible = !passwordVisible },
             ) {
