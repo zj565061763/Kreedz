@@ -38,7 +38,7 @@ import com.sd.android.kreedz.data.model.NewsCommentGroupModel
 import com.sd.android.kreedz.data.model.NewsCommentModel
 import com.sd.android.kreedz.data.model.RecordModel
 import com.sd.android.kreedz.feature.common.ui.ComCountryTextViewLarge
-import com.sd.android.kreedz.feature.common.ui.ComErrorEffect
+import com.sd.android.kreedz.feature.common.ui.ComEffectError
 import com.sd.android.kreedz.feature.common.ui.ComInputLayer
 import com.sd.android.kreedz.feature.common.ui.ComLoadingDialog
 import com.sd.android.kreedz.feature.news.screen.comments.NewsCommentMenuLayer
@@ -104,8 +104,8 @@ fun LatestReleaseScreen(
       commentVM.load(state.newsId ?: "")
    }
 
-   vm.effectFlow.ComErrorEffect()
-   commentVM.effectFlow.ComErrorEffect()
+   vm.effectFlow.ComEffectError()
+   commentVM.effectFlow.ComEffectError()
 
    if (fIsActive()) {
       LaunchedEffect(lazyListState) {

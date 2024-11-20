@@ -13,7 +13,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 
 @Composable
-fun Flow<*>.ComErrorEffect() {
+fun Flow<*>.ComEffectError() {
    val flow = this
    var throwable by remember { mutableStateOf<Throwable?>(null) }
 

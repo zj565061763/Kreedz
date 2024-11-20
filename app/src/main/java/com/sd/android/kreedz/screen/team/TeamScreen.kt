@@ -10,7 +10,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sd.android.kreedz.core.router.AppRouter
 import com.sd.android.kreedz.core.ui.AppPullToRefresh
-import com.sd.android.kreedz.feature.common.ui.ComErrorEffect
+import com.sd.android.kreedz.feature.common.ui.ComEffectError
 
 @Composable
 internal fun TeamScreen(
@@ -37,5 +37,5 @@ internal fun TeamScreen(
       vm.init()
    }
 
-   vm.effectFlow.ComErrorEffect()
+   vm.effectFlow.ComEffectError()
 }

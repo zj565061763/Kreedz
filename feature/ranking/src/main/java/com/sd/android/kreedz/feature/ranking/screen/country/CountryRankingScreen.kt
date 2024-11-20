@@ -9,7 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.sd.android.kreedz.feature.common.ui.ComErrorEffect
+import com.sd.android.kreedz.feature.common.ui.ComEffectError
 import com.sd.android.kreedz.feature.ranking.screen.ranking.RankingItemView
 import com.sd.android.kreedz.feature.ranking.screen.ranking.RankingScreenView
 
@@ -46,5 +46,5 @@ internal fun CountryRankingScreen(
       vm.refresh(null)
    }
 
-   vm.effectFlow.ComErrorEffect()
+   vm.effectFlow.ComEffectError()
 }

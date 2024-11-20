@@ -16,7 +16,7 @@ import com.sd.android.kreedz.core.router.AppRouter
 import com.sd.android.kreedz.core.ui.AppPullToRefresh
 import com.sd.android.kreedz.data.model.TopCountryRankingModel
 import com.sd.android.kreedz.data.model.TopPlayerRankingModel
-import com.sd.android.kreedz.feature.common.ui.ComErrorEffect
+import com.sd.android.kreedz.feature.common.ui.ComEffectError
 
 @Composable
 fun TopRankingScreen(
@@ -50,7 +50,7 @@ fun TopRankingScreen(
       vm.init()
    }
 
-   vm.effectFlow.ComErrorEffect()
+   vm.effectFlow.ComEffectError()
 }
 
 @Composable
