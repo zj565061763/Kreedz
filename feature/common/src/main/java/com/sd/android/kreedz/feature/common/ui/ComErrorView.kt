@@ -69,6 +69,18 @@ private fun Preview() {
       ComErrorView(
          error = "Load error",
          title = "Error",
+         onClickRetry = null,
+      )
+   }
+}
+
+@Preview
+@Composable
+private fun PreviewRetry() {
+   AppTheme {
+      ComErrorView(
+         error = "Load error",
+         title = "Error",
          onClickRetry = {},
       )
    }
