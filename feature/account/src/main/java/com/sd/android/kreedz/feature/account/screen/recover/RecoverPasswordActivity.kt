@@ -10,7 +10,7 @@ import com.sd.android.kreedz.core.base.BaseActivity
 import com.sd.android.kreedz.core.router.AppRouter
 import com.sd.android.kreedz.data.repository.AccountRepository
 import com.sd.android.kreedz.feature.common.ui.ComAlertDialog
-import com.sd.android.kreedz.feature.common.ui.ComEffectError
+import com.sd.android.kreedz.feature.common.ui.ComEffect
 
 @Router(path = AppRouter.RECOVER_PASSWORD)
 internal class RecoverPasswordActivity : BaseActivity() {
@@ -43,7 +43,7 @@ internal class RecoverPasswordActivity : BaseActivity() {
          )
       }
 
-      vm.effectFlow.ComEffectError()
+      vm.effectFlow.ComEffect()
    }
 }
 

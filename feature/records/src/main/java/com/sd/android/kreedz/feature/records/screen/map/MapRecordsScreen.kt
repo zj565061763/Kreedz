@@ -32,7 +32,7 @@ import com.sd.android.kreedz.data.event.ReClickMainNavigation
 import com.sd.android.kreedz.data.model.MainNavigation
 import com.sd.android.kreedz.data.model.MapRecordModel
 import com.sd.android.kreedz.data.model.UserModel
-import com.sd.android.kreedz.feature.common.ui.ComEffectError
+import com.sd.android.kreedz.feature.common.ui.ComEffect
 import com.sd.lib.compose.refresh.FRefreshContainer
 import com.sd.lib.compose.refresh.rememberFRefreshStateTop
 import com.sd.lib.compose.refresh.setRefreshing
@@ -118,7 +118,7 @@ fun MapRecordsScreen(
       vm.textFieldState.clearText()
    }
 
-   vm.effectFlow.ComEffectError()
+   vm.effectFlow.ComEffect()
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

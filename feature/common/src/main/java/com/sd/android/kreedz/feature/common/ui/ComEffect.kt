@@ -1,5 +1,6 @@
 package com.sd.android.kreedz.feature.common.ui
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -13,24 +14,38 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 
 @Composable
-fun Flow<*>.ComEffectError() {
+fun Flow<*>.ComEffect() {
    val flow = this
-   var throwable by remember { mutableStateOf<Throwable?>(null) }
+
+   var effectError by remember { mutableStateOf<Throwable?>(null) }
+   var effectString by remember { mutableStateOf("") }
 
    LaunchedEffect(flow) {
       flow.collect { effect ->
-         if (effect is Throwable
-            && !effect.isCancellationException()
-         ) {
-            throwable = effect
+         when {
+            effect is Throwable && !effect.isCancellationException() -> {
+               effectError = effect
+            }
+            effect is String -> {
+               effectString = effect
+            }
          }
       }
    }
 
-   throwable?.also { error ->
+   if (effectString.isNotBlank()) {
+      ComAlertDialog(
+         text = {
+            Text(text = effectString)
+         },
+         onDismissRequest = { effectString = "" },
+      )
+   }
+
+   effectError?.also { error ->
       ComErrorDialog(
          error = remember(error) { error.errorMessage() },
-         onDismissRequest = { throwable = null },
+         onDismissRequest = { effectError = null },
          onClickRetry = null,
       )
    }

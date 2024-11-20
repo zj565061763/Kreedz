@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sd.android.kreedz.core.router.AppRouter
-import com.sd.android.kreedz.feature.common.ui.ComEffectError
+import com.sd.android.kreedz.feature.common.ui.ComEffect
 import com.sd.android.kreedz.feature.ranking.screen.ranking.RankingItemView
 import com.sd.android.kreedz.feature.ranking.screen.ranking.RankingScreenView
 
@@ -53,5 +53,5 @@ internal fun PlayerRankingScreen(
       vm.refresh(null)
    }
 
-   vm.effectFlow.ComEffectError()
+   vm.effectFlow.ComEffect()
 }

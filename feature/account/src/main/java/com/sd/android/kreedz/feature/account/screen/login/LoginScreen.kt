@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sd.android.kreedz.core.router.AppRouter
-import com.sd.android.kreedz.feature.common.ui.ComEffectError
+import com.sd.android.kreedz.feature.common.ui.ComEffect
 import com.sd.android.kreedz.feature.common.ui.ComLoadingDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -87,5 +87,5 @@ internal fun LoginScreen(
       }
    }
 
-   vm.effectFlow.ComEffectError()
+   vm.effectFlow.ComEffect()
 }

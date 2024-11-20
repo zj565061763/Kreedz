@@ -37,7 +37,7 @@ import com.sd.android.kreedz.data.event.ReClickMainNavigation
 import com.sd.android.kreedz.data.model.ChatBoxItemModel
 import com.sd.android.kreedz.data.model.ChatBoxMessageModel
 import com.sd.android.kreedz.data.model.MainNavigation
-import com.sd.android.kreedz.feature.common.ui.ComEffectError
+import com.sd.android.kreedz.feature.common.ui.ComEffect
 import com.sd.android.kreedz.feature.common.ui.ComErrorView
 import com.sd.android.kreedz.feature.common.ui.ComInputLayer
 import com.sd.android.kreedz.feature.common.ui.ComLoadingDialog
@@ -114,7 +114,7 @@ fun ChatBoxScreen(
       }
    }
 
-   vm.effectFlow.ComEffectError()
+   vm.effectFlow.ComEffect()
 
    LaunchedEffect(lazyListState, scrollBehavior) {
       FEvent.flowOf<ReClickMainNavigation>()

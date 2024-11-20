@@ -21,7 +21,7 @@ import com.sd.android.kreedz.core.router.AppRouter
 import com.sd.android.kreedz.core.ui.AppPullToRefresh
 import com.sd.android.kreedz.core.utils.AppUtils
 import com.sd.android.kreedz.data.model.GameServerModel
-import com.sd.android.kreedz.feature.common.ui.ComEffectError
+import com.sd.android.kreedz.feature.common.ui.ComEffect
 
 @Composable
 fun GameServerScreen(
@@ -53,7 +53,7 @@ fun GameServerScreen(
       vm.init()
    }
 
-   vm.effectFlow.ComEffectError()
+   vm.effectFlow.ComEffect()
 }
 
 @Composable
