@@ -100,6 +100,7 @@ private fun InputEmailView(
 private fun Preview() {
    AppTheme {
       RecoverInputView(
+         modifier = Modifier.padding(16.dp),
          emailState = TextFieldState("666666666@qq.com"),
          onClickRecover = {},
       )
@@ -111,6 +112,7 @@ private fun Preview() {
 private fun PreviewEmpty() {
    AppTheme {
       RecoverInputView(
+         modifier = Modifier.padding(16.dp),
          emailState = TextFieldState(""),
          onClickRecover = {},
       )
