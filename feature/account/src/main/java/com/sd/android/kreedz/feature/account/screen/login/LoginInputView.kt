@@ -107,8 +107,8 @@ private fun InputUsernameView(
          fontSize = 16.sp,
          lineHeight = (1.5).em,
       ),
-      placeholder = {
-         Text(text = "Enter your username...")
+      label = {
+         Text(text = "Enter your username")
       },
       keyboardOptions = KeyboardOptions.Default.copy(
          imeAction = ImeAction.Next,
@@ -142,8 +142,8 @@ private fun InputPasswordView(
       onKeyboardAction = {
          onDone()
       },
-      placeholder = {
-         Text(text = "Enter your password...")
+      label = {
+         Text(text = "Enter your password")
       },
       trailingIcon = {
          if (state.text.isNotBlank()) {

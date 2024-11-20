@@ -79,8 +79,8 @@ private fun InputEmailView(
          fontSize = 16.sp,
          lineHeight = (1.5).em,
       ),
-      placeholder = {
-         Text(text = "Enter your email...")
+      label = {
+         Text(text = "Enter your email")
       },
       keyboardOptions = KeyboardOptions.Default.copy(
          imeAction = ImeAction.Done,
