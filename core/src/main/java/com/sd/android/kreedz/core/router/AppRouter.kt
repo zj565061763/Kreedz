@@ -22,6 +22,7 @@ object AppRouter {
    const val WEB = "/web"
 
    const val LOGIN = "/login"
+   const val REGISTER = "/register"
    const val RECOVER_PASSWORD = "/recover_password"
    const val RECOVER_USERNAME = "/recover_username"
 
@@ -97,6 +98,12 @@ object AppRouter {
    fun login(context: Context) {
       context.fFindActivity {
          DRouter.build(LOGIN).start()
+      }
+   }
+
+   fun register(context: Context) {
+      context.fFindActivity {
+         DRouter.build(REGISTER).start()
       }
    }
 

@@ -32,6 +32,7 @@ object AppUtils {
    }
 
    fun isValidEmail(email: String): Boolean {
+      if (email.isBlank()) return false
       val emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$".toRegex()
       return emailRegex.matches(email)
    }

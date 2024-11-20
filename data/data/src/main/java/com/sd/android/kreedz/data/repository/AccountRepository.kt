@@ -30,6 +30,7 @@ interface AccountRepository {
    fun getUserAccountFlow(): Flow<UserAccountModel?>
 
    suspend fun login(username: String, password: String)
+   suspend fun register(email: String, nickname: String, username: String, password: String)
    suspend fun logout()
    suspend fun syncAccount()
 
@@ -54,6 +55,15 @@ private object AccountRepositoryImpl : AccountRepository, FLogger {
       val data = _netDataSource.login(username = username, password = password)
       LocalUserAccountModel.replace(data.asLocalUserAccountModel())
       LocalAppConfig.setLastLoginUsername(username)
+   }
+
+   override suspend fun register(email: String, nickname: String, username: String, password: String) {
+      _netDataSource.register(
+         email = email,
+         nickname = nickname,
+         username = username,
+         password = password,
+      )
    }
 
    override suspend fun logout() {

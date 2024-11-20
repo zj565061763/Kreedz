@@ -1,4 +1,4 @@
-package com.sd.android.kreedz.feature.account.screen.login
+package com.sd.android.kreedz.feature.account.screen.register
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -21,26 +21,24 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.sd.android.kreedz.core.router.AppRouter
 import com.sd.android.kreedz.feature.common.ui.ComEffect
 import com.sd.android.kreedz.feature.common.ui.ComLoadingDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun LoginScreen(
+internal fun RegisterScreen(
    modifier: Modifier = Modifier,
-   vm: LoginVM = viewModel(),
+   vm: RegisterVM = viewModel(),
    onClickBack: () -> Unit,
 ) {
    val state by vm.stateFlow.collectAsStateWithLifecycle()
-   val context = LocalContext.current
 
    Scaffold(
       modifier = modifier,
       topBar = {
          TopAppBar(
             title = {
-               Text(text = "Login")
+               Text(text = "Register")
             },
             navigationIcon = {
                IconButton(onClick = onClickBack) {
@@ -53,35 +51,31 @@ internal fun LoginScreen(
          )
       }
    ) { padding ->
-      LoginInputView(
+      RegisterInputView(
          modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(padding)
             .padding(16.dp),
+         emailState = vm.emailState,
+         nicknameState = vm.nicknameState,
          usernameState = vm.usernameState,
          passwordState = vm.passwordState,
-         onClickLogin = { vm.login() },
-         onClickForgotPassword = {
-            AppRouter.recoverPassword(context)
-         },
-         onClickForgotUsername = {
-            AppRouter.recoverUsername(context)
-         },
+         confirmPasswordState = vm.confirmPasswordState,
          onClickRegister = {
-            AppRouter.register(context)
+            vm.register()
          },
       )
    }
 
-   if (state.isLoggingIn) {
+   if (state.isRegistering) {
       ComLoadingDialog {
-         vm.cancelLogin()
+         vm.cancelRegister()
       }
    }
 
    val onClickBackUpdated by rememberUpdatedState(onClickBack)
-   if (state.isLoginSuccess) {
+   if (state.isRegisterSuccess) {
       LaunchedEffect(Unit) {
          onClickBackUpdated()
       }

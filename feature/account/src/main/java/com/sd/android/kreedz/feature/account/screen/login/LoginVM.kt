@@ -22,7 +22,10 @@ internal class LoginVM : BaseViewModel<LoginVM.State, Any>(State()) {
          if (password.isBlank()) return@vmLaunch
 
          _loginLoader.tryLoad {
-            _repository.login(username = username, password = password)
+            _repository.login(
+               username = username,
+               password = password,
+            )
          }.onSuccess {
             updateState {
                it.copy(isLoginSuccess = true)

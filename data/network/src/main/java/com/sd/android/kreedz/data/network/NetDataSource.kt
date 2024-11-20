@@ -52,6 +52,7 @@ interface NetDataSource {
    suspend fun getTeam(): List<NetTeamRole>
 
    suspend fun login(username: String, password: String): NetLogin
+   suspend fun register(email: String, nickname: String, username: String, password: String)
    suspend fun logout()
 
    suspend fun recoverPassword(email: String)
@@ -139,6 +140,15 @@ private object NetDataSourceImpl : NetDataSource {
 
    override suspend fun login(username: String, password: String): NetLogin {
       return _api.login(username = username, password = password)
+   }
+
+   override suspend fun register(email: String, nickname: String, username: String, password: String) {
+      _api.register(
+         email = email,
+         nickname = nickname,
+         username = username,
+         password = password,
+      )
    }
 
    override suspend fun logout() {
@@ -274,6 +284,16 @@ private interface AppNetApi {
       @Field("username") username: String,
       @Field("password") password: String,
    ): NetLogin
+
+   @AppApi
+   @FormUrlEncoded
+   @POST("auth/register")
+   suspend fun register(
+      @Field("email") email: String,
+      @Field("pseudo") nickname: String,
+      @Field("username") username: String,
+      @Field("password") password: String,
+   )
 
    @AppApi
    @POST("auth/logout")
