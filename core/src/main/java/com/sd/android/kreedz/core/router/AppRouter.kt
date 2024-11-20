@@ -14,7 +14,6 @@ object AppRouter {
    const val USER = "/user"
 
    const val FAVORITE_MAPS = "/favorite_maps"
-   const val FAVORITE_USERS = "/favorite_users"
 
    const val NEWS = "/news"
    const val BLOG = "/blog"
@@ -27,107 +26,101 @@ object AppRouter {
    const val RECOVER_USERNAME = "/recover_username"
 
    fun main(context: Context) {
-      context.fFindActivity {
-         DRouter.build(MAIN).start(it)
+      context.fFindActivity { activity ->
+         DRouter.build(MAIN).start(activity)
       }
    }
 
    fun playerRanking(context: Context) {
-      context.fFindActivity {
-         DRouter.build(PLAYER_RANKING).start(it)
+      context.fFindActivity { activity ->
+         DRouter.build(PLAYER_RANKING).start(activity)
       }
    }
 
    fun countryRanking(context: Context) {
-      context.fFindActivity {
-         DRouter.build(COUNTRY_RANKING).start()
+      context.fFindActivity { activity ->
+         DRouter.build(COUNTRY_RANKING).start(activity)
       }
    }
 
    fun ljRecords(context: Context) {
-      context.fFindActivity {
-         DRouter.build(LJ_RECORDS).start(it)
+      context.fFindActivity { activity ->
+         DRouter.build(LJ_RECORDS).start(activity)
       }
    }
 
    fun map(context: Context, id: String) {
       if (id.isBlank()) return
-      context.fFindActivity {
+      context.fFindActivity { activity ->
          DRouter.build(MAP)
             .putExtra("id", id)
-            .start(it)
+            .start(activity)
       }
    }
 
    fun user(context: Context, id: String) {
       if (id.isBlank()) return
-      context.fFindActivity {
+      context.fFindActivity { activity ->
          DRouter.build(USER)
             .putExtra("id", id)
-            .start(it)
+            .start(activity)
       }
    }
 
    fun news(context: Context, id: String) {
       if (id.isBlank()) return
-      context.fFindActivity {
+      context.fFindActivity { activity ->
          DRouter.build(NEWS)
             .putExtra("id", id)
-            .start(it)
+            .start(activity)
       }
    }
 
    fun blog(context: Context, id: String) {
       if (id.isBlank()) return
-      context.fFindActivity {
+      context.fFindActivity { activity ->
          DRouter.build(BLOG)
             .putExtra("id", id)
-            .start(it)
+            .start(activity)
       }
    }
 
    fun web(context: Context, url: String) {
       if (url.isBlank()) return
-      context.fFindActivity {
+      context.fFindActivity { activity ->
          DRouter.build(WEB)
             .putExtra("url", url)
-            .start(it)
+            .start(activity)
       }
    }
 
    fun login(context: Context) {
-      context.fFindActivity {
-         DRouter.build(LOGIN).start()
+      context.fFindActivity { activity ->
+         DRouter.build(LOGIN).start(activity)
       }
    }
 
    fun register(context: Context) {
-      context.fFindActivity {
-         DRouter.build(REGISTER).start()
+      context.fFindActivity { activity ->
+         DRouter.build(REGISTER).start(activity)
       }
    }
 
    fun recoverPassword(context: Context) {
-      context.fFindActivity {
-         DRouter.build(RECOVER_PASSWORD).start()
+      context.fFindActivity { activity ->
+         DRouter.build(RECOVER_PASSWORD).start(activity)
       }
    }
 
    fun recoverUsername(context: Context) {
-      context.fFindActivity {
-         DRouter.build(RECOVER_USERNAME).start()
+      context.fFindActivity { activity ->
+         DRouter.build(RECOVER_USERNAME).start(activity)
       }
    }
 
    fun favoriteMaps(context: Context) {
-      context.fFindActivity {
-         DRouter.build(FAVORITE_MAPS).start()
-      }
-   }
-
-   fun favoriteUsers(context: Context) {
-      context.fFindActivity {
-         DRouter.build(FAVORITE_USERS).start()
+      context.fFindActivity { activity ->
+         DRouter.build(FAVORITE_MAPS).start(activity)
       }
    }
 }
