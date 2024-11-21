@@ -6,24 +6,29 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sd.android.kreedz.core.ui.AppTextColor
 import com.sd.android.kreedz.core.ui.AppTheme
 import com.sd.android.kreedz.data.model.RecordModel
+import com.sd.android.kreedz.data.repository.MapRepository
 import com.sd.android.kreedz.data.utils.DataUtils
 import com.sd.android.kreedz.feature.common.ui.ComCountryImageView
 import com.sd.android.kreedz.feature.common.ui.ComYoutubeButton
 import com.sd.lib.compose.constraintlayout.goneIf
+import com.sd.lib.xlog.fDebug
 
 @Composable
 internal fun LatestRecordsItemView(
@@ -45,6 +50,7 @@ internal fun LatestRecordsItemView(
    }
    ItemView(
       modifier = modifier,
+      mapId = current.map.id,
       mapName = current.map.name,
       currentTime = current.timeStr,
       youtubeLink = current.youtubeLink,
@@ -58,6 +64,7 @@ internal fun LatestRecordsItemView(
 @Composable
 private fun ItemView(
    modifier: Modifier = Modifier,
+   mapId: String,
    mapName: String,
    currentTime: String,
    youtubeLink: String?,
@@ -66,15 +73,17 @@ private fun ItemView(
    previousPlayerCountry: String?,
    timeDifference: String?,
 ) {
+   val isLoadingMap = isLoadingMap(mapId)
+   fDebug { "mapId:$mapId isLoadingMap:$isLoadingMap" }
+
    ConstraintLayout(
       modifier = modifier
-         .animateContentSize()
          .fillMaxWidth()
          .padding(8.dp)
    ) {
       val (
          refMapName, refCurrentTime, refYoutubeLink,
-         refPrevious,
+         refPrevious, refLoading,
       ) = createRefs()
 
       // mapName
@@ -119,6 +128,18 @@ private fun ItemView(
             goneIf(youtubeLink.isNullOrBlank())
          }
       )
+
+      if (isLoadingMap) {
+         CircularProgressIndicator(
+            strokeWidth = 1.dp,
+            modifier = Modifier.constrainAs(refLoading) {
+               start.linkTo(refPrevious.end, 4.dp)
+               centerVerticallyTo(refPrevious)
+               width = 12.dp.asDimension()
+               height = 12.dp.asDimension()
+            }
+         )
+      }
    }
 }
 
@@ -131,7 +152,7 @@ private fun PreviousView(
    timeDifference: String?,
 ) {
    Row(
-      modifier = modifier,
+      modifier = modifier.animateContentSize(),
       verticalAlignment = Alignment.CenterVertically,
    ) {
       if (playerCountry != null) {
@@ -167,12 +188,21 @@ private fun PreviousView(
    }
 }
 
+@Composable
+private fun isLoadingMap(mapId: String): Boolean {
+   if (LocalInspectionMode.current) return false
+   return remember(mapId) {
+      MapRepository().getMapLoadingFlow(mapId)
+   }.collectAsStateWithLifecycle(initialValue = false).value
+}
+
 @Preview
 @Composable
 private fun Preview() {
    AppTheme {
       Card(shape = MaterialTheme.shapes.extraSmall) {
          ItemView(
+            mapId = "",
             mapName = "bkz_factory",
             currentTime = "01:59.12",
             youtubeLink = "youtubeLink",
@@ -191,6 +221,7 @@ private fun PreviewEmptyPrevious() {
    AppTheme {
       Card(shape = MaterialTheme.shapes.extraSmall) {
          ItemView(
+            mapId = "",
             mapName = "bkz_factory",
             currentTime = "01:59.12",
             youtubeLink = "youtubeLink",

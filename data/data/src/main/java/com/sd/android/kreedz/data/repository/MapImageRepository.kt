@@ -22,70 +22,68 @@ fun MapImageRepository(): MapImageRepository = MapImageRepositoryImpl
 
 interface MapImageRepository {
    fun load(mapId: String, image: String?)
-   fun loadingFlow(mapId: String): Flow<Boolean>
+   fun getLoadingFlow(mapId: String): Flow<Boolean>
 }
 
 private object MapImageRepositoryImpl : MapImageRepository, FLogger {
    private val _daoMap = DaoMapRepository()
    private val _loaders: MutableMap<String, FLoader> = mutableMapOf()
-   private val _loadingState = FKeyedState<Boolean>()
+   private val _loadingState = FKeyedState { false }
 
    override fun load(mapId: String, image: String?) {
+      if (mapId.isBlank()) return
       if (image.isNullOrBlank()) return
       fGlobalLaunch {
          val loader = _loaders.getOrPut(mapId) { FLoader() }
-         loader.tryLoad(
-            onFinish = {
-               fGlobalLaunch {
-                  _loadingState.emitAndRelease(mapId, state = false)
-                  _loaders.remove(mapId)
-               }
+         loader.tryLoad {
+            try {
+               _loadingState.update(mapId, state = true)
+               loadImage(mapId = mapId, image = image)
+            } finally {
+               _loadingState.updateAndRelease(mapId, state = false)
+               _loaders.remove(mapId)
             }
-         ) {
-            _loadingState.emit(mapId, state = true)
-            syncMapImage(mapId = mapId, image = image)
          }
       }
    }
 
-   override fun loadingFlow(mapId: String): Flow<Boolean> {
+   override fun getLoadingFlow(mapId: String): Flow<Boolean> {
       return _loadingState.flowOf(mapId)
    }
 
-   private suspend fun syncMapImage(
-      mapId: String,
-      image: String,
-   ) {
+   private suspend fun loadImage(mapId: String, image: String) {
+      // Check local cache first.
       _daoMap.getById(mapId).firstOrNull()?.also { map ->
-         fContext.imageLoader.execute(
+         val result = fContext.imageLoader.execute(
             ImageRequest.Builder(fContext)
                .data(map.image)
                .networkCachePolicy(CachePolicy.DISABLED)
                .build()
-         ).also {
-            if (it is SuccessResult) {
-               return
-            }
+         )
+         if (result is SuccessResult) {
+            return
          }
       }
 
       yield()
       ld { "load image $image" }
 
-      fContext.imageLoader.execute(
+      // Load image from the network.
+      val result = fContext.imageLoader.execute(
          ImageRequest.Builder(fContext)
             .data(image)
             .build()
-      ).also {
-         when (it) {
-            is SuccessResult -> {
-               ld { "load image success" }
-               _daoMap.updateImage(id = mapId, image = image)
-            }
-            is ErrorResult -> {
-               lw { "load image error ${it.throwable.stackTraceToString()}" }
-               throw it.throwable
-            }
+      )
+
+      when (result) {
+         is SuccessResult -> {
+            ld { "load image success" }
+            // Save the image uri to local.
+            _daoMap.updateImage(id = mapId, image = image)
+         }
+         is ErrorResult -> {
+            lw { "load image error ${result.throwable.stackTraceToString()}" }
+            throw result.throwable
          }
       }
    }

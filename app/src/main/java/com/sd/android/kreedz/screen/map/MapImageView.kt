@@ -4,13 +4,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.sd.android.kreedz.core.ui.AppImage
@@ -50,9 +50,7 @@ fun MapImageView(
 @Composable
 private fun isLoadingMapImage(mapId: String): Boolean {
    if (LocalInspectionMode.current) return false
-   return produceState(initialValue = false, mapId) {
-      MapImageRepository()
-         .loadingFlow(mapId)
-         .collect { value = it }
-   }.value
+   return remember(mapId) {
+      MapImageRepository().getLoadingFlow(mapId)
+   }.collectAsStateWithLifecycle(initialValue = false).value
 }

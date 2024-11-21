@@ -17,9 +17,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sd.android.kreedz.data.event.ReClickMainNavigation
 import com.sd.android.kreedz.data.model.MainNavigation
 import com.sd.android.kreedz.feature.chat.screen.chatbox.ChatBoxScreen
-import com.sd.android.kreedz.screen.more.MainMoreScreen
 import com.sd.android.kreedz.feature.records.screen.map.MapRecordsScreen
 import com.sd.android.kreedz.screen.home.MainHomeScreen
+import com.sd.android.kreedz.screen.more.MainMoreScreen
 import com.sd.lib.compose.active.FSetActive
 import com.sd.lib.compose.tab.container.TabContainer
 import com.sd.lib.event.FEvent
