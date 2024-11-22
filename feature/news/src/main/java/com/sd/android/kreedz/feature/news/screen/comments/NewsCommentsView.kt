@@ -14,6 +14,7 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -34,7 +36,6 @@ import com.sd.android.kreedz.feature.common.ui.ComCountryTextViewSmall
 import com.sd.android.kreedz.feature.common.ui.ComUserIconsView
 import com.sd.android.kreedz.feature.common.ui.comAnnotatedLink
 import com.sd.lib.compose.utils.fClick
-import com.sd.lib.compose.utils.fEnabled
 
 internal fun LazyListScope.newsCommentsView(
    comments: List<NewsCommentGroupModel>,
@@ -43,8 +44,8 @@ internal fun LazyListScope.newsCommentsView(
    onClickComment: (NewsCommentModel) -> Unit,
 ) {
    item(
-      key = "Comments",
-      contentType = "Comments",
+      key = "comment:title",
+      contentType = "comment:title",
    ) {
       TitleView(
          onClickAddComment = onClickAddComment,
@@ -52,28 +53,29 @@ internal fun LazyListScope.newsCommentsView(
    }
 
    comments.forEachIndexed { index, group ->
+      if (index > 0) {
+         item(contentType = "comment:divider") {
+            HorizontalDivider(thickness = Dp.Hairline)
+         }
+      }
       item(
-         key = group.comment.id,
-         contentType = "group item",
+         key = "comment:${group.comment.id}",
+         contentType = "comment:group item",
       ) {
          GroupItemView(
             item = group.comment,
             onClickAuthor = {
                onClickAuthor(group.comment.author.id)
             },
-            modifier = Modifier
-               .fEnabled(index > 0) {
-                  padding(top = 16.dp)
-               }
-               .fClick {
-                  onClickComment(group.comment)
-               }
+            modifier = Modifier.fClick {
+               onClickComment(group.comment)
+            }
          )
       }
       items(
          items = group.children,
-         key = { it.comment.id },
-         contentType = { "reply item" },
+         key = { "comment:${it.comment.id}" },
+         contentType = { "comment:reply item" },
       ) { item ->
          val showReplyUser = item.reply != null
             && item.reply?.comment?.id != group.comment.id

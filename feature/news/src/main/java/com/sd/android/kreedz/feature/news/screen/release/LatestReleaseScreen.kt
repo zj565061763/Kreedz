@@ -222,8 +222,8 @@ private fun LazyListScope.titleView(
 ) {
    if (title.isNullOrBlank()) return
    item(
-      key = "title",
-      contentType = "title",
+      key = "news title",
+      contentType = "news title",
    ) {
       Card(
          modifier = Modifier.fillParentMaxWidth(),
@@ -248,7 +248,7 @@ private fun LazyListScope.recordsView(
 ) {
    for (group in groups) {
       item(
-         key = group.player.id,
+         key = "player:${group.player.id}",
          contentType = "player",
       ) {
          ComCountryTextViewLarge(
@@ -261,7 +261,8 @@ private fun LazyListScope.recordsView(
       }
       items(
          items = group.records,
-         key = { it.current.id },
+         key = { "record:${it.current.id}" },
+         contentType = { "record" }
       ) { item ->
          Card(shape = MaterialTheme.shapes.extraSmall) {
             LatestRecordsItemView(
