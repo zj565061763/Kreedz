@@ -13,10 +13,7 @@ import com.sd.android.kreedz.data.network.model.NetMapRecord
 import com.sd.android.kreedz.data.repository.dao.DaoMapRepository
 import com.sd.android.kreedz.data.repository.dao.DaoRecordRepository
 import com.sd.android.kreedz.data.repository.dao.DaoUserRepository
-import com.sd.lib.coroutines.FKeyedState
-import com.sd.lib.coroutines.FSyncable
-import com.sd.lib.coroutines.fPreferMainImmediate
-import com.sd.lib.coroutines.syncOrThrow
+import com.sd.lib.coroutines.FKeyedSyncable
 import com.sd.lib.xlog.FLogger
 import com.sd.lib.xlog.li
 import com.sd.lib.xlog.lw
@@ -43,8 +40,7 @@ private object MapRepositoryImpl : MapRepository, FLogger {
    private val _daoUser = DaoUserRepository()
    private val _daoRecord = DaoRecordRepository()
 
-   private val _mapsSyncable = mutableMapOf<String, FSyncable<MapDetailsModel>>()
-   private val _mapsLoadingState = FKeyedState { false }
+   private val _mapsSyncable = FKeyedSyncable<MapDetailsModel>()
 
    override fun getMapFlow(id: String): Flow<MapModel?> {
       return _daoMap.getById(id)
@@ -55,28 +51,14 @@ private object MapRepositoryImpl : MapRepository, FLogger {
    }
 
    override fun getMapLoadingFlow(mapId: String): Flow<Boolean> {
-      return _mapsLoadingState.flowOf(mapId)
+      return _mapsSyncable.syncingFlow(mapId)
    }
 
    override suspend fun syncMap(id: String): MapDetailsModel {
       require(id.isNotBlank())
-      return withContext(Dispatchers.fPreferMainImmediate) {
-         val syncable = _mapsSyncable.getOrPut(id) { newSyncable(id) }
-         try {
-            syncable.syncOrThrow()
-         } finally {
-            _mapsSyncable.remove(id)
-         }
-      }
-   }
-
-   private fun newSyncable(id: String): FSyncable<MapDetailsModel> {
-      return FSyncable {
-         runCatching {
-            li { "sync $id" }
-            _mapsLoadingState.update(id, state = true)
-            doSyncMap(id)
-         }.also { _mapsLoadingState.updateAndRelease(id, state = false) }
+      return _mapsSyncable.syncOrThrow(key = id) {
+         li { "sync $id" }
+         runCatching { doSyncMap(id) }
             .onSuccess { li { "sync $id onSuccess" } }
             .onFailure { lw { "sync $id onFailure ${it.stackTraceToString()}" } }
             .getOrThrow()

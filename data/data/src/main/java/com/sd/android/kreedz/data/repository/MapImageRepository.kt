@@ -6,10 +6,8 @@ import coil.request.ErrorResult
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.sd.android.kreedz.data.repository.dao.DaoMapRepository
-import com.sd.lib.coroutines.FKeyedState
-import com.sd.lib.coroutines.FLoader
+import com.sd.lib.coroutines.FKeyedSyncable
 import com.sd.lib.coroutines.fGlobalLaunch
-import com.sd.lib.coroutines.tryLoad
 import com.sd.lib.ctx.fContext
 import com.sd.lib.xlog.FLogger
 import com.sd.lib.xlog.ld
@@ -27,28 +25,20 @@ interface MapImageRepository {
 
 private object MapImageRepositoryImpl : MapImageRepository, FLogger {
    private val _daoMap = DaoMapRepository()
-   private val _loaders: MutableMap<String, FLoader> = mutableMapOf()
-   private val _loadingState = FKeyedState { false }
+   private val _imagesSyncable = FKeyedSyncable<Unit>()
 
    override fun load(mapId: String, image: String?) {
       if (mapId.isBlank()) return
       if (image.isNullOrBlank()) return
       fGlobalLaunch {
-         val loader = _loaders.getOrPut(mapId) { FLoader() }
-         loader.tryLoad {
-            try {
-               _loadingState.update(mapId, state = true)
-               loadImage(mapId = mapId, image = image)
-            } finally {
-               _loadingState.updateAndRelease(mapId, state = false)
-               _loaders.remove(mapId)
-            }
+         _imagesSyncable.sync(key = mapId) {
+            loadImage(mapId = mapId, image = image)
          }
       }
    }
 
    override fun getLoadingFlow(mapId: String): Flow<Boolean> {
-      return _loadingState.flowOf(mapId)
+      return _imagesSyncable.syncingFlow(mapId)
    }
 
    private suspend fun loadImage(mapId: String, image: String) {
