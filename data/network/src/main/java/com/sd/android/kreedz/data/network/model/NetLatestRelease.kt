@@ -1,5 +1,7 @@
 package com.sd.android.kreedz.data.network.model
 
+import com.sd.android.kreedz.data.network.http.moshi.RecordTime
+
 data class NetLatestRelease(
    val newsId: String?,
    val newsName: String?,
@@ -17,5 +19,6 @@ data class NetLatestRecord(
    val demoId: String,
    val mapId: String,
    val mapName: String,
-   val time: String,
+   @RecordTime
+   val time: Long = 0,
 )

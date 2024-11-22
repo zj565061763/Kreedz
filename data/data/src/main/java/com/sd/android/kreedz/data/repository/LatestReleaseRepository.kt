@@ -1,5 +1,7 @@
 package com.sd.android.kreedz.data.repository
 
+import com.sd.android.kreedz.data.database.entity.MapEntity
+import com.sd.android.kreedz.data.database.entity.RecordEntity
 import com.sd.android.kreedz.data.database.entity.UserEntity
 import com.sd.android.kreedz.data.local.LocalLatestReleaseMapIds
 import com.sd.android.kreedz.data.model.LatestRecordGroupModel
@@ -7,6 +9,7 @@ import com.sd.android.kreedz.data.model.LatestRecordModel
 import com.sd.android.kreedz.data.model.LatestReleaseModel
 import com.sd.android.kreedz.data.network.NetDataSource
 import com.sd.android.kreedz.data.network.model.NetLatestRelease
+import com.sd.android.kreedz.data.repository.dao.DaoMapRepository
 import com.sd.android.kreedz.data.repository.dao.DaoRecordRepository
 import com.sd.android.kreedz.data.repository.dao.DaoUserRepository
 import com.sd.lib.coroutines.FLoader
@@ -14,6 +17,7 @@ import com.sd.lib.coroutines.FSyncable
 import com.sd.lib.coroutines.fGlobalLaunch
 import com.sd.lib.coroutines.syncOrThrow
 import com.sd.lib.retry.ktx.fNetRetry
+import com.sd.lib.xlog.FLogger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -21,10 +25,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
 
 fun LatestReleaseRepository(): LatestReleaseRepository = LatestReleaseRepositoryImpl
@@ -35,11 +39,11 @@ interface LatestReleaseRepository {
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-private object LatestReleaseRepositoryImpl : LatestReleaseRepository {
+private object LatestReleaseRepositoryImpl : LatestReleaseRepository, FLogger {
    private val _netDataSource = NetDataSource()
    private val _mapLoader = MapLoader()
 
-   private val _mapRecordRepository = MapRecordRepository()
+   private val _daoMap = DaoMapRepository()
    private val _daoUser = DaoUserRepository()
    private val _daoRecord = DaoRecordRepository()
 
@@ -102,33 +106,45 @@ private object LatestReleaseRepositoryImpl : LatestReleaseRepository {
    private val _syncable = FSyncable {
       val data = _netDataSource.getLatestRelease()
 
-      // Save users
+      supervisorScope {
+         saveMaps(data)
+         saveUsers(data)
+         saveRecords(data)
+      }
+
+      _sourceFlow.value = data
+      loadMaps(data)
+   }
+
+   private suspend fun saveMaps(data: NetLatestRelease) {
+      withContext(Dispatchers.IO) {
+         data.asMapEntities()
+      }.also {
+         _daoMap.insertOrIgnore(it)
+      }
+   }
+
+   private suspend fun saveUsers(data: NetLatestRelease) {
       withContext(Dispatchers.IO) {
          data.asUserEntities()
       }.also {
          _daoUser.insertOrUpdate(it)
       }
+   }
 
+   private suspend fun saveRecords(data: NetLatestRelease) {
       withContext(Dispatchers.IO) {
-         data.asRecordIds()
-      }.also { recordIds ->
-         syncMapRecords(recordIds)
+         data.asRecordEntities()
+      }.also {
+         _daoRecord.insertOrIgnore(it)
       }
+   }
 
-      _sourceFlow.value = data
-
-      // Load maps
+   private suspend fun loadMaps(data: NetLatestRelease) {
       withContext(Dispatchers.IO) {
          data.asMapIds()
       }.also { mapIds ->
          _mapLoader.load(data.newsId, mapIds)
-      }
-   }
-
-   private suspend fun syncMapRecords(recordIds: List<String>) {
-      val list = _daoRecord.getByIds(recordIds).first()
-      if (list.size != recordIds.size) {
-         _mapRecordRepository.sync()
       }
    }
 }
@@ -172,6 +188,19 @@ private class MapLoader {
    }
 }
 
+private fun NetLatestRelease.asMapEntities(): List<MapEntity> {
+   return demosByPlayer.asSequence()
+      .flatMap { it.demos }
+      .map {
+         MapEntity(
+            id = it.mapId,
+            name = it.mapName,
+            recordId = null,
+            image = null,
+         )
+      }.toList()
+}
+
 private fun NetLatestRelease.asUserEntities(): List<UserEntity> {
    return demosByPlayer.map {
       UserEntity(
@@ -180,6 +209,25 @@ private fun NetLatestRelease.asUserEntities(): List<UserEntity> {
          country = it.playerCountry,
       )
    }
+}
+
+private fun NetLatestRelease.asRecordEntities(): List<RecordEntity> {
+   return demosByPlayer.asSequence()
+      .flatMap { data ->
+         data.demos.map {
+            RecordEntity(
+               id = it.demoId,
+               mapId = it.mapId,
+               userId = data.playerId,
+               userNickname = data.playerName,
+               userCountry = data.playerCountry,
+               time = it.time,
+               date = 0,
+               youtubeLink = null,
+               deleted = false,
+            )
+         }
+      }.toList()
 }
 
 private fun NetLatestRelease.asRecordIds(): List<String> {

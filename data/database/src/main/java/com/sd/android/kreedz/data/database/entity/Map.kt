@@ -26,6 +26,7 @@ data class MapEntity(
 interface MapEntityDao {
    suspend fun insertOrUpdateRecordId(items: List<MapEntity>)
    suspend fun insertOrUpdateWithoutImage(item: MapEntity)
+   suspend fun insertOrIgnore(items: List<MapEntity>)
    suspend fun updateImage(id: String, image: String)
    fun getById(id: String): Flow<MapEntity?>
    fun getAllWithRecordAndUser(): Flow<Map<MapEntity, Map<RecordEntity, UserEntity?>>>
@@ -75,6 +76,17 @@ internal interface MapDao : MapEntityDao {
          )
       }.also {
          updateWithoutImageInternal(it)
+      }
+   }
+
+   override suspend fun insertOrIgnore(items: List<MapEntity>) {
+      withContext(Dispatchers.IO) {
+         items.filter {
+            it.id.isNotBlank() && it.name.isNotBlank()
+         }
+      }.also { filterItems ->
+         ModuleDatabase.li { "Map.insertOrIgnore items:${items.size} filter:${filterItems.size}" }
+         insertOrIgnoreInternal(filterItems)
       }
    }
 

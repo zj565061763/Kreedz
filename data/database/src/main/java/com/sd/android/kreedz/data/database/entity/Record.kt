@@ -54,6 +54,7 @@ data class RecordEntityWithMapAndUser(
 
 interface RecordEntityDao {
    suspend fun insertOrUpdate(items: List<RecordEntity>)
+   suspend fun insertOrIgnore(items: List<RecordEntity>)
    fun getByMapId(mapId: String, limit: Int): Flow<List<RecordEntityWithMapAndUser>>
    fun getByIds(ids: List<String>): Flow<List<RecordEntityWithMapAndUser>>
    fun getPrevious(id: String): Flow<RecordEntityWithMapAndUser?>
@@ -63,15 +64,16 @@ interface RecordEntityDao {
 @Dao
 internal interface RecordDao : RecordEntityDao {
    override suspend fun insertOrUpdate(items: List<RecordEntity>) {
-      withContext(Dispatchers.IO) {
-         items.filter {
-            it.id.isNotBlank()
-               && it.mapId.isNotBlank()
-               && (it.userId.isNotBlank() || it.userNickname.isNotBlank())
-         }
-      }.also { filterItems ->
+      filterItems(items).also { filterItems ->
          ModuleDatabase.li { "Record.insertOrUpdate items:${items.size} filter:${filterItems.size}" }
          insertOrUpdateInternal(filterItems)
+      }
+   }
+
+   override suspend fun insertOrIgnore(items: List<RecordEntity>) {
+      filterItems(items).also { filterItems ->
+         ModuleDatabase.li { "Record.insertOrIgnore items:${items.size} filter:${filterItems.size}" }
+         insertOrIgnoreInternal(filterItems)
       }
    }
 
@@ -97,6 +99,9 @@ internal interface RecordDao : RecordEntityDao {
    @Insert(onConflict = OnConflictStrategy.REPLACE)
    suspend fun insertOrUpdateInternal(items: List<RecordEntity>)
 
+   @Insert(onConflict = OnConflictStrategy.IGNORE)
+   suspend fun insertOrIgnoreInternal(items: List<RecordEntity>)
+
    @Transaction
    @Query("SELECT * FROM t_record WHERE mapId = :mapId AND date < :date ORDER BY date DESC LIMIT 1")
    fun getPreviousInternal(mapId: String, date: Long): Flow<RecordEntityWithMapAndUser?>
@@ -108,3 +113,12 @@ internal interface RecordDao : RecordEntityDao {
    }
 }
 
+private suspend fun filterItems(items: List<RecordEntity>): List<RecordEntity> {
+   return withContext(Dispatchers.IO) {
+      items.filter {
+         it.id.isNotBlank()
+            && it.mapId.isNotBlank()
+            && (it.userId.isNotBlank() || it.userNickname.isNotBlank())
+      }
+   }
+}

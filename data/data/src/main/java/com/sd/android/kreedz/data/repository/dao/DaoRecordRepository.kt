@@ -21,6 +21,7 @@ internal interface DaoRecordRepository {
    fun getByIds(ids: List<String>): Flow<List<RecordModel>>
    fun getPrevious(id: String): Flow<RecordModel?>
    suspend fun insertOrUpdate(items: List<RecordEntity>)
+   suspend fun insertOrIgnore(items: List<RecordEntity>)
 }
 
 private object DaoRecordRepositoryImpl : DaoRecordRepository {
@@ -49,6 +50,10 @@ private object DaoRecordRepositoryImpl : DaoRecordRepository {
 
    override suspend fun insertOrUpdate(items: List<RecordEntity>) {
       _recordDao.insertOrUpdate(items)
+   }
+
+   override suspend fun insertOrIgnore(items: List<RecordEntity>) {
+      _recordDao.insertOrIgnore(items)
    }
 }
 

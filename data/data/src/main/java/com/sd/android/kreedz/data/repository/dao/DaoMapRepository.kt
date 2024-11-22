@@ -25,6 +25,7 @@ internal interface DaoMapRepository {
    fun getAllWithRecord(): Flow<List<MapRecordModel>>
    suspend fun insertOrUpdateRecordId(items: List<MapEntity>)
    suspend fun insertOrUpdateWithoutImage(item: MapEntity)
+   suspend fun insertOrIgnore(items: List<MapEntity>)
    suspend fun updateImage(id: String, image: String)
 }
 
@@ -50,6 +51,10 @@ private object DaoMapRepositoryImpl : DaoMapRepository {
 
    override suspend fun insertOrUpdateWithoutImage(item: MapEntity) {
       _mapDao.insertOrUpdateWithoutImage(item)
+   }
+
+   override suspend fun insertOrIgnore(items: List<MapEntity>) {
+      _mapDao.insertOrIgnore(items)
    }
 
    override suspend fun updateImage(id: String, image: String) {
