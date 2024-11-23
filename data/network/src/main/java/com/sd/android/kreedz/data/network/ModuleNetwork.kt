@@ -1,8 +1,7 @@
 package com.sd.android.kreedz.data.network
 
 import android.content.Context
-import com.didi.drouter.api.DRouter
-import com.sd.android.kreedz.data.network.export.FSHttpUrl
+import com.sd.android.kreedz.data.network.export.fsHttpUrl
 import com.sd.android.kreedz.data.network.http.AppCookieJar
 import com.sd.android.kreedz.data.network.http.moshi.RecordDateAdapter
 import com.sd.android.kreedz.data.network.http.moshi.RecordTimeAdapter
@@ -24,9 +23,6 @@ object ModuleNetwork : FLogger {
    private lateinit var _client: OkHttpClient
    private lateinit var _cookieJar: AppCookieJar
 
-   internal val urlService: FSHttpUrl
-      get() = checkNotNull(DRouter.build(FSHttpUrl::class.java).getService())
-
    fun init(
       context: Context,
       isRelease: Boolean,
@@ -35,7 +31,7 @@ object ModuleNetwork : FLogger {
       _cookieJar = AppCookieJar(context)
       _client = newOkHttpClient(isRelease, _cookieJar)
       _retrofit = newRetrofit(
-         baseUrl = urlService.getApiUrl(),
+         baseUrl = fsHttpUrl.getApiUrl(),
          client = _client,
          moshi = fMoshi.newBuilder()
             .add(RecordTimeAdapter())
@@ -47,13 +43,13 @@ object ModuleNetwork : FLogger {
    suspend fun hasToken(): Boolean {
       return withContext(Dispatchers.IO) {
          _cookieJar.hasToken(
-            urlService.getServerUrl().toHttpUrl()
+            fsHttpUrl.getServerUrl().toHttpUrl()
          )
       }
    }
 
    fun connectOnlineUsersWebSocket(userId: String, listener: WebSocketListener): WebSocket {
-      val url = urlService.getOnlineUsersWSUrl().let {
+      val url = fsHttpUrl.getOnlineUsersWSUrl().let {
          if (userId.isBlank()) {
             it
          } else {
