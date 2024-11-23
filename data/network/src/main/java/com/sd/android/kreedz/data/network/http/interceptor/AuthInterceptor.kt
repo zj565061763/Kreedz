@@ -1,8 +1,8 @@
 package com.sd.android.kreedz.data.network.http.interceptor
 
-import com.sd.android.kreedz.data.network.ModuleNetwork
 import com.sd.android.kreedz.data.network.event.EHttpUnauthorized
 import com.sd.android.kreedz.data.network.exception.HttpUnauthorizedException
+import com.sd.android.kreedz.data.network.export.fsHttpUrl
 import com.sd.android.kreedz.data.network.http.AppApi
 import com.sd.lib.coroutines.FContinuations
 import com.sd.lib.event.FEvent
@@ -70,7 +70,7 @@ internal class AuthInterceptor : AppApiInterceptor() {
       return fNetRetry {
          request.logDebug { "refreshToken" }
          request.newBuilder()
-            .url(ModuleNetwork.urlService.getRefreshTokenUrl())
+            .url(fsHttpUrl.getRefreshTokenUrl())
             .method("POST", "".toRequestBody())
             .build()
             .let { chain.proceed(it) }
