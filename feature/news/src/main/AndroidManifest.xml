@@ -5,7 +5,8 @@
 
         <activity
             android:name="com.sd.android.kreedz.feature.news.screen.news.NewsActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
 
     </application>
 

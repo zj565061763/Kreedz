@@ -10,6 +10,7 @@ import com.sd.android.kreedz.data.network.model.NetLatestNews
 import com.sd.android.kreedz.data.network.model.NetLatestRelease
 import com.sd.android.kreedz.data.network.model.NetLogin
 import com.sd.android.kreedz.data.network.model.NetMap
+import com.sd.android.kreedz.data.network.model.NetNews
 import com.sd.android.kreedz.data.network.model.NetNewsComment
 import com.sd.android.kreedz.data.network.model.NetPlayerRanking
 import com.sd.android.kreedz.data.network.model.NetRecord
@@ -42,6 +43,7 @@ interface NetDataSource {
    suspend fun getUserRecordsStats(id: String): NetUserRecordStats
 
    suspend fun getLatestNews(page: Int): NetLatestNews
+   suspend fun getNews(newsId: String): NetNews
    suspend fun newsComments(newsId: String): List<NetNewsComment>
    suspend fun newsSendComment(newsId: String, content: String, replyCommentId: String?)
    suspend fun newsDeleteComment(id: String)
@@ -112,6 +114,10 @@ private object NetDataSourceImpl : NetDataSource {
 
    override suspend fun getLatestNews(page: Int): NetLatestNews {
       return _api.getLatestNews(page)
+   }
+
+   override suspend fun getNews(newsId: String): NetNews {
+      return _api.getNews(newsId)
    }
 
    override suspend fun newsComments(newsId: String): List<NetNewsComment> {
@@ -241,6 +247,12 @@ private interface AppNetApi {
    suspend fun getLatestNews(
       @Query("page") page: Int,
    ): NetLatestNews
+
+   @AppApi
+   @GET("news/news")
+   suspend fun getNews(
+      @Query("newsId") newsId: String,
+   ): NetNews
 
    @AppApi
    @GET("news/comments")

@@ -1,5 +1,6 @@
 package com.sd.android.kreedz.feature.news.screen.comments
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -12,8 +13,8 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.sd.android.kreedz.core.ui.AppTextColor
 import com.sd.android.kreedz.data.model.NewsCommentGroupModel
 import com.sd.android.kreedz.data.model.NewsCommentModel
@@ -38,9 +40,10 @@ import com.sd.android.kreedz.feature.common.ui.comAnnotatedLink
 import com.sd.lib.compose.utils.fClick
 
 internal fun LazyListScope.newsCommentsView(
-   comments: List<NewsCommentGroupModel>,
+   isLoadingComments: Boolean,
+   commentCount: Int?,
+   comments: List<NewsCommentGroupModel>?,
    onClickAuthor: (userId: String) -> Unit,
-   onClickAddComment: () -> Unit,
    onClickComment: (NewsCommentModel) -> Unit,
 ) {
    item(
@@ -48,11 +51,12 @@ internal fun LazyListScope.newsCommentsView(
       contentType = "comment:title",
    ) {
       TitleView(
-         onClickAddComment = onClickAddComment,
+         commentCount = commentCount,
+         isLoadingComments = isLoadingComments,
       )
    }
 
-   comments.forEachIndexed { index, group ->
+   comments?.forEachIndexed { index, group ->
       if (index > 0) {
          item(contentType = "comment:divider") {
             HorizontalDivider(thickness = Dp.Hairline)
@@ -98,23 +102,37 @@ internal fun LazyListScope.newsCommentsView(
 @Composable
 private fun TitleView(
    modifier: Modifier = Modifier,
-   onClickAddComment: () -> Unit,
+   commentCount: Int?,
+   isLoadingComments: Boolean,
 ) {
    Row(
-      modifier = modifier.fClick { onClickAddComment() },
+      modifier = modifier.animateContentSize(),
       verticalAlignment = Alignment.CenterVertically,
    ) {
       Text(
          text = "Comments",
          fontSize = 16.sp,
          fontWeight = FontWeight.Medium,
-         modifier = Modifier.padding(vertical = 8.dp)
+         modifier = Modifier.padding(vertical = 16.dp)
       )
-      Spacer(Modifier.weight(1f))
-      Icon(
-         Icons.Filled.Add,
-         contentDescription = "Add news comment",
-      )
+
+      Spacer(Modifier.width(4.dp))
+
+      if (isLoadingComments) {
+         CircularProgressIndicator(
+            strokeWidth = 1.dp,
+            modifier = Modifier.size(14.dp),
+         )
+      } else {
+         if (commentCount != null) {
+            Text(
+               text = "($commentCount)",
+               fontSize = 16.sp,
+               fontWeight = FontWeight.Medium,
+               modifier = Modifier.padding(vertical = 16.dp)
+            )
+         }
+      }
    }
 }
 
@@ -128,8 +146,8 @@ private fun GroupItemView(
       modifier = modifier,
       country = item.author.country,
       countryText = item.author.nickname,
-      dateTime = item.dateTimeStr,
-      message = item.message,
+      dateStr = item.dateStr,
+      comment = item.comment,
       icons = item.author.icons,
       onClickAuthor = onClickAuthor,
       replayUser = {},
@@ -148,8 +166,8 @@ private fun ReplyItemView(
       modifier = modifier,
       country = comment.author.country,
       countryText = comment.author.nickname,
-      dateTime = comment.dateTimeStr,
-      message = comment.message,
+      dateStr = comment.dateStr,
+      comment = comment.comment,
       icons = comment.author.icons,
       onClickAuthor = onClickAuthor,
       replayUser = {
@@ -166,48 +184,24 @@ private fun ReplyItemView(
 }
 
 @Composable
-private fun ReplyUserView(
-   modifier: Modifier = Modifier,
-   user: UserWithIconsModel,
-   onClickAuthor: () -> Unit,
-) {
-   Row(
-      modifier = modifier,
-      verticalAlignment = Alignment.CenterVertically,
-   ) {
-      Spacer(Modifier.width(4.dp))
-      Icon(
-         imageVector = Icons.Filled.PlayArrow,
-         contentDescription = "Reply",
-         modifier = Modifier.size(14.dp),
-      )
-      Spacer(Modifier.width(4.dp))
-      ComCountryTextViewSmall(
-         country = user.country,
-         text = user.nickname,
-         textColor = AppTextColor.small,
-         modifier = Modifier.clickable {
-            onClickAuthor()
-         }
-      )
-   }
-}
-
-@Composable
 private fun ItemView(
    modifier: Modifier = Modifier,
    country: String?,
    countryText: String?,
-   dateTime: String,
-   message: String,
+   dateStr: String,
+   comment: String,
    icons: UserIconsModel,
    onClickAuthor: () -> Unit,
    replayUser: @Composable () -> Unit,
 ) {
-   ConstraintLayout(modifier = modifier.fillMaxWidth()) {
+   ConstraintLayout(
+      modifier = modifier
+         .fillMaxWidth()
+         .padding(vertical = 4.dp)
+   ) {
       val (
          refUser, refIcons, refReply,
-         refDateTime, refMessage,
+         refDateTime, refComment,
       ) = createRefs()
 
       ComCountryTextViewSmall(
@@ -230,6 +224,7 @@ private fun ItemView(
          }
       )
 
+      // Reply
       Box(modifier = Modifier.constrainAs(refReply) {
          centerVerticallyTo(refUser)
          start.linkTo(refIcons.end)
@@ -237,29 +232,70 @@ private fun ItemView(
          replayUser()
       }
 
-      Text(
-         text = dateTime,
-         fontSize = 12.sp,
-         color = AppTextColor.small,
-         modifier = Modifier.constrainAs(refDateTime) {
-            top.linkTo(parent.top)
-            end.linkTo(parent.end)
-         }
-      )
-
+      // Comment
       Box(
-         modifier = Modifier.constrainAs(refMessage) {
-            top.linkTo(refUser.bottom, 2.dp)
-            start.linkTo(refUser.start)
+         modifier = Modifier.constrainAs(refComment) {
+            top.linkTo(refUser.bottom, 1.dp)
+            start.linkTo(refUser.start, 16.dp)
+            linkTo(
+               start = refUser.start, end = parent.end,
+               startMargin = 16.dp, endMargin = 16.dp,
+               bias = 0f,
+            )
+            width = Dimension.fillToConstraints
          }
       ) {
          SelectionContainer {
             Text(
-               text = message.comAnnotatedLink(),
+               text = comment.comAnnotatedLink(),
                fontSize = 14.sp,
+               lineHeight = 18.sp,
             )
          }
       }
+
+      // Date
+      Text(
+         text = dateStr,
+         fontSize = 11.sp,
+         color = AppTextColor.small,
+         modifier = Modifier.constrainAs(refDateTime) {
+            top.linkTo(refComment.bottom, 1.dp)
+            start.linkTo(refComment.start)
+         }
+      )
+   }
+}
+
+@Composable
+private fun ReplyUserView(
+   modifier: Modifier = Modifier,
+   user: UserWithIconsModel,
+   onClickAuthor: () -> Unit,
+) {
+   Row(
+      modifier = modifier,
+      verticalAlignment = Alignment.CenterVertically,
+   ) {
+      Spacer(Modifier.width(4.dp))
+      Icon(
+         imageVector = Icons.Filled.PlayArrow,
+         contentDescription = "Reply",
+         modifier = Modifier.size(14.dp),
+      )
+
+      Spacer(Modifier.width(4.dp))
+      ComCountryTextViewSmall(
+         country = user.country,
+         text = user.nickname,
+         textColor = AppTextColor.small,
+         modifier = Modifier.clickable {
+            onClickAuthor()
+         }
+      )
+
+      Spacer(Modifier.width(2.dp))
+      ComUserIconsView(icons = user.icons)
    }
 }
 
@@ -267,7 +303,40 @@ private fun ItemView(
 @Composable
 private fun PreviewTitleView() {
    TitleView(
-      onClickAddComment = {},
+      commentCount = 33,
+      isLoadingComments = false,
+   )
+}
+
+@Preview
+@Composable
+private fun PreviewTitleViewLoading() {
+   TitleView(
+      commentCount = 33,
+      isLoadingComments = true,
+   )
+}
+
+@Preview
+@Composable
+private fun PreviewReplyUserView() {
+   ReplyUserView(
+      user = UserWithIconsModel(
+         id = "",
+         nickname = "zhengjun",
+         country = "cn",
+         icons = UserIconsModel(
+            isVip = true,
+            isRecordHolder = true,
+            isLJRecordHolder = true,
+            isTournamentRank1 = true,
+            isTournamentRank2 = true,
+            isTournamentRank3 = true,
+            isMapper = true,
+            isMovieEditor = true,
+         ),
+      ),
+      onClickAuthor = {},
    )
 }
 
@@ -277,8 +346,8 @@ private fun PreviewItemView() {
    ItemView(
       country = "cn",
       countryText = "zhengjun",
-      dateTime = "10/10/2024",
-      message = "Welcome to kreedz https://www.youtube.com",
+      dateStr = "10/10/2024",
+      comment = "Welcome to kreedz Welcome to kreedz Welcome to kreedz Welcome to kreedz",
       icons = UserIconsModel(
          isVip = true,
          isRecordHolder = true,

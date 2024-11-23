@@ -18,11 +18,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.sd.android.kreedz.data.model.UserIconsModel
 import com.sd.android.kreedz.feature.common.R
+import com.sd.lib.compose.utils.fEnabled
 
 @Composable
 fun ComUserIconsView(
    modifier: Modifier = Modifier,
    icons: UserIconsModel,
+   enableClick: Boolean = true,
 ) {
    Row(
       modifier = modifier,
@@ -30,29 +32,30 @@ fun ComUserIconsView(
       horizontalArrangement = Arrangement.spacedBy(1.dp),
    ) {
       if (icons.isVip) {
-         VIPIcon()
+         VIPIcon(enableClick = enableClick)
       }
 
       if (icons.isRecordHolder) {
-         RecordHolderIcon()
+         RecordHolderIcon(enableClick = enableClick)
       }
 
       if (icons.isLJRecordHolder) {
-         LJRecordHolderIcon()
+         LJRecordHolderIcon(enableClick = enableClick)
       }
 
-      TournamentIcon(
-         isTournamentRank1 = icons.isTournamentRank1,
-         isTournamentRank2 = icons.isTournamentRank2,
-         isTournamentRank3 = icons.isTournamentRank3,
-      )
+      when {
+         icons.isTournamentRank1 -> ComTournamentIconView(rank = 1)
+         icons.isTournamentRank2 -> ComTournamentIconView(rank = 2)
+         icons.isTournamentRank3 -> ComTournamentIconView(rank = 3)
+         else -> {}
+      }
 
       if (icons.isMapper) {
-         MapperIcon()
+         MapperIcon(enableClick = enableClick)
       }
 
       if (icons.isMovieEditor) {
-         MovieEditorIcon()
+         MovieEditorIcon(enableClick = enableClick)
       }
    }
 }
@@ -60,84 +63,65 @@ fun ComUserIconsView(
 @Composable
 private fun VIPIcon(
    modifier: Modifier = Modifier,
+   enableClick: Boolean,
 ) {
-   val context = LocalContext.current
    IconView(
-      modifier = modifier.clickable {
-         Toast.makeText(context, "VIP", Toast.LENGTH_SHORT).show()
-      },
+      modifier = modifier,
       id = R.drawable.vip,
       contentDescription = "VIP",
+      enableClick = enableClick,
    )
 }
 
 @Composable
 private fun RecordHolderIcon(
    modifier: Modifier = Modifier,
+   enableClick: Boolean,
 ) {
-   val context = LocalContext.current
    IconView(
-      modifier = modifier.clickable {
-         Toast.makeText(context, "Record Holder", Toast.LENGTH_SHORT).show()
-      },
+      modifier = modifier,
       id = R.drawable.record_holder,
       contentDescription = "Record Holder",
+      enableClick = enableClick,
    )
 }
 
 @Composable
 private fun LJRecordHolderIcon(
    modifier: Modifier = Modifier,
+   enableClick: Boolean,
 ) {
-   val context = LocalContext.current
    IconView(
-      modifier = modifier.clickable {
-         Toast.makeText(context, "LJ Record Holder", Toast.LENGTH_SHORT).show()
-      },
+      modifier = modifier,
       id = R.drawable.lj_record_holder,
       contentDescription = "LJ Record Holder",
+      enableClick = enableClick,
    )
-}
-
-@Composable
-private fun TournamentIcon(
-   isTournamentRank1: Boolean,
-   isTournamentRank2: Boolean,
-   isTournamentRank3: Boolean,
-) {
-   when {
-      isTournamentRank1 -> ComTournamentIconView(rank = 1)
-      isTournamentRank2 -> ComTournamentIconView(rank = 2)
-      isTournamentRank3 -> ComTournamentIconView(rank = 3)
-      else -> {}
-   }
 }
 
 @Composable
 private fun MapperIcon(
    modifier: Modifier = Modifier,
+   enableClick: Boolean,
 ) {
-   val context = LocalContext.current
    IconView(
-      modifier = modifier.clickable {
-         Toast.makeText(context, "Mapper", Toast.LENGTH_SHORT).show()
-      },
+      modifier = modifier,
       id = R.drawable.mapper,
       contentDescription = "Mapper",
+      enableClick = enableClick,
    )
 }
 
 @Composable
 private fun MovieEditorIcon(
    modifier: Modifier = Modifier,
+   enableClick: Boolean,
 ) {
-   val context = LocalContext.current
    IconView(
-      modifier = modifier.clickable {
-         Toast.makeText(context, "Movie Editor", Toast.LENGTH_SHORT).show()
-      },
+      modifier = modifier,
       id = R.drawable.movie_maker,
       contentDescription = "Movie Editor",
+      enableClick = enableClick,
    )
 }
 
@@ -147,9 +131,19 @@ private fun IconView(
    contentDescription: String?,
    modifier: Modifier = Modifier,
    imageWidth: Dp = 14.dp,
+   enableClick: Boolean,
 ) {
+   val context = LocalContext.current
    Image(
-      modifier = modifier.width(imageWidth),
+      modifier = modifier
+         .width(imageWidth)
+         .fEnabled(enableClick) {
+            clickable {
+               Toast
+                  .makeText(context, contentDescription, Toast.LENGTH_SHORT)
+                  .show()
+            }
+         },
       painter = painterResource(id),
       contentDescription = contentDescription,
       contentScale = ContentScale.FillWidth,

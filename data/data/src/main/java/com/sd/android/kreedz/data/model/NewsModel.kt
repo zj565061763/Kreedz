@@ -7,16 +7,14 @@ data class NewsModel(
    val id: String,
    val title: String,
    val htmlContent: String,
-   val dataStr: String,
+   val dateStr: String,
    val author: UserWithIconsModel,
 )
 
 @Immutable
-data class NewsCommentModel(
-   val id: String,
-   val message: String,
-   val dateTimeStr: String,
-   val author: UserWithIconsModel,
+data class NewsCommentListModel(
+   val count: Int,
+   val groups: List<NewsCommentGroupModel>,
 )
 
 @Immutable
@@ -29,4 +27,12 @@ data class NewsCommentGroupModel(
 data class NewsCommentReplyModel(
    val comment: NewsCommentModel,
    val reply: NewsCommentReplyModel?,
+)
+
+@Immutable
+data class NewsCommentModel(
+   val id: String,
+   val comment: String,
+   val dateStr: String,
+   val author: UserWithIconsModel,
 )

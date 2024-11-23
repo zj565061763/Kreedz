@@ -28,7 +28,6 @@ import com.sd.android.kreedz.data.utils.DataUtils
 import com.sd.android.kreedz.feature.common.ui.ComCountryImageView
 import com.sd.android.kreedz.feature.common.ui.ComYoutubeButton
 import com.sd.lib.compose.constraintlayout.goneIf
-import com.sd.lib.xlog.fDebug
 
 @Composable
 internal fun LatestRecordsItemView(
@@ -74,7 +73,6 @@ private fun ItemView(
    timeDifference: String?,
 ) {
    val isLoadingMap = isLoadingMap(mapId)
-   fDebug { "mapId:$mapId isLoadingMap:$isLoadingMap" }
 
    ConstraintLayout(
       modifier = modifier

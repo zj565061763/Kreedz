@@ -2,6 +2,7 @@ package com.sd.android.kreedz.data.repository
 
 import com.sd.android.kreedz.data.mapper.asUserIconsModel
 import com.sd.android.kreedz.data.model.NewsCommentGroupModel
+import com.sd.android.kreedz.data.model.NewsCommentListModel
 import com.sd.android.kreedz.data.model.NewsCommentModel
 import com.sd.android.kreedz.data.model.NewsCommentReplyModel
 import com.sd.android.kreedz.data.model.NewsModel
@@ -16,7 +17,8 @@ fun NewsRepository(): NewsRepository = NewsRepositoryImpl()
 
 interface NewsRepository {
    suspend fun getLatest(page: Int): List<NewsModel>
-   suspend fun comments(newsId: String): List<NewsCommentGroupModel>
+   suspend fun getNews(newsId: String): NewsModel
+   suspend fun comments(newsId: String): NewsCommentListModel
    suspend fun sendComment(newsId: String, content: String, replyCommentId: String?)
    suspend fun deleteComment(id: String)
 }
@@ -31,16 +33,23 @@ private class NewsRepositoryImpl : NewsRepository {
       }
    }
 
-   override suspend fun comments(newsId: String): List<NewsCommentGroupModel> {
+   override suspend fun getNews(newsId: String): NewsModel {
+      val data = _netDataSource.getNews(newsId)
+      return data.asNewsModel()
+   }
+
+   override suspend fun comments(newsId: String): NewsCommentListModel {
       val data = _netDataSource.newsComments(newsId)
-      return withContext(Dispatchers.IO) {
+      val groups = withContext(Dispatchers.IO) {
          val (parents, children) = data.partition { it.parentId.isNullOrBlank() }
          val group = children.groupBy { it.parentId }
+
          fun findAllChildren(comment: NetNewsComment): List<NetNewsComment> {
             val list = group[comment.id] ?: emptyList()
             list.forEach { it.parent = comment }
             return list + (list.flatMap { findAllChildren(it) })
          }
+
          parents.map { parent ->
             val netChildren = findAllChildren(parent)
             NewsCommentGroupModel(
@@ -49,6 +58,10 @@ private class NewsRepositoryImpl : NewsRepository {
             )
          }
       }
+      return NewsCommentListModel(
+         count = data.size,
+         groups = groups,
+      )
    }
 
    override suspend fun sendComment(
@@ -73,7 +86,7 @@ private fun NetNews.asNewsModel(): NewsModel {
       id = id,
       title = title,
       htmlContent = htmlContent,
-      dataStr = newsDate,
+      dateStr = newsDate,
       author = UserWithIconsModel(
          id = authorId,
          nickname = author,
@@ -86,8 +99,8 @@ private fun NetNews.asNewsModel(): NewsModel {
 private fun NetNewsComment.asNewsCommentModel(): NewsCommentModel {
    return NewsCommentModel(
       id = id,
-      message = message,
-      dateTimeStr = commentDate,
+      comment = message,
+      dateStr = commentDate,
       author = UserWithIconsModel(
          id = authorId ?: "",
          nickname = author,

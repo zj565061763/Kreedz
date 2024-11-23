@@ -36,7 +36,6 @@ internal fun LatestNewsListView(
    lazyListState: LazyListState,
    news: LazyPagingItems<NewsModel>,
    onClickNews: (NewsModel) -> Unit,
-   onClickAuthor: (userId: String) -> Unit,
 ) {
    LazyColumn(
       modifier = modifier.fillMaxSize(),
@@ -51,12 +50,8 @@ internal fun LatestNewsListView(
          Card(shape = MaterialTheme.shapes.extraSmall) {
             ItemView(
                title = item.title,
-               date = item.dataStr,
+               date = item.dateStr,
                author = item.author,
-               htmlContent = item.htmlContent,
-               onClickAuthor = {
-                  onClickAuthor(item.author.id)
-               },
                modifier = Modifier.clickable {
                   onClickNews(item)
                }
@@ -76,8 +71,6 @@ private fun ItemView(
    title: String,
    date: String,
    author: UserWithIconsModel,
-   htmlContent: String,
-   onClickAuthor: () -> Unit,
 ) {
    ConstraintLayout(
       modifier = modifier
@@ -104,15 +97,14 @@ private fun ItemView(
       ComCountryTextViewSmall(
          country = author.country,
          text = author.nickname,
-         modifier = Modifier
-            .constrainAs(refAuthor) {
-               start.linkTo(parent.start)
-               top.linkTo(refTitle.bottom, 6.dp)
-            }
-            .clickable { onClickAuthor() }
+         modifier = Modifier.constrainAs(refAuthor) {
+            start.linkTo(parent.start)
+            top.linkTo(refTitle.bottom, 6.dp)
+         }
       )
       ComUserIconsView(
          icons = author.icons,
+         enableClick = false,
          modifier = Modifier.constrainAs(refAuthorIcons) {
             centerVerticallyTo(refAuthor)
             start.linkTo(refAuthor.end, 4.dp)
@@ -138,7 +130,6 @@ private fun PreviewView() {
       Card {
          ItemView(
             title = "WR Release #819 - 22 new world records + News",
-            htmlContent = "htmlContent",
             date = "30/09/2024 18:20",
             author = UserWithIconsModel(
                id = "1",
@@ -155,7 +146,6 @@ private fun PreviewView() {
                   isMovieEditor = true,
                )
             ),
-            onClickAuthor = {},
          )
       }
    }

@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.onEach
 internal class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) {
    private val _newsRepository = NewsRepository()
    private val _accountRepository = AccountRepository()
-   private val _loader = FLoader()
+   private val _commentsLoader = FLoader()
 
    private val _sendLoader = FLoader()
    private val _deleteLoader = FLoader()
@@ -53,7 +53,10 @@ internal class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) 
 
    fun closeInput() {
       updateState {
-         it.copy(showInput = false)
+         it.copy(
+            showInput = false,
+            reply = null,
+         )
       }
    }
 
@@ -114,17 +117,23 @@ internal class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) 
    private fun loadComments(newsId: String) {
       if (newsId.isBlank()) return
       vmLaunch {
-         _loader.load {
+         _commentsLoader.load {
             fNetRetry {
-               _newsRepository.comments(newsId)
+               loadCommentsInternal(newsId)
             }.getOrThrow()
-         }.onSuccess { data ->
-            updateState {
-               it.copy(comments = data)
-            }
          }.onFailure { error ->
             sendEffect(error)
          }
+      }
+   }
+
+   private suspend fun loadCommentsInternal(newsId: String) {
+      val data = _newsRepository.comments(newsId)
+      updateState {
+         it.copy(
+            commentCount = data.count,
+            comments = data.groups
+         )
       }
    }
 
@@ -150,6 +159,13 @@ internal class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) 
 
    init {
       vmLaunch {
+         _commentsLoader.loadingFlow.collect { data ->
+            updateState {
+               it.copy(isLoading = data)
+            }
+         }
+      }
+      vmLaunch {
          _sendLoader.loadingFlow.collect { data ->
             updateState {
                it.copy(isSending = data)
@@ -170,7 +186,7 @@ internal class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) 
             .onEach {
                updateState {
                   it.copy(
-                     comments = emptyList(),
+                     comments = null,
                      reply = null,
                   )
                }
@@ -199,7 +215,11 @@ internal class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) 
 
    data class State(
       val newsId: String = "",
-      val comments: List<NewsCommentGroupModel> = emptyList(),
+      val isLoading: Boolean = false,
+
+      val commentCount: Int? = null,
+      val comments: List<NewsCommentGroupModel>? = null,
+
       val reply: NewsCommentModel? = null,
 
       val userId: String = "",

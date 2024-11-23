@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -30,7 +31,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sd.android.kreedz.core.router.AppRouter
 import com.sd.android.kreedz.core.ui.AppPullToRefresh
-import com.sd.android.kreedz.core.utils.AppUtils
 import com.sd.android.kreedz.data.event.ReClickMainNavigation
 import com.sd.android.kreedz.data.model.LatestRecordGroupModel
 import com.sd.android.kreedz.data.model.MainNavigation
@@ -39,9 +39,8 @@ import com.sd.android.kreedz.data.model.NewsCommentModel
 import com.sd.android.kreedz.data.model.RecordModel
 import com.sd.android.kreedz.feature.common.ui.ComCountryTextViewLarge
 import com.sd.android.kreedz.feature.common.ui.ComEffect
-import com.sd.android.kreedz.feature.common.ui.ComInputLayer
-import com.sd.android.kreedz.feature.common.ui.ComLoadingDialog
-import com.sd.android.kreedz.feature.news.screen.comments.NewsCommentMenuLayer
+import com.sd.android.kreedz.feature.news.screen.comments.NewsAddCommentButton
+import com.sd.android.kreedz.feature.news.screen.comments.NewsCommentOperateScreen
 import com.sd.android.kreedz.feature.news.screen.comments.NewsCommentVM
 import com.sd.android.kreedz.feature.news.screen.comments.newsCommentsView
 import com.sd.lib.compose.active.fIsActive
@@ -60,8 +59,7 @@ fun LatestReleaseScreen(
 
    val commentVM = viewModel<NewsCommentVM>()
    val commentState by commentVM.stateFlow.collectAsStateWithLifecycle()
-
-   var clickComment by remember { mutableStateOf<NewsCommentModel?>(null) }
+   var clickedComment by remember { mutableStateOf<NewsCommentModel?>(null) }
 
    AppPullToRefresh(
       modifier = modifier.fillMaxSize(),
@@ -75,6 +73,8 @@ fun LatestReleaseScreen(
          lazyListState = lazyListState,
          title = state.newsName,
          groups = state.records,
+         isLoadingComments = commentState.isLoading,
+         commentCount = commentState.commentCount,
          comments = commentState.comments,
          onClickTitle = {
             state.newsId?.also { newsId ->
@@ -87,12 +87,20 @@ fun LatestReleaseScreen(
          onClickItem = {
             AppRouter.map(context, it.map.id)
          },
-         onClickAddComment = {
+         onClickComment = {
+            clickedComment = it
+         }
+      )
+
+      NewsAddCommentButton(
+         visible = state.records.isNotEmpty()
+            && !lazyListState.isScrollInProgress,
+         onClick = {
             commentVM.clickAdd(context)
          },
-         onClickComment = {
-            clickComment = it
-         }
+         modifier = Modifier
+            .align(Alignment.BottomEnd)
+            .padding(bottom = 16.dp, end = 16.dp)
       )
    }
 
@@ -117,62 +125,13 @@ fun LatestReleaseScreen(
       }
    }
 
-   ComInputLayer(
-      attach = commentState.showInput,
-      onDetachRequest = {
-         commentVM.closeInput()
-      },
-      topLabel = commentState.reply?.let { reply ->
-         "Replay ${reply.author.nickname}'s comment"
-      } ?: "",
-      inputState = commentVM.inputState,
-      maxInput = commentState.maxInput,
-      onClickSend = {
-         commentVM.clickSend(context)
+   NewsCommentOperateScreen(
+      vm = commentVM,
+      clickedComment = clickedComment,
+      onDetachRequestCommentMenuLayer = {
+         clickedComment = null
       },
    )
-
-   NewsCommentMenuLayer(
-      attach = clickComment != null,
-      onDetachRequest = {
-         clickComment = null
-      },
-      onClickReply = {
-         clickComment?.also { model ->
-            commentVM.clickReply(context, model)
-            clickComment = null
-         }
-      },
-      onClickCopy = {
-         clickComment?.also { model ->
-            AppUtils.copyText(model.message)
-            clickComment = null
-         }
-      },
-      onClickDelete = if (
-         commentState.userId.isNotBlank()
-         && commentState.userId == clickComment?.author?.id
-      ) {
-         {
-            clickComment?.also { model ->
-               commentVM.clickDelete(context, model)
-               clickComment = null
-            }
-         }
-      } else null,
-   )
-
-   if (commentState.isSending) {
-      ComLoadingDialog {
-         commentVM.cancelSend()
-      }
-   }
-
-   if (commentState.isDeleting) {
-      ComLoadingDialog {
-         commentVM.cancelDelete()
-      }
-   }
 }
 
 @Composable
@@ -181,18 +140,22 @@ private fun ListView(
    lazyListState: LazyListState,
    title: String?,
    groups: List<LatestRecordGroupModel>,
-   comments: List<NewsCommentGroupModel>,
+   isLoadingComments: Boolean,
+   commentCount: Int?,
+   comments: List<NewsCommentGroupModel>?,
    onClickTitle: () -> Unit,
    onClickPlayer: (userId: String) -> Unit,
    onClickItem: (RecordModel) -> Unit,
-   onClickAddComment: () -> Unit,
    onClickComment: (NewsCommentModel) -> Unit,
 ) {
    LazyColumn(
       modifier = modifier.fillMaxSize(),
       state = lazyListState,
       verticalArrangement = Arrangement.spacedBy(8.dp),
-      contentPadding = PaddingValues(8.dp),
+      contentPadding = PaddingValues(
+         start = 8.dp, end = 8.dp,
+         top = 8.dp, bottom = 64.dp,
+      ),
    ) {
       titleView(
          title = title,
@@ -207,9 +170,10 @@ private fun ListView(
 
       if (groups.isNotEmpty()) {
          newsCommentsView(
+            isLoadingComments = isLoadingComments,
+            commentCount = commentCount,
             comments = comments,
             onClickAuthor = onClickPlayer,
-            onClickAddComment = onClickAddComment,
             onClickComment = onClickComment,
          )
       }

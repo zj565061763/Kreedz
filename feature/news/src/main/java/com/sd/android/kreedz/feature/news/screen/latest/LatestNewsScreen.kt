@@ -39,9 +39,6 @@ fun LatestNewsScreen(
          onClickNews = {
             AppRouter.news(context, it.id)
          },
-         onClickAuthor = {
-            AppRouter.user(context, it)
-         },
       )
 
       news.FUIStateRefresh(
