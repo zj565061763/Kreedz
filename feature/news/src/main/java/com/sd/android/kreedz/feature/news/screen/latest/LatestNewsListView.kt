@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemKey
 import com.sd.android.kreedz.core.ui.AppTextColor
@@ -95,9 +96,15 @@ private fun ItemView(
          text = title,
          fontSize = 14.sp,
          fontWeight = FontWeight.Medium,
+         lineHeight = 18.sp,
          modifier = Modifier.constrainAs(refTitle) {
-            start.linkTo(parent.start)
             top.linkTo(parent.top)
+            linkTo(
+               start = parent.start,
+               end = refOpenUri.start,
+               bias = 0f,
+            )
+            width = Dimension.fillToConstraints
          }
       )
 
