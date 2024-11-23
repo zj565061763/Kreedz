@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sd.android.kreedz.core.utils.AppUtils
+import com.sd.android.kreedz.core.export.fsUri
 
 @Composable
 fun ComYoutubeButton(
@@ -26,7 +26,7 @@ fun ComYoutubeButton(
    IconButton(
       modifier = modifier.size(24.dp),
       onClick = {
-         AppUtils.handleLink(link, uriHandler)
+         fsUri.openUri(link, uriHandler)
       },
    ) {
       YoutubeImageView()

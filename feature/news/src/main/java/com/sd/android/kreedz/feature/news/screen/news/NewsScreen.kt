@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.sd.android.kreedz.core.export.fsUri
 import com.sd.android.kreedz.core.router.AppRouter
 import com.sd.android.kreedz.core.ui.AppPullToRefresh
 import com.sd.android.kreedz.data.model.NewsCommentGroupModel
@@ -96,7 +97,7 @@ internal fun NewsScreen(
             actions = {
                if (state.id.isNotBlank()) {
                   IconButton(onClick = {
-                     vm.openUri(uriHandler)
+                     fsUri.openNewsUri(state.id, uriHandler)
                   }) {
                      Icon(
                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,

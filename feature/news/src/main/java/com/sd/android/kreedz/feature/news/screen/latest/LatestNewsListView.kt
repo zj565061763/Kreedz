@@ -8,7 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +39,7 @@ internal fun LatestNewsListView(
    lazyListState: LazyListState,
    news: LazyPagingItems<NewsModel>,
    onClickNews: (NewsModel) -> Unit,
+   onClickOpenUri: (NewsModel) -> Unit,
 ) {
    LazyColumn(
       modifier = modifier.fillMaxSize(),
@@ -52,9 +56,12 @@ internal fun LatestNewsListView(
                title = item.title,
                date = item.dateStr,
                author = item.author,
+               onClickOpenUri = {
+                  onClickOpenUri(item)
+               },
                modifier = Modifier.clickable {
                   onClickNews(item)
-               }
+               },
             )
          }
       }
@@ -71,6 +78,7 @@ private fun ItemView(
    title: String,
    date: String,
    author: UserWithIconsModel,
+   onClickOpenUri: () -> Unit,
 ) {
    ConstraintLayout(
       modifier = modifier
@@ -78,9 +86,8 @@ private fun ItemView(
          .padding(8.dp)
    ) {
       val (
-         refTitle,
-         refAuthor, refAuthorIcons,
-         refDate, refHtmlContent,
+         refTitle, refOpenUri,
+         refAuthor, refAuthorIcons, refDate,
       ) = createRefs()
 
       // title
@@ -111,6 +118,7 @@ private fun ItemView(
          }
       )
 
+      // Date
       Text(
          text = date,
          fontSize = 12.sp,
@@ -120,6 +128,18 @@ private fun ItemView(
             top.linkTo(refTitle.bottom, 6.dp)
          }
       )
+
+      // Open uri
+      Icon(
+         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+         contentDescription = "Open uri",
+         modifier = Modifier
+            .constrainAs(refOpenUri) {
+               centerVerticallyTo(refTitle)
+               end.linkTo(parent.end)
+            }
+            .clickable { onClickOpenUri() }
+      )
    }
 }
 
@@ -127,7 +147,7 @@ private fun ItemView(
 @Composable
 private fun PreviewView() {
    AppTheme {
-      Card {
+      Card(shape = MaterialTheme.shapes.extraSmall) {
          ItemView(
             title = "WR Release #819 - 22 new world records + News",
             date = "30/09/2024 18:20",
@@ -146,6 +166,7 @@ private fun PreviewView() {
                   isMovieEditor = true,
                )
             ),
+            onClickOpenUri = {},
          )
       }
    }

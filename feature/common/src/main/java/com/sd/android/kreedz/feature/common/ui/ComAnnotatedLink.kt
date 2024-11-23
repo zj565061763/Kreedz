@@ -14,7 +14,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
-import com.sd.android.kreedz.core.utils.AppUtils
+import com.sd.android.kreedz.core.export.fsUri
 import com.sd.lib.compose.annotated.fAnnotatedTargets
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -47,7 +47,7 @@ fun CharSequence.comAnnotatedLink(): AnnotatedString {
                url = target,
                styles = TextLinkStyles(linkStyle),
                linkInteractionListener = {
-                  AppUtils.handleLink(target, uriHandler)
+                  fsUri.openUri(target, uriHandler)
                },
             )
          ) {

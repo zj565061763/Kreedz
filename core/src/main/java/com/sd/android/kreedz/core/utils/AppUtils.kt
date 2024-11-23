@@ -3,22 +3,9 @@ package com.sd.android.kreedz.core.utils
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import androidx.compose.ui.platform.UriHandler
 import com.sd.lib.ctx.fContext
 
 object AppUtils {
-
-   fun handleLink(
-      link: String?,
-      uriHandler: UriHandler,
-   ) {
-      if (link.isNullOrBlank()) return
-      runCatching {
-         uriHandler.openUri(link)
-      }.onFailure {
-         it.printStackTrace()
-      }
-   }
 
    fun copyText(
       text: String,

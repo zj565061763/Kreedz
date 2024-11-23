@@ -1,9 +1,7 @@
 package com.sd.android.kreedz.feature.news.screen.news
 
 import androidx.compose.runtime.Immutable
-import androidx.compose.ui.platform.UriHandler
 import com.sd.android.kreedz.core.base.BaseViewModel
-import com.sd.android.kreedz.core.utils.AppUtils
 import com.sd.android.kreedz.data.model.UserWithIconsModel
 import com.sd.android.kreedz.data.repository.NewsRepository
 import com.sd.lib.coroutines.FLoader
@@ -34,13 +32,6 @@ internal class NewsVM : BaseViewModel<NewsVM.State, Any>(State()) {
             loadData(id)
          }
       }
-   }
-
-   fun openUri(uriHandler: UriHandler) {
-      val id = state.id
-      if (id.isBlank()) return
-      val url = "https://xtreme-jumps.eu/news/$id"
-      AppUtils.handleLink(url, uriHandler)
    }
 
    private suspend fun loadData(id: String) {

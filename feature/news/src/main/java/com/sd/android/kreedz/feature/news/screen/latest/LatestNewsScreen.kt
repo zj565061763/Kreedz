@@ -6,8 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.sd.android.kreedz.core.export.fsUri
 import com.sd.android.kreedz.core.router.AppRouter
 import com.sd.android.kreedz.core.ui.AppPullToRefresh
 import com.sd.android.kreedz.data.event.ReClickMainNavigation
@@ -27,6 +29,7 @@ fun LatestNewsScreen(
    val news = vm.newsFlow.collectAsLazyPagingItems()
    val lazyListState = rememberLazyListState()
    val context = LocalContext.current
+   val uriHandler = LocalUriHandler.current
 
    AppPullToRefresh(
       modifier = modifier.fillMaxSize(),
@@ -38,6 +41,9 @@ fun LatestNewsScreen(
          news = news,
          onClickNews = {
             AppRouter.news(context, it.id)
+         },
+         onClickOpenUri = {
+            fsUri.openNewsUri(it.id, uriHandler)
          },
       )
 
