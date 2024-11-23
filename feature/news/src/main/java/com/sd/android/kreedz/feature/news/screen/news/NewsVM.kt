@@ -17,10 +17,7 @@ internal class NewsVM : BaseViewModel<NewsVM.State, Any>(State()) {
 
          _loader.cancelLoad()
          updateState { State() }
-
-         _loader.load {
-            loadData(id)
-         }
+         loadData(id)
       }
    }
 
@@ -28,24 +25,27 @@ internal class NewsVM : BaseViewModel<NewsVM.State, Any>(State()) {
       vmLaunch {
          val id = state.id
          if (id.isBlank()) return@vmLaunch
-         _loader.load {
-            loadData(id)
-         }
+         loadData(id)
       }
    }
 
    private suspend fun loadData(id: String) {
-      val data = _repository.getNews(id)
-      with(data) {
-         updateState {
-            it.copy(
-               id = id,
-               title = title,
-               author = author,
-               dateStr = dateStr,
-               htmlContent = htmlContent,
-            )
+      _loader.load {
+         _repository.getNews(id)
+      }.onSuccess { data ->
+         with(data) {
+            updateState {
+               it.copy(
+                  id = id,
+                  title = title,
+                  author = author,
+                  dateStr = dateStr,
+                  htmlContent = htmlContent,
+               )
+            }
          }
+      }.onFailure { error ->
+         sendEffect(error)
       }
    }
 
