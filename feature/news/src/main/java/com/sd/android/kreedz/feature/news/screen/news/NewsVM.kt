@@ -16,7 +16,7 @@ internal class NewsVM : BaseViewModel<NewsVM.State, Any>(State()) {
          if (state.id == id) return@vmLaunch
 
          _loader.cancelLoad()
-         updateState { State() }
+         updateState { State(id = id) }
          loadData(id)
       }
    }
