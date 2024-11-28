@@ -33,9 +33,9 @@ private class TeamRepositoryImpl : TeamRepository {
 private enum class TeamRole(
    val key: String,
 ) {
-   CEO("CEO"),
-   COO("COO"),
-   CTO("CTO"),
+   HEAD_MANAGEMENT("HEAD_MANAGEMENT"),
+   MANAGEMENT("MANAGEMENT"),
+   TECHNICAL_MANAGEMENT("TECHNICAL_MANAGEMENT"),
 
    HEAD_DEMO_CHECKER("HEAD_DEMO_CHECKER"),
    DEMO_CHECKER("DEMO_CHECKER"),
