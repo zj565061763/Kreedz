@@ -20,7 +20,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -39,7 +38,6 @@ import com.sd.android.kreedz.data.model.NewsCommentModel
 import com.sd.android.kreedz.data.model.RecordModel
 import com.sd.android.kreedz.feature.common.ui.ComCountryTextViewLarge
 import com.sd.android.kreedz.feature.common.ui.ComEffect
-import com.sd.android.kreedz.feature.news.screen.comments.NewsAddCommentButton
 import com.sd.android.kreedz.feature.news.screen.comments.NewsCommentOperateScreen
 import com.sd.android.kreedz.feature.news.screen.comments.NewsCommentVM
 import com.sd.android.kreedz.feature.news.screen.comments.newsCommentsView
@@ -89,18 +87,10 @@ fun LatestReleaseScreen(
          },
          onClickComment = {
             clickedComment = it
-         }
-      )
-
-      NewsAddCommentButton(
-         visible = state.records.isNotEmpty()
-            && !lazyListState.isScrollInProgress,
-         onClick = {
+         },
+         onClickAddComment = {
             commentVM.clickAdd(context)
          },
-         modifier = Modifier
-            .align(Alignment.BottomEnd)
-            .padding(bottom = 16.dp, end = 16.dp)
       )
    }
 
@@ -147,6 +137,7 @@ private fun ListView(
    onClickPlayer: (userId: String) -> Unit,
    onClickItem: (RecordModel) -> Unit,
    onClickComment: (NewsCommentModel) -> Unit,
+   onClickAddComment: () -> Unit,
 ) {
    LazyColumn(
       modifier = modifier.fillMaxSize(),
@@ -175,6 +166,7 @@ private fun ListView(
             comments = comments,
             onClickAuthor = onClickPlayer,
             onClickComment = onClickComment,
+            onClickAddComment = onClickAddComment,
          )
       }
    }

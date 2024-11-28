@@ -1,6 +1,7 @@
 package com.sd.android.kreedz.data.network
 
 import com.sd.android.kreedz.data.network.http.AppApi
+import com.sd.android.kreedz.data.network.model.NetBlog
 import com.sd.android.kreedz.data.network.model.NetChatBoxMessage
 import com.sd.android.kreedz.data.network.model.NetCountryRanking
 import com.sd.android.kreedz.data.network.model.NetGameServer
@@ -49,6 +50,10 @@ interface NetDataSource {
    suspend fun newsDeleteComment(id: String)
 
    suspend fun getLatestBlog(page: Int): NetLatestBlog
+   suspend fun getBlog(blogId: String): NetBlog
+   suspend fun blogComments(blogId: String): List<NetNewsComment>
+   suspend fun blogSendComment(blogId: String, content: String, replyCommentId: String?)
+   suspend fun blogDeleteComment(id: String)
 
    suspend fun getGameServers(): List<NetGameServer>
    suspend fun getTeam(): List<NetTeamRole>
@@ -134,6 +139,22 @@ private object NetDataSourceImpl : NetDataSource {
 
    override suspend fun getLatestBlog(page: Int): NetLatestBlog {
       return _api.getLatestBlog(page)
+   }
+
+   override suspend fun getBlog(blogId: String): NetBlog {
+      return _api.getBlog(blogId)
+   }
+
+   override suspend fun blogComments(blogId: String): List<NetNewsComment> {
+      return _api.blogComments(blogId)
+   }
+
+   override suspend fun blogSendComment(blogId: String, content: String, replyCommentId: String?) {
+      _api.blogSendComment(blogId, content, replyCommentId)
+   }
+
+   override suspend fun blogDeleteComment(id: String) {
+      _api.blogDeleteComment(id)
    }
 
    override suspend fun getGameServers(): List<NetGameServer> {
@@ -272,7 +293,7 @@ private interface AppNetApi {
    @AppApi
    @DELETE("news/comment")
    suspend fun newsDeleteComment(
-      @Query("commentId") id: String,
+      @Query("commentId") commentId: String,
    )
 
    @AppApi(resultLog = false)
@@ -280,6 +301,33 @@ private interface AppNetApi {
    suspend fun getLatestBlog(
       @Query("page") page: Int,
    ): NetLatestBlog
+
+   @AppApi
+   @GET("article/article")
+   suspend fun getBlog(
+      @Query("articleId") blogId: String,
+   ): NetBlog
+
+   @AppApi
+   @GET("article/comments")
+   suspend fun blogComments(
+      @Query("articleId") blogId: String,
+   ): List<NetNewsComment>
+
+   @AppApi
+   @FormUrlEncoded
+   @POST("article/comment")
+   suspend fun blogSendComment(
+      @Query("articleId") blogId: String,
+      @Field("commentMessage") content: String,
+      @Field("parentId") replyCommentId: String?,
+   )
+
+   @AppApi
+   @DELETE("article/comment")
+   suspend fun blogDeleteComment(
+      @Query("commentId") commentId: String,
+   )
 
    @AppApi
    @GET("game-server/list")

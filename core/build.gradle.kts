@@ -49,6 +49,8 @@ dependencies {
    api(libs.sd.compose.wheelPicker)
    api(libs.sd.compose.paging)
    api(libs.sd.compose.annotated)
+   api(libs.sd.compose.html)
+   api(libs.sd.compose.nested)
    api(libs.sd.compose.utils)
 
    api(libs.sd.ctx)

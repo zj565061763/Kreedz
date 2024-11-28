@@ -4,7 +4,7 @@
     <application>
 
         <activity
-            android:name="com.sd.android.kreedz.feature.common.screen.WebActivity"
+            android:name="com.sd.android.kreedz.feature.common.screen.web.WebActivity"
             android:screenOrientation="portrait" />
 
     </application>

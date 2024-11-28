@@ -38,7 +38,7 @@ android {
       }
       release {
          signingConfig = signingConfigs["release"]
-         isShrinkResources = true
+         isShrinkResources = false
          isMinifyEnabled = true
          proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
       }
@@ -80,6 +80,7 @@ dependencies {
 
    implementation(projects.core)
    implementation(projects.feature.account)
+   implementation(projects.feature.blog)
    implementation(projects.feature.common)
    implementation(projects.feature.news)
    implementation(projects.feature.ranking)

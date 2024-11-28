@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -28,46 +25,45 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.sd.android.kreedz.core.export.fsUri
 import com.sd.android.kreedz.core.router.AppRouter
 import com.sd.android.kreedz.core.ui.AppPullToRefresh
 import com.sd.android.kreedz.data.model.NewsCommentGroupModel
 import com.sd.android.kreedz.data.model.NewsCommentModel
-import com.sd.android.kreedz.data.model.UserIconsModel
 import com.sd.android.kreedz.data.model.UserWithIconsModel
 import com.sd.android.kreedz.feature.common.ui.ComEffect
-import com.sd.android.kreedz.feature.news.screen.comments.NewsAddCommentButton
 import com.sd.android.kreedz.feature.news.screen.comments.NewsCommentOperateScreen
 import com.sd.android.kreedz.feature.news.screen.comments.NewsCommentVM
 import com.sd.android.kreedz.feature.news.screen.comments.newsCommentsView
+import com.sd.lib.compose.nested.NestedHeader
+import com.sd.lib.compose.nested.NestedHeaderState
+import com.sd.lib.compose.nested.rememberNestedHeaderState
+import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun NewsScreen(
+fun NewsScreen(
    modifier: Modifier = Modifier,
    id: String,
+   vm: NewsVM = viewModel(),
+   commentVM: NewsCommentVM = viewModel(),
    onClickBack: () -> Unit,
+   onClickOpenUri: (newsId: String) -> Unit,
 ) {
-   val vm = viewModel<NewsVM>()
    val state by vm.stateFlow.collectAsStateWithLifecycle()
-
-   val commentVM = viewModel<NewsCommentVM>()
    val commentState by commentVM.stateFlow.collectAsStateWithLifecycle()
    var clickComment by remember { mutableStateOf<NewsCommentModel?>(null) }
 
    val context = LocalContext.current
-   val uriHandler = LocalUriHandler.current
-   val lazyListState = rememberLazyListState()
+   val density = LocalDensity.current
+   val nestedHeaderState = rememberNestedHeaderState()
 
    val showTitle by remember {
       derivedStateOf {
-         lazyListState.firstVisibleItemIndex > 0
+         nestedHeaderState.offset.absoluteValue > density.run { 64.dp.toPx() }
       }
    }
 
@@ -97,7 +93,7 @@ internal fun NewsScreen(
             actions = {
                if (state.id.isNotBlank()) {
                   IconButton(onClick = {
-                     fsUri.openNewsUri(state.id, uriHandler)
+                     onClickOpenUri(state.id)
                   }) {
                      Icon(
                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
@@ -105,15 +101,6 @@ internal fun NewsScreen(
                      )
                   }
                }
-            },
-         )
-      },
-      floatingActionButton = {
-         NewsAddCommentButton(
-            visible = state.title.isNotBlank()
-               && !lazyListState.isScrollInProgress,
-            onClick = {
-               commentVM.clickAdd(context)
             },
          )
       },
@@ -129,9 +116,9 @@ internal fun NewsScreen(
          }
       ) {
          BodyView(
-            lazyListState = lazyListState,
+            nestedHeaderState = nestedHeaderState,
             title = state.title,
-            htmlContent = state.htmlContent,
+            html = state.html,
             author = state.author,
             dateStr = state.dateStr,
             isLoadingComments = commentState.isLoading,
@@ -139,6 +126,9 @@ internal fun NewsScreen(
             comments = commentState.comments,
             onClickComment = {
                clickComment = it
+            },
+            onClickAddComment = {
+               commentVM.clickAdd(context)
             },
             onClickUser = {
                AppRouter.user(context, it)
@@ -172,99 +162,53 @@ internal fun NewsScreen(
 @Composable
 private fun BodyView(
    modifier: Modifier = Modifier,
-   lazyListState: LazyListState,
-   title: String?,
-   htmlContent: String,
+   nestedHeaderState: NestedHeaderState,
+   title: String,
+   html: String,
    author: UserWithIconsModel?,
    dateStr: String,
    isLoadingComments: Boolean,
    commentCount: Int?,
    comments: List<NewsCommentGroupModel>?,
    onClickComment: (NewsCommentModel) -> Unit,
+   onClickAddComment: () -> Unit,
    onClickUser: (userId: String) -> Unit,
 ) {
-   LazyColumn(
+   NestedHeader(
       modifier = modifier.fillMaxSize(),
-      state = lazyListState,
-      verticalArrangement = Arrangement.spacedBy(8.dp),
-      contentPadding = PaddingValues(
-         start = 8.dp, end = 8.dp,
-         top = 8.dp, bottom = 64.dp,
-      ),
-   ) {
-      titleView(title = title)
-
-      if (author != null) {
-         infoView(
-            authorCountry = author.country,
-            authorNickname = author.nickname,
-            authorIcons = author.icons,
+      state = nestedHeaderState,
+      header = {
+         NewsHeaderView(
+            title = title,
+            html = html,
+            authorCountry = author?.country,
+            authorNickname = author?.nickname,
+            authorIcons = author?.icons,
             dateStr = dateStr,
             onClickAuthor = {
-               onClickUser(author.id)
+               author?.also { onClickUser(it.id) }
             }
          )
       }
-
-      contentView(htmlContent = htmlContent)
-
-      if (!title.isNullOrBlank()) {
-         newsCommentsView(
-            isLoadingComments = isLoadingComments,
-            commentCount = commentCount,
-            comments = comments,
-            onClickAuthor = onClickUser,
-            onClickComment = onClickComment,
-         )
+   ) {
+      LazyColumn(
+         modifier = Modifier.fillMaxSize(),
+         verticalArrangement = Arrangement.spacedBy(8.dp),
+         contentPadding = PaddingValues(
+            start = 8.dp, end = 8.dp,
+            top = 8.dp, bottom = 64.dp,
+         ),
+      ) {
+         if (title.isNotBlank()) {
+            newsCommentsView(
+               isLoadingComments = isLoadingComments,
+               commentCount = commentCount,
+               comments = comments,
+               onClickAuthor = onClickUser,
+               onClickComment = onClickComment,
+               onClickAddComment = onClickAddComment,
+            )
+         }
       }
-   }
-}
-
-private fun LazyListScope.titleView(
-   title: String?,
-) {
-   if (title.isNullOrBlank()) return
-   item(
-      key = "news title",
-      contentType = "news title",
-   ) {
-      Text(
-         text = title,
-         fontSize = 24.sp,
-         fontWeight = FontWeight.Medium,
-      )
-   }
-}
-
-private fun LazyListScope.infoView(
-   authorCountry: String?,
-   authorNickname: String?,
-   authorIcons: UserIconsModel,
-   dateStr: String,
-   onClickAuthor: () -> Unit,
-) {
-   item(
-      key = "news author",
-      contentType = "news author",
-   ) {
-      NewsInfoView(
-         authorCountry = authorCountry,
-         authorNickname = authorNickname,
-         authorIcons = authorIcons,
-         dateStr = dateStr,
-         onClickAuthor = onClickAuthor,
-      )
-   }
-}
-
-private fun LazyListScope.contentView(
-   htmlContent: String,
-) {
-   if (htmlContent.isBlank()) return
-   item(
-      key = "news content",
-      contentType = "news content",
-   ) {
-      NewsContentView(htmlContent = htmlContent)
    }
 }

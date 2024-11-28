@@ -1,4 +1,4 @@
-package com.sd.android.kreedz.feature.common.screen
+package com.sd.android.kreedz.feature.common.screen.web
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

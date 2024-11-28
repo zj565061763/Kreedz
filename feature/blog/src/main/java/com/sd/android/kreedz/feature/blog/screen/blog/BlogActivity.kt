@@ -1,7 +1,6 @@
-package com.sd.android.kreedz.screen.blog
+package com.sd.android.kreedz.feature.blog.screen.blog
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalUriHandler
 import com.didi.drouter.annotation.Router
 import com.sd.android.kreedz.core.base.BaseActivity
@@ -21,9 +20,15 @@ internal class BlogActivity : BaseActivity() {
       }
 
       val uriHandler = LocalUriHandler.current
-      LaunchedEffect(id, uriHandler) {
-         fsUri.openBlogUri(id, uriHandler)
-         finish()
-      }
+
+      BlogScreen(
+         id = id,
+         onClickBack = {
+            finish()
+         },
+         onClickOpenUri = {
+            fsUri.openBlogUri(it, uriHandler)
+         }
+      )
    }
 }

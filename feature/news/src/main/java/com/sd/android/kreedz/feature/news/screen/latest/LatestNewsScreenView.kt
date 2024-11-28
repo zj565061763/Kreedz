@@ -1,17 +1,15 @@
-package com.sd.android.kreedz.screen.blog
+package com.sd.android.kreedz.feature.news.screen.latest
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.paging.compose.collectAsLazyPagingItems
-import com.sd.android.kreedz.core.router.AppRouter
+import androidx.paging.compose.LazyPagingItems
 import com.sd.android.kreedz.core.ui.AppPullToRefresh
 import com.sd.android.kreedz.data.event.ReClickMainNavigation
 import com.sd.android.kreedz.data.model.MainNavigation
+import com.sd.android.kreedz.data.model.NewsModel
 import com.sd.android.kreedz.feature.common.ui.ComErrorView
 import com.sd.lib.compose.active.fIsActive
 import com.sd.lib.compose.paging.FUIStateRefresh
@@ -20,31 +18,24 @@ import com.sd.lib.event.FEvent
 import kotlinx.coroutines.flow.filter
 
 @Composable
-fun LatestBlogScreen(
+fun LatestNewsScreenView(
    modifier: Modifier = Modifier,
-   vm: LatestBlogVM = viewModel(),
+   items: LazyPagingItems<NewsModel>,
+   onClickItem: (newsId: String) -> Unit,
 ) {
-   val blogs = vm.blogFlow.collectAsLazyPagingItems()
    val lazyListState = rememberLazyListState()
-   val context = LocalContext.current
 
    AppPullToRefresh(
       modifier = modifier.fillMaxSize(),
-      isRefreshing = blogs.fIsRefreshing(),
-      onRefresh = { blogs.refresh() },
+      isRefreshing = items.fIsRefreshing(),
+      onRefresh = { items.refresh() },
    ) {
-      LatestBlogListView(
+      LatestNewsListView(
          lazyListState = lazyListState,
-         blogs = blogs,
-         onClickBlog = {
-            AppRouter.blog(context, it.id)
-         },
-         onClickAuthor = {
-            AppRouter.user(context, it)
-         },
+         news = items,
+         onClickItem = onClickItem,
       )
-
-      blogs.FUIStateRefresh(
+      items.FUIStateRefresh(
          stateError = {
             ComErrorView(error = it)
          }

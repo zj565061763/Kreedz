@@ -6,9 +6,11 @@ import com.sd.android.kreedz.data.model.UserWithIconsModel
 import com.sd.android.kreedz.data.repository.NewsRepository
 import com.sd.lib.coroutines.FLoader
 
-internal class NewsVM : BaseViewModel<NewsVM.State, Any>(State()) {
-   private val _repository = NewsRepository()
+open class NewsVM : BaseViewModel<NewsVM.State, Any>(State()) {
+   private val _repository by lazy { newsRepository() }
    private val _loader = FLoader()
+
+   protected open fun newsRepository(): NewsRepository = NewsRepository()
 
    fun load(id: String) {
       vmLaunch {
@@ -40,7 +42,7 @@ internal class NewsVM : BaseViewModel<NewsVM.State, Any>(State()) {
                   title = title,
                   author = author,
                   dateStr = dateStr,
-                  htmlContent = htmlContent,
+                  html = htmlContent,
                )
             }
          }
@@ -67,6 +69,6 @@ internal class NewsVM : BaseViewModel<NewsVM.State, Any>(State()) {
       val title: String = "",
       val author: UserWithIconsModel? = null,
       val dateStr: String = "",
-      val htmlContent: String = "",
+      val html: String = "",
    )
 }

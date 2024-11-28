@@ -18,8 +18,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
-internal class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) {
-   private val _newsRepository = NewsRepository()
+open class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) {
+   private val _newsRepository by lazy { newsRepository() }
    private val _accountRepository = AccountRepository()
    private val _commentsLoader = FLoader()
 
@@ -27,6 +27,8 @@ internal class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) 
    private val _deleteLoader = FLoader()
 
    val inputState = TextFieldState()
+
+   protected open fun newsRepository(): NewsRepository = NewsRepository()
 
    fun load(newsId: String) {
       updateState {
@@ -71,7 +73,7 @@ internal class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) 
          if (checkLogin(context)) {
             _sendLoader.tryLoad {
                _newsRepository.sendComment(
-                  newsId = newsId,
+                  id = newsId,
                   content = content,
                   replyCommentId = state.reply?.id,
                )

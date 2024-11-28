@@ -1,4 +1,4 @@
-package com.sd.android.kreedz.feature.common.screen
+package com.sd.android.kreedz.feature.common.screen.web
 
 import androidx.compose.runtime.Composable
 import com.didi.drouter.annotation.Router

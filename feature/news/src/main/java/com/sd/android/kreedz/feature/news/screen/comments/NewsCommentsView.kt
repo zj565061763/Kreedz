@@ -13,10 +13,12 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -45,6 +47,7 @@ internal fun LazyListScope.newsCommentsView(
    comments: List<NewsCommentGroupModel>?,
    onClickAuthor: (userId: String) -> Unit,
    onClickComment: (NewsCommentModel) -> Unit,
+   onClickAddComment: () -> Unit,
 ) {
    item(
       key = "comment:title",
@@ -53,6 +56,7 @@ internal fun LazyListScope.newsCommentsView(
       TitleView(
          commentCount = commentCount,
          isLoadingComments = isLoadingComments,
+         onClickAddComment = onClickAddComment,
       )
    }
 
@@ -104,9 +108,12 @@ private fun TitleView(
    modifier: Modifier = Modifier,
    commentCount: Int?,
    isLoadingComments: Boolean,
+   onClickAddComment: () -> Unit,
 ) {
    Row(
-      modifier = modifier.animateContentSize(),
+      modifier = modifier
+         .fillMaxWidth()
+         .animateContentSize(),
       verticalAlignment = Alignment.CenterVertically,
    ) {
       Text(
@@ -117,7 +124,6 @@ private fun TitleView(
       )
 
       Spacer(Modifier.width(4.dp))
-
       if (isLoadingComments) {
          CircularProgressIndicator(
             strokeWidth = 1.dp,
@@ -132,6 +138,17 @@ private fun TitleView(
                modifier = Modifier.padding(vertical = 16.dp)
             )
          }
+      }
+
+      Spacer(Modifier.weight(1f))
+      IconButton(
+         onClick = onClickAddComment,
+         modifier = Modifier.size(36.dp)
+      ) {
+         Icon(
+            Icons.Filled.Add,
+            contentDescription = "Add comment",
+         )
       }
    }
 }
@@ -305,6 +322,7 @@ private fun PreviewTitleView() {
    TitleView(
       commentCount = 33,
       isLoadingComments = false,
+      onClickAddComment = {},
    )
 }
 
@@ -314,6 +332,7 @@ private fun PreviewTitleViewLoading() {
    TitleView(
       commentCount = 33,
       isLoadingComments = true,
+      onClickAddComment = {},
    )
 }
 

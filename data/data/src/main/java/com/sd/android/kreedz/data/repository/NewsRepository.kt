@@ -8,38 +8,50 @@ import com.sd.android.kreedz.data.model.NewsCommentReplyModel
 import com.sd.android.kreedz.data.model.NewsModel
 import com.sd.android.kreedz.data.model.UserWithIconsModel
 import com.sd.android.kreedz.data.network.NetDataSource
+import com.sd.android.kreedz.data.network.model.NetLatestNews
 import com.sd.android.kreedz.data.network.model.NetNews
 import com.sd.android.kreedz.data.network.model.NetNewsComment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-fun NewsRepository(): NewsRepository = NewsRepositoryImpl()
+fun NewsRepository(
+   dataSource: NewsDataSource = NewsDataSourceImpl(),
+): NewsRepository = NewsRepositoryImpl(dataSource = dataSource)
 
 interface NewsRepository {
    suspend fun getLatest(page: Int): List<NewsModel>
-   suspend fun getNews(newsId: String): NewsModel
-   suspend fun comments(newsId: String): NewsCommentListModel
-   suspend fun sendComment(newsId: String, content: String, replyCommentId: String?)
-   suspend fun deleteComment(id: String)
+   suspend fun getNews(id: String): NewsModel
+   suspend fun comments(id: String): NewsCommentListModel
+   suspend fun sendComment(id: String, content: String, replyCommentId: String?)
+   suspend fun deleteComment(commentId: String)
 }
 
-private class NewsRepositoryImpl : NewsRepository {
-   private val _netDataSource = NetDataSource()
+interface NewsDataSource {
+   suspend fun getLatest(page: Int): NetLatestNews
+   suspend fun getNews(id: String): NetNews
+   suspend fun comments(id: String): List<NetNewsComment>
+   suspend fun sendComment(id: String, content: String, replyCommentId: String?)
+   suspend fun deleteComment(commentId: String)
+}
+
+private class NewsRepositoryImpl(
+   private val dataSource: NewsDataSource,
+) : NewsRepository {
 
    override suspend fun getLatest(page: Int): List<NewsModel> {
-      val data = _netDataSource.getLatestNews(page)
+      val data = dataSource.getLatest(page)
       return withContext(Dispatchers.IO) {
          data.lastNews.map { it.asNewsModel() }
       }
    }
 
-   override suspend fun getNews(newsId: String): NewsModel {
-      val data = _netDataSource.getNews(newsId)
+   override suspend fun getNews(id: String): NewsModel {
+      val data = dataSource.getNews(id)
       return data.asNewsModel()
    }
 
-   override suspend fun comments(newsId: String): NewsCommentListModel {
-      val data = _netDataSource.newsComments(newsId)
+   override suspend fun comments(id: String): NewsCommentListModel {
+      val data = dataSource.comments(id)
       val groups = withContext(Dispatchers.IO) {
          val (parents, children) = data.partition { it.parentId.isNullOrBlank() }
          val group = children.groupBy { it.parentId }
@@ -65,19 +77,47 @@ private class NewsRepositoryImpl : NewsRepository {
    }
 
    override suspend fun sendComment(
-      newsId: String,
+      id: String,
       content: String,
       replyCommentId: String?,
    ) {
-      _netDataSource.newsSendComment(
-         newsId = newsId,
+      dataSource.sendComment(
+         id = id,
          content = content,
          replyCommentId = replyCommentId,
       )
    }
 
-   override suspend fun deleteComment(id: String) {
-      _netDataSource.newsDeleteComment(id)
+   override suspend fun deleteComment(commentId: String) {
+      dataSource.deleteComment(commentId)
+   }
+}
+
+private class NewsDataSourceImpl : NewsDataSource {
+   private val _netDataSource = NetDataSource()
+
+   override suspend fun getLatest(page: Int): NetLatestNews {
+      return _netDataSource.getLatestNews(page)
+   }
+
+   override suspend fun getNews(id: String): NetNews {
+      return _netDataSource.getNews(id)
+   }
+
+   override suspend fun comments(id: String): List<NetNewsComment> {
+      return _netDataSource.newsComments(id)
+   }
+
+   override suspend fun sendComment(id: String, content: String, replyCommentId: String?) {
+      _netDataSource.newsSendComment(
+         newsId = id,
+         content = content,
+         replyCommentId = replyCommentId,
+      )
+   }
+
+   override suspend fun deleteComment(commentId: String) {
+      _netDataSource.newsDeleteComment(commentId)
    }
 }
 

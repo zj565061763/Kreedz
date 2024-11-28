@@ -14,10 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.sd.android.kreedz.feature.blog.screen.latest.LatestBlogScreen
 import com.sd.android.kreedz.feature.news.screen.latest.LatestNewsScreen
 import com.sd.android.kreedz.feature.news.screen.release.LatestReleaseScreen
 import com.sd.android.kreedz.feature.ranking.screen.top.TopRankingScreen
-import com.sd.android.kreedz.screen.blog.LatestBlogScreen
 import com.sd.android.kreedz.screen.servers.GameServerScreen
 import com.sd.android.kreedz.screen.team.TeamScreen
 import com.sd.lib.compose.active.FActiveAtLeastOnce
@@ -66,7 +66,9 @@ fun MainHomeScreen(
          pagerState.FSetActivePage(index) {
             state.tabs.getOrNull(index)?.also { tab ->
                when (tab) {
-                  MainHomeTab.News -> LatestNewsScreen()
+                  MainHomeTab.News -> {
+                     LatestNewsScreen()
+                  }
                   MainHomeTab.Release -> {
                      FActiveAtLeastOnce {
                         LatestReleaseScreen()

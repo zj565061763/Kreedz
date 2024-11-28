@@ -4,7 +4,7 @@ import com.sd.android.kreedz.data.model.NewsModel
 import com.sd.android.kreedz.data.repository.NewsRepository
 import com.sd.lib.compose.paging.FIntPagingSource
 
-internal class NewsPagingSource : FIntPagingSource<NewsModel>(
+internal class LatestNewsPagingSource : FIntPagingSource<NewsModel>(
    initialKey = 0,
 ) {
    private val _repository = NewsRepository()

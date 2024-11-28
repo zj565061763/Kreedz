@@ -8,10 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemKey
 import com.sd.android.kreedz.core.ui.AppTextColor
@@ -39,8 +35,7 @@ internal fun LatestNewsListView(
    modifier: Modifier = Modifier,
    lazyListState: LazyListState,
    news: LazyPagingItems<NewsModel>,
-   onClickNews: (NewsModel) -> Unit,
-   onClickOpenUri: (NewsModel) -> Unit,
+   onClickItem: (newsId: String) -> Unit,
 ) {
    LazyColumn(
       modifier = modifier.fillMaxSize(),
@@ -57,11 +52,8 @@ internal fun LatestNewsListView(
                title = item.title,
                date = item.dateStr,
                author = item.author,
-               onClickOpenUri = {
-                  onClickOpenUri(item)
-               },
                modifier = Modifier.clickable {
-                  onClickNews(item)
+                  onClickItem(item.id)
                },
             )
          }
@@ -79,7 +71,6 @@ private fun ItemView(
    title: String,
    date: String,
    author: UserWithIconsModel,
-   onClickOpenUri: () -> Unit,
 ) {
    ConstraintLayout(
       modifier = modifier
@@ -87,7 +78,7 @@ private fun ItemView(
          .padding(8.dp)
    ) {
       val (
-         refTitle, refOpenUri,
+         refTitle,
          refAuthor, refAuthorIcons, refDate,
       ) = createRefs()
 
@@ -99,12 +90,7 @@ private fun ItemView(
          lineHeight = 18.sp,
          modifier = Modifier.constrainAs(refTitle) {
             top.linkTo(parent.top)
-            linkTo(
-               start = parent.start,
-               end = refOpenUri.start,
-               bias = 0f,
-            )
-            width = Dimension.fillToConstraints
+            start.linkTo(parent.start)
          }
       )
 
@@ -135,18 +121,6 @@ private fun ItemView(
             top.linkTo(refTitle.bottom, 6.dp)
          }
       )
-
-      // Open uri
-      Icon(
-         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-         contentDescription = "Open uri",
-         modifier = Modifier
-            .constrainAs(refOpenUri) {
-               centerVerticallyTo(refTitle)
-               end.linkTo(parent.end)
-            }
-            .clickable { onClickOpenUri() }
-      )
    }
 }
 
@@ -173,7 +147,6 @@ private fun PreviewView() {
                   isMovieEditor = true,
                )
             ),
-            onClickOpenUri = {},
          )
       }
    }

@@ -6,9 +6,7 @@ import com.sd.android.kreedz.core.base.BaseViewModel
 import com.sd.lib.compose.paging.fPagerFlow
 
 class LatestNewsVM : BaseViewModel<Unit, Unit>(Unit) {
-
-   val newsFlow = fPagerFlow(prefetchDistance = 5) {
-      NewsPagingSource()
+   val itemsFlow = fPagerFlow(prefetchDistance = 5) {
+      LatestNewsPagingSource()
    }.cachedIn(viewModelScope)
-
 }
