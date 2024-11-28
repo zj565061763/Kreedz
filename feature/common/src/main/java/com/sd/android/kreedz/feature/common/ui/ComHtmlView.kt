@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import com.sd.android.kreedz.core.export.fsUri
@@ -62,6 +61,28 @@ fun ComHtmlView(
    html: String,
    lineHeight: TextUnit = 20.sp,
 ) {
+   BoxWithConstraints(modifier = modifier) {
+      val result = parseHtml(
+         html = html,
+         lineHeight = lineHeight,
+         maxWidth = maxWidth,
+      )
+      Text(
+         text = result.text,
+         inlineContent = result.inlineContent,
+         color = AppTextColor.medium,
+         fontSize = 14.sp,
+         lineHeight = lineHeight,
+      )
+   }
+}
+
+@Composable
+private fun parseHtml(
+   html: String,
+   lineHeight: TextUnit,
+   maxWidth: Dp,
+): ComposeHtml.Result {
    val colorScheme = MaterialTheme.colorScheme
    val context = LocalContext.current
    val uriHandler = LocalUriHandler.current
@@ -145,43 +166,35 @@ fun ComHtmlView(
             },
          )
       }
-   }
 
-   BoxWithConstraints(modifier = modifier) {
-      composeHtml.Factory("img") {
+      Factory("img") {
          AppTag_img(
             density = density,
             maxWidth = maxWidth,
             lineHeight = lineHeight,
          )
       }
-
-      var annotated by remember { mutableStateOf(AnnotatedString("")) }
-      LaunchedEffect(
-         composeHtml,
-         html,
-         colorScheme,
-         context,
-         uriHandler,
-         density,
-         maxWidth,
-         lineHeight,
-      ) {
-         withContext(Dispatchers.IO) {
-            annotated = composeHtml.parse(hookHtml(html))
-         }
-      }
-
-      val inlineContent by composeHtml.inlineContentFlow.collectAsStateWithLifecycle()
-
-      Text(
-         text = annotated,
-         inlineContent = inlineContent,
-         color = AppTextColor.medium,
-         fontSize = 14.sp,
-         lineHeight = lineHeight,
-      )
    }
+
+   var result by remember { mutableStateOf(ComposeHtml.Result.Empty) }
+
+   LaunchedEffect(
+      composeHtml,
+      html,
+      colorScheme,
+      context,
+      uriHandler,
+      density,
+      maxWidth,
+      lineHeight,
+   ) {
+      withContext(Dispatchers.IO) {
+         val hookHtml = hookHtml(html)
+         result = composeHtml.parse(hookHtml)
+      }
+   }
+
+   return result
 }
 
 private class AppTag_a(
