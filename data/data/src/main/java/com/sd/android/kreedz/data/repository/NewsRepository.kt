@@ -139,7 +139,7 @@ private fun NetNews.asNewsModel(): NewsModel {
 private fun NetNewsComment.asNewsCommentModel(): NewsCommentModel {
    return NewsCommentModel(
       id = id,
-      comment = message,
+      comment = message.replace("""\r\n""", "\n"),
       dateStr = commentDate,
       author = UserWithIconsModel(
          id = authorId ?: "",

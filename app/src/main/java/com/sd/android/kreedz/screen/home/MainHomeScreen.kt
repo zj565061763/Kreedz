@@ -11,9 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.sd.android.kreedz.core.router.AppRouter
 import com.sd.android.kreedz.feature.blog.screen.latest.LatestBlogScreen
 import com.sd.android.kreedz.feature.news.screen.latest.LatestNewsScreen
 import com.sd.android.kreedz.feature.news.screen.release.LatestReleaseScreen
@@ -33,6 +35,7 @@ fun MainHomeScreen(
 ) {
    val state by vm.stateFlow.collectAsStateWithLifecycle()
    val scope = rememberCoroutineScope()
+   val context = LocalContext.current
 
    val pagerState = rememberPagerState { state.tabs.size }
    pagerState.FCurrentPage { vm.selectTab(it) }
@@ -50,6 +53,9 @@ fun MainHomeScreen(
                      scope.launch {
                         pagerState.animateScrollToPage(index)
                      }
+                  },
+                  onClickSearch = {
+                     AppRouter.search(context = context)
                   },
                )
             },

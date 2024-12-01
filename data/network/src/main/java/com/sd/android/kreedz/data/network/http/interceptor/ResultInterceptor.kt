@@ -1,6 +1,7 @@
 package com.sd.android.kreedz.data.network.http.interceptor
 
 import com.sd.android.kreedz.data.network.exception.HttpMessageException
+import com.sd.android.kreedz.data.network.exception.HttpTooManyRequestsException
 import com.sd.android.kreedz.data.network.http.AppApi
 import com.sd.android.kreedz.data.network.model.NetFailureResponse
 import com.sd.lib.moshi.fMoshi
@@ -16,7 +17,10 @@ internal class ResultInterceptor : AppApiInterceptor() {
 
       val response = chain.proceed(request)
       if (!response.isSuccessful) {
-         return response.handleFailureResponse()
+         when (response.code) {
+            429 -> throw HttpTooManyRequestsException()
+            else -> return response.handleFailureResponse()
+         }
       }
 
       val body = response.body

@@ -15,6 +15,7 @@ import com.sd.android.kreedz.data.network.model.NetNews
 import com.sd.android.kreedz.data.network.model.NetNewsComment
 import com.sd.android.kreedz.data.network.model.NetPlayerRanking
 import com.sd.android.kreedz.data.network.model.NetRecord
+import com.sd.android.kreedz.data.network.model.NetSearch
 import com.sd.android.kreedz.data.network.model.NetTeamRole
 import com.sd.android.kreedz.data.network.model.NetTopRanking
 import com.sd.android.kreedz.data.network.model.NetUserProfile
@@ -68,6 +69,8 @@ interface NetDataSource {
    suspend fun chatBoxMessages(page: Int): List<NetChatBoxMessage>
    suspend fun chatBoxSendMessage(content: String)
    suspend fun chatBoxDeleteMessage(id: String)
+
+   suspend fun search(keyword: String): NetSearch
 }
 
 private object NetDataSourceImpl : NetDataSource {
@@ -200,6 +203,10 @@ private object NetDataSourceImpl : NetDataSource {
 
    override suspend fun chatBoxDeleteMessage(id: String) {
       _api.chatBoxDeleteMessage(id)
+   }
+
+   override suspend fun search(keyword: String): NetSearch {
+      return _api.search(keyword = keyword, types = "user,news")
    }
 }
 
@@ -389,4 +396,11 @@ private interface AppNetApi {
    suspend fun chatBoxDeleteMessage(
       @Query("commentId") id: String,
    )
+
+   @AppApi
+   @GET("search/")
+   suspend fun search(
+      @Query("expression") keyword: String,
+      @Query("types") types: String,
+   ): NetSearch
 }

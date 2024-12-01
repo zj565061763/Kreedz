@@ -57,4 +57,4 @@ fun CharSequence.comAnnotatedLink(): AnnotatedString {
    )
 }
 
-private const val URL_PATTERN = "(https?://[\\w-]+(\\.[\\w-]+)+(/[^\\s]*)?)"
+private const val URL_PATTERN = "(https?://[\\w-]+(\\.[\\w-]+)+(/\\S*)?)"

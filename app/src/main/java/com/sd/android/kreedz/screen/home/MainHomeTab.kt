@@ -2,9 +2,16 @@ package com.sd.android.kreedz.screen.home
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
@@ -34,35 +41,53 @@ fun MainHomeTabView(
    tabs: List<MainHomeTab>,
    selectedTabIndex: Int,
    onClickTab: (Int) -> Unit,
+   onClickSearch: () -> Unit,
 ) {
-   PrimaryScrollableTabRow(
+   Row(
       modifier = modifier,
-      selectedTabIndex = selectedTabIndex,
-      containerColor = Color.Transparent,
-      edgePadding = 0.dp,
-      divider = {},
-      indicator = {
-         if (selectedTabIndex in tabs.indices) {
-            TabRowDefaults.PrimaryIndicator(
-               Modifier.tabIndicatorOffset(selectedTabIndex),
-            )
-         }
-      },
+      verticalAlignment = Alignment.CenterVertically,
    ) {
-      tabs.forEachIndexed { index, item ->
-         Box(
-            modifier = Modifier
-               .height(40.dp)
-               .clickable { onClickTab(index) }
-               .padding(horizontal = 8.dp)
-         ) {
-            Text(
-               text = item.name,
-               fontSize = 18.sp,
-               fontWeight = FontWeight.Medium,
-               modifier = Modifier.align(Alignment.Center),
-            )
+      PrimaryScrollableTabRow(
+         modifier = Modifier.weight(1f),
+         selectedTabIndex = selectedTabIndex,
+         containerColor = Color.Transparent,
+         edgePadding = 0.dp,
+         divider = {},
+         indicator = {
+            if (selectedTabIndex in tabs.indices) {
+               TabRowDefaults.PrimaryIndicator(
+                  Modifier.tabIndicatorOffset(selectedTabIndex),
+               )
+            }
+         },
+      ) {
+         tabs.forEachIndexed { index, item ->
+            Box(
+               modifier = Modifier
+                  .height(40.dp)
+                  .clickable { onClickTab(index) }
+                  .padding(horizontal = 8.dp)
+            ) {
+               Text(
+                  text = item.name,
+                  fontSize = 18.sp,
+                  fontWeight = FontWeight.Medium,
+                  modifier = Modifier.align(Alignment.Center),
+               )
+            }
          }
+      }
+
+      IconButton(
+         onClick = onClickSearch,
+         colors = IconButtonDefaults.iconButtonColors(
+            contentColor = MaterialTheme.colorScheme.primary,
+         )
+      ) {
+         Icon(
+            imageVector = Icons.Default.Search,
+            contentDescription = "Search",
+         )
       }
    }
 }
@@ -75,6 +100,7 @@ private fun PreviewTabsView() {
          tabs = MainHomeTab.entries,
          selectedTabIndex = 0,
          onClickTab = {},
+         onClickSearch = {},
       )
    }
 }

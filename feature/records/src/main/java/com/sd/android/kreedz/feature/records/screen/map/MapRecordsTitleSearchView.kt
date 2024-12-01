@@ -20,9 +20,9 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.sd.android.kreedz.core.ui.AppTheme
 import com.sd.lib.compose.input.FTextField
-import com.sd.lib.compose.input.FTextFieldIcon
 import com.sd.lib.compose.input.FTextFieldIconClear
-import com.sd.lib.compose.input.FTextFieldIndicator
+import com.sd.lib.compose.input.FTextFieldIconContainer
+import com.sd.lib.compose.input.FTextFieldIndicatorOutline
 
 @Composable
 internal fun MapRecordsTitleSearchView(
@@ -41,7 +41,7 @@ internal fun MapRecordsTitleSearchView(
          Text(text = "Search...")
       },
       leadingIcon = {
-         FTextFieldIcon(Modifier.padding(start = 8.dp)) {
+         FTextFieldIconContainer(Modifier.padding(start = 8.dp)) {
             Icon(
                imageVector = Icons.Default.Search,
                contentDescription = "Search",
@@ -53,9 +53,7 @@ internal fun MapRecordsTitleSearchView(
          FTextFieldIconClear(Modifier.padding(end = 8.dp))
       },
       indicator = {
-         FTextFieldIndicator(
-            shape = CircleShape,
-         )
+         FTextFieldIndicatorOutline(shape = CircleShape)
       },
    )
 }

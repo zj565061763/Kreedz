@@ -41,6 +41,10 @@
             android:name="com.sd.android.kreedz.screen.user.UserActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name="com.sd.android.kreedz.screen.search.SearchActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

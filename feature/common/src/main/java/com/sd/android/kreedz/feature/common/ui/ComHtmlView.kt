@@ -104,6 +104,12 @@ private fun parseHtml(
             onClickNews = {
                AppRouter.news(context, it)
             },
+            onClickUser = {
+               AppRouter.user(context, it)
+            },
+            onClickMap = {
+               AppRouter.map(context, it)
+            },
          )
       }
 
@@ -141,6 +147,10 @@ private fun parseHtml(
 
       Factory("ytLink") {
          AppTag_ytLink()
+      }
+
+      Factory("flag") {
+         AppTag_flag()
       }
 
       Factory("iframe") {
@@ -202,6 +212,8 @@ private class AppTag_a(
    private val onClickUrl: (url: String) -> Unit,
    private val onClickBlog: (blogId: String) -> Unit,
    private val onClickNews: (newsId: String) -> Unit,
+   private val onClickUser: (userId: String) -> Unit,
+   private val onClickMap: (mapId: String) -> Unit,
 ) : ComposeHtml.Tag() {
    override fun elementEnd(builder: AnnotatedString.Builder, element: Element, start: Int, end: Int) {
       val url = element.attr("href")
@@ -229,6 +241,16 @@ private class AppTag_a(
          url.startsWith("news/") -> {
             url.removePrefix("news/").toIntOrNull()?.also { id ->
                onClickNews(id.toString())
+            }
+         }
+         url.startsWith("/profile/") -> {
+            url.removePrefix("/profile/").toIntOrNull()?.also { id ->
+               onClickUser(id.toString())
+            }
+         }
+         url.startsWith("/record/") -> {
+            url.removePrefix("/record/").toIntOrNull()?.also { id ->
+               onClickMap(id.toString())
             }
          }
          else -> onClickUrl(url)
@@ -353,6 +375,35 @@ private class AppTag_ytLink : ComposeHtml.Tag() {
    }
 }
 
+private class AppTag_flag : ComposeHtml.Tag() {
+   override fun elementText(builder: AnnotatedString.Builder, element: Element, textNode: TextNode) {
+      // [flag]ru[/flag]
+
+      val country = textNode.text()
+      if (country.isNullOrBlank()) return
+
+      builder.appendInlineContent(id = country)
+      addInlineContent(
+         id = country,
+         placeholderWidth = 18.sp,
+         placeholderHeight = 1.em,
+         placeholderVerticalAlign = PlaceholderVerticalAlign.TextBottom,
+      ) {
+         Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+               .fillMaxSize()
+               .padding(end = 2.dp),
+         ) {
+            ComCountryImageView(
+               country = country,
+               modifier = Modifier.fillMaxWidth(),
+            )
+         }
+      }
+   }
+}
+
 private class AppTag_iframe(
    private val style: SpanStyle,
    private val onClickUrl: (url: String) -> Unit,
@@ -436,13 +487,16 @@ private class AppTag_img(
 }
 
 private fun hookHtml(html: String): String {
-   return html.replace(
-      regex = CustomDataRegex.toRegex(),
-      replacement = "<$1>$2</$1>",
-   ).replace(
-      regex = CustomUrlRegex.toRegex(),
-      replacement = "<url url=$1>$2</url>",
-   )
+   return html
+      .replace("""\r\n""", """<br/>""")
+      .replace(
+         regex = CustomDataRegex.toRegex(),
+         replacement = "<$1>$2</$1>",
+      )
+      .replace(
+         regex = CustomUrlRegex.toRegex(),
+         replacement = "<url url=$1>$2</url>",
+      )
 }
 
 private const val CustomDataRegex = """\[(\w+)](.+?)\[/\1]"""

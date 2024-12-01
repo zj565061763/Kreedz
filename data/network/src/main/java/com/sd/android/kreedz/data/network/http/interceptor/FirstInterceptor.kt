@@ -24,7 +24,7 @@ internal class FirstInterceptor : AppApiInterceptor() {
 
       request.logDebug {
          buildString {
-            if (response != null) append("${response.code}|")
+            append("${response?.code}|")
             append("time:${timedValue.duration.inWholeMilliseconds}")
          }
       }
