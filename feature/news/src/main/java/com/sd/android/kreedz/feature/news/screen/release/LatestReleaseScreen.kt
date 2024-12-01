@@ -105,13 +105,13 @@ fun LatestReleaseScreen(
    vm.effectFlow.ComEffect()
    commentVM.effectFlow.ComEffect()
 
-   if (fIsActive()) {
-      LaunchedEffect(lazyListState) {
-         FEvent.flowOf<ReClickMainNavigation>()
-            .filter { it.navigation == MainNavigation.Home }
-            .collect {
-               lazyListState.scrollToItem(0)
+   LaunchedEffect(commentVM, lazyListState) {
+      commentVM.effectFlow.collect { effect ->
+         when (effect) {
+            NewsCommentVM.Effect.AddNewComment -> {
+               lazyListState.scrollToItem(lazyListState.layoutInfo.totalItemsCount)
             }
+         }
       }
    }
 
@@ -122,6 +122,16 @@ fun LatestReleaseScreen(
          clickedComment = null
       },
    )
+
+   if (fIsActive()) {
+      LaunchedEffect(lazyListState) {
+         FEvent.flowOf<ReClickMainNavigation>()
+            .filter { it.navigation == MainNavigation.Home }
+            .collect {
+               lazyListState.scrollToItem(0)
+            }
+      }
+   }
 }
 
 @Composable
@@ -145,7 +155,7 @@ private fun ListView(
       verticalArrangement = Arrangement.spacedBy(8.dp),
       contentPadding = PaddingValues(
          start = 8.dp, end = 8.dp,
-         top = 8.dp, bottom = 64.dp,
+         top = 8.dp, bottom = 128.dp,
       ),
    ) {
       titleView(

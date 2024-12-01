@@ -72,16 +72,7 @@ open class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) {
 
          if (checkLogin(context)) {
             _sendLoader.tryLoad {
-               _newsRepository.sendComment(
-                  id = newsId,
-                  content = content,
-                  replyCommentId = state.reply?.id,
-               )
-            }.onSuccess {
-               updateState { it.copy(reply = null) }
-               inputState.clearText()
-               refresh()
-               closeInput()
+               sendComment(newsId, content)
             }.onFailure { error ->
                sendEffect(error)
             }
@@ -116,6 +107,18 @@ open class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) {
       }
    }
 
+   fun cancelSend() {
+      vmLaunch {
+         _sendLoader.cancel()
+      }
+   }
+
+   fun cancelDelete() {
+      vmLaunch {
+         _deleteLoader.cancel()
+      }
+   }
+
    private fun loadComments(newsId: String) {
       if (newsId.isBlank()) return
       vmLaunch {
@@ -139,15 +142,20 @@ open class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) {
       }
    }
 
-   fun cancelSend() {
-      vmLaunch {
-         _sendLoader.cancel()
-      }
-   }
+   private suspend fun sendComment(newsId: String, content: String) {
+      val replyCommentId = state.reply?.id
+      _newsRepository.sendComment(
+         id = newsId,
+         content = content,
+         replyCommentId = replyCommentId,
+      )
 
-   fun cancelDelete() {
-      vmLaunch {
-         _deleteLoader.cancel()
+      inputState.clearText()
+      closeInput()
+      refresh()
+
+      if (replyCommentId.isNullOrBlank()) {
+         sendEffect(Effect.AddNewComment)
       }
    }
 
@@ -188,6 +196,7 @@ open class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) {
             .onEach {
                updateState {
                   it.copy(
+                     commentCount = null,
                      comments = null,
                      reply = null,
                   )
@@ -221,7 +230,6 @@ open class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) {
 
       val commentCount: Int? = null,
       val comments: List<NewsCommentGroupModel>? = null,
-
       val reply: NewsCommentModel? = null,
 
       val userId: String = "",
@@ -231,4 +239,8 @@ open class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) {
       val showInput: Boolean = false,
       val maxInput: Int = 250,
    )
+
+   sealed interface Effect {
+      data object AddNewComment : Effect
+   }
 }

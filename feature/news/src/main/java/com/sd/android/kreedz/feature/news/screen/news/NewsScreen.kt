@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -60,6 +62,7 @@ fun NewsScreen(
    val context = LocalContext.current
    val density = LocalDensity.current
    val nestedHeaderState = rememberNestedHeaderState()
+   val lazyListState = rememberLazyListState()
 
    val showTitle by remember {
       derivedStateOf {
@@ -117,6 +120,7 @@ fun NewsScreen(
       ) {
          BodyView(
             nestedHeaderState = nestedHeaderState,
+            lazyListState = lazyListState,
             title = state.title,
             html = state.html,
             author = state.author,
@@ -150,6 +154,17 @@ fun NewsScreen(
    vm.effectFlow.ComEffect()
    commentVM.effectFlow.ComEffect()
 
+   LaunchedEffect(commentVM, nestedHeaderState, lazyListState) {
+      commentVM.effectFlow.collect { effect ->
+         when (effect) {
+            NewsCommentVM.Effect.AddNewComment -> {
+               nestedHeaderState.hideHeader()
+               lazyListState.scrollToItem(lazyListState.layoutInfo.totalItemsCount)
+            }
+         }
+      }
+   }
+
    NewsCommentOperateScreen(
       vm = commentVM,
       clickedComment = clickComment,
@@ -163,6 +178,7 @@ fun NewsScreen(
 private fun BodyView(
    modifier: Modifier = Modifier,
    nestedHeaderState: NestedHeaderState,
+   lazyListState: LazyListState,
    title: String,
    html: String,
    author: UserWithIconsModel?,
@@ -193,10 +209,11 @@ private fun BodyView(
    ) {
       LazyColumn(
          modifier = Modifier.fillMaxSize(),
+         state = lazyListState,
          verticalArrangement = Arrangement.spacedBy(8.dp),
          contentPadding = PaddingValues(
             start = 8.dp, end = 8.dp,
-            top = 8.dp, bottom = 64.dp,
+            top = 8.dp, bottom = 128.dp,
          ),
       ) {
          if (title.isNotBlank()) {
