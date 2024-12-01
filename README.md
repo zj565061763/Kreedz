@@ -5,10 +5,8 @@ Report any [issues](https://github.com/zj565061763/Kreedz/issues) if you encount
 
 # Download
 
-QRCode:
 ![](https://www.pgyer.com/app/qrcode/h2tb2CjB)
-
-[Download1](https://www.pgyer.com/h2tb2CjB)
+[Download1](https://www.pgyer.com/h2tb2CjB)<br>
 [Download2](https://github.com/zj565061763/Kreedz/releases)
 
 # Screenshots
