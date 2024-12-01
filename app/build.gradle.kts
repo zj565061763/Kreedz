@@ -68,7 +68,7 @@ android {
       create("kreedz") {
          applicationId = "com.sd.android.kreedz"
          versionCode = 1
-         versionName = "1.0.0-beta01"
+         versionName = "1.0.0-dev"
       }
    }
 }
