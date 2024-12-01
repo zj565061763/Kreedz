@@ -33,6 +33,12 @@ Report any [issues](https://github.com/zj565061763/Kreedz/issues) if you encount
 </p>
 
 <p>
+  <img src="Screenshots/News.png" width="30%" />
+  <img src="Screenshots/News-Comments.png" width="30%" />
+  <img src="Screenshots/Search.png" width="30%" />
+</p>
+
+<p>
   <img src="Screenshots/Map.png" width="30%" />
   <img src="Screenshots/User.png" width="30%" />
   <img src="Screenshots/More.png" width="30%" />
