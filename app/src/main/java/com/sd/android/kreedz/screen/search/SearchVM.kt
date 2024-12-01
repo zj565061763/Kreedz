@@ -74,7 +74,7 @@ class SearchVM : BaseViewModel<SearchVM.State, Any>(State()) {
             }
             .distinctUntilChanged()
             .onEach { keyword ->
-               _loader.cancelLoad()
+               _loader.cancel()
                updateState { State(keyword = keyword.toString()) }
             }
             .debounce(1_000)

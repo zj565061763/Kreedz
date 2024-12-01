@@ -65,7 +65,7 @@ object NetOnlineUsersDataSource : FLogger {
    private fun disconnect() {
       fGlobalLaunch {
          li { "disconnect" }
-         _connectLoader.cancelLoad()
+         _connectLoader.cancel()
       }
    }
 

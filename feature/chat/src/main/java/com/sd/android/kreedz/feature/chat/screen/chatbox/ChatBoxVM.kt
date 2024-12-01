@@ -124,13 +124,13 @@ class ChatBoxVM : BaseViewModel<ChatBoxVM.State, Any>(State()) {
 
    fun cancelSend() {
       vmLaunch {
-         _sendLoader.cancelLoad()
+         _sendLoader.cancel()
       }
    }
 
    fun cancelDelete() {
       vmLaunch {
-         _deleteLoader.cancelLoad()
+         _deleteLoader.cancel()
       }
    }
 

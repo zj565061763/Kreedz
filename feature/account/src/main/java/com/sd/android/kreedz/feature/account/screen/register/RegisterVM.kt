@@ -58,7 +58,7 @@ internal class RegisterVM : BaseViewModel<RegisterVM.State, Any>(State()) {
 
    fun cancelRegister() {
       vmLaunch {
-         _registerLoader.cancelLoad()
+         _registerLoader.cancel()
       }
    }
 

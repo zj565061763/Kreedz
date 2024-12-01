@@ -28,7 +28,7 @@ class MapRecordsVM : BaseViewModel<MapRecordsVM.State, Any>(State()) {
 
    fun refresh() {
       vmLaunch {
-         _initLoader.cancelLoad()
+         _initLoader.cancel()
          _refreshLoader.load {
             _repository.sync()
          }.onFailure { error ->

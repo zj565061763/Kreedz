@@ -17,7 +17,7 @@ open class NewsVM : BaseViewModel<NewsVM.State, Any>(State()) {
          if (id.isBlank()) return@vmLaunch
          if (state.id == id) return@vmLaunch
 
-         _loader.cancelLoad()
+         _loader.cancel()
          updateState { State(id = id) }
          loadData(id)
       }

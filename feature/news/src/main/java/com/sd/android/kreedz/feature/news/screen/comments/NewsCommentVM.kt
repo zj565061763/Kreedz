@@ -141,13 +141,13 @@ open class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) {
 
    fun cancelSend() {
       vmLaunch {
-         _sendLoader.cancelLoad()
+         _sendLoader.cancel()
       }
    }
 
    fun cancelDelete() {
       vmLaunch {
-         _deleteLoader.cancelLoad()
+         _deleteLoader.cancel()
       }
    }
 

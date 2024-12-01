@@ -38,7 +38,7 @@ internal class LoginVM : BaseViewModel<LoginVM.State, Any>(State()) {
 
    fun cancelLogin() {
       vmLaunch {
-         _loginLoader.cancelLoad()
+         _loginLoader.cancel()
       }
    }
 

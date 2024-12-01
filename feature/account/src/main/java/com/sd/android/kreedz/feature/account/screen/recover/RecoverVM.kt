@@ -28,7 +28,7 @@ internal abstract class RecoverVM : BaseViewModel<RecoverVM.State, Any>(State())
 
    fun cancelRecover() {
       vmLaunch {
-         _loader.cancelLoad()
+         _loader.cancel()
       }
    }
 
