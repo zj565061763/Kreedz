@@ -43,6 +43,7 @@
 
         <activity
             android:name="com.sd.android.kreedz.screen.search.SearchActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
     </application>
