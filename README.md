@@ -1,8 +1,10 @@
 # Kreedz
 
-This is an Android app project developed for the [Kreedz](https://xtreme-jumps.eu/) website.
+The official [Kreedz](https://xtreme-jumps.eu/) app has not been released, so I developed an Android app myself to try it out.
 
 Report any [issues](https://github.com/zj565061763/Kreedz/issues) if you encounter one.
+
+For more information, please visit the official website at https://xtreme-jumps.eu.
 
 # Download
 
