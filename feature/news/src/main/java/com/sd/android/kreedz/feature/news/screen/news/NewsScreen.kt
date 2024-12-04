@@ -27,7 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -40,10 +39,6 @@ import com.sd.android.kreedz.feature.common.ui.ComEffect
 import com.sd.android.kreedz.feature.news.screen.comments.NewsCommentOperateScreen
 import com.sd.android.kreedz.feature.news.screen.comments.NewsCommentVM
 import com.sd.android.kreedz.feature.news.screen.comments.newsCommentsView
-import com.sd.lib.compose.nested.NestedHeader
-import com.sd.lib.compose.nested.NestedHeaderState
-import com.sd.lib.compose.nested.rememberNestedHeaderState
-import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,15 +55,8 @@ fun NewsScreen(
    var clickComment by remember { mutableStateOf<NewsCommentModel?>(null) }
 
    val context = LocalContext.current
-   val density = LocalDensity.current
-   val nestedHeaderState = rememberNestedHeaderState()
    val lazyListState = rememberLazyListState()
-
-   val showTitle by remember {
-      derivedStateOf {
-         nestedHeaderState.offset.absoluteValue > density.run { 64.dp.toPx() }
-      }
-   }
+   val showTitle by remember { derivedStateOf { lazyListState.firstVisibleItemIndex > 0 } }
 
    Scaffold(
       modifier = modifier,
@@ -119,7 +107,6 @@ fun NewsScreen(
          }
       ) {
          BodyView(
-            nestedHeaderState = nestedHeaderState,
             lazyListState = lazyListState,
             title = state.title,
             html = state.html,
@@ -154,11 +141,10 @@ fun NewsScreen(
    vm.effectFlow.ComEffect()
    commentVM.effectFlow.ComEffect()
 
-   LaunchedEffect(commentVM, nestedHeaderState, lazyListState) {
+   LaunchedEffect(commentVM, lazyListState) {
       commentVM.effectFlow.collect { effect ->
          when (effect) {
             NewsCommentVM.Effect.AddNewComment -> {
-               nestedHeaderState.hideHeader()
                lazyListState.scrollToItem(lazyListState.layoutInfo.totalItemsCount)
             }
          }
@@ -177,7 +163,6 @@ fun NewsScreen(
 @Composable
 private fun BodyView(
    modifier: Modifier = Modifier,
-   nestedHeaderState: NestedHeaderState,
    lazyListState: LazyListState,
    title: String,
    html: String,
@@ -190,42 +175,38 @@ private fun BodyView(
    onClickAddComment: () -> Unit,
    onClickUser: (userId: String) -> Unit,
 ) {
-   NestedHeader(
+   LazyColumn(
       modifier = modifier.fillMaxSize(),
-      state = nestedHeaderState,
-      header = {
-         NewsHeaderView(
-            title = title,
-            html = html,
-            authorCountry = author?.country,
-            authorNickname = author?.nickname,
-            authorIcons = author?.icons,
+      state = lazyListState,
+      verticalArrangement = Arrangement.spacedBy(8.dp),
+      contentPadding = PaddingValues(
+         start = 8.dp, end = 8.dp,
+         top = 8.dp, bottom = 128.dp,
+      ),
+   ) {
+      newsTitleView(title)
+
+      if (author != null) {
+         newsAuthorInfoView(
+            authorCountry = author.country,
+            authorNickname = author.nickname,
+            authorIcons = author.icons,
             dateStr = dateStr,
-            onClickAuthor = {
-               author?.also { onClickUser(it.id) }
-            }
+            onClickAuthor = { onClickUser(author.id) },
          )
       }
-   ) {
-      LazyColumn(
-         modifier = Modifier.fillMaxSize(),
-         state = lazyListState,
-         verticalArrangement = Arrangement.spacedBy(8.dp),
-         contentPadding = PaddingValues(
-            start = 8.dp, end = 8.dp,
-            top = 8.dp, bottom = 128.dp,
-         ),
-      ) {
-         if (title.isNotBlank()) {
-            newsCommentsView(
-               isLoadingComments = isLoadingComments,
-               commentCount = commentCount,
-               comments = comments,
-               onClickAuthor = onClickUser,
-               onClickComment = onClickComment,
-               onClickAddComment = onClickAddComment,
-            )
-         }
+
+      newsContentView(html = html)
+
+      if (title.isNotBlank()) {
+         newsCommentsView(
+            isLoadingComments = isLoadingComments,
+            commentCount = commentCount,
+            comments = comments,
+            onClickAuthor = onClickUser,
+            onClickComment = onClickComment,
+            onClickAddComment = onClickAddComment,
+         )
       }
    }
 }
