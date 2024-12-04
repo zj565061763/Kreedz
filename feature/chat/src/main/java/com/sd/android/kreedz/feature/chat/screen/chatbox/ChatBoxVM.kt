@@ -83,11 +83,7 @@ class ChatBoxVM : BaseViewModel<ChatBoxVM.State, Any>(State()) {
          if (content.isEmpty()) return@vmLaunch
          if (checkLogin(context)) {
             _sendLoader.tryLoad {
-               _chatBoxRepository.sendMessage(content)
-            }.onSuccess {
-               inputState.clearText()
-               _messageItems?.refresh()
-               closeInput()
+               sendMessage(content)
             }.onFailure { error ->
                sendEffect(error)
             }
@@ -132,6 +128,14 @@ class ChatBoxVM : BaseViewModel<ChatBoxVM.State, Any>(State()) {
       vmLaunch {
          _deleteLoader.cancel()
       }
+   }
+
+   private suspend fun sendMessage(content: String) {
+      closeInput()
+      _chatBoxRepository.sendMessage(content)
+
+      inputState.clearText()
+      _messageItems?.refresh()
    }
 
    private suspend fun checkLogin(context: Context): Boolean {
