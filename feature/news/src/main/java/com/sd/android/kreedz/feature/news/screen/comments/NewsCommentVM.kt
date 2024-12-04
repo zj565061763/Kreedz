@@ -144,6 +144,8 @@ open class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) {
 
    private suspend fun sendComment(newsId: String, content: String) {
       val replyCommentId = state.reply?.id
+      closeInput()
+
       _newsRepository.sendComment(
          id = newsId,
          content = content,
@@ -151,7 +153,6 @@ open class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) {
       )
 
       inputState.clearText()
-      closeInput()
       refresh()
 
       if (replyCommentId.isNullOrBlank()) {
