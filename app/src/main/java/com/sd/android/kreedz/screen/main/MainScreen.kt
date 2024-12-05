@@ -26,68 +26,68 @@ import com.sd.lib.event.FEvent
 
 @Composable
 fun MainScreen(
-   modifier: Modifier = Modifier,
-   vm: MainVM = viewModel(),
-   onExit: () -> Unit,
+  modifier: Modifier = Modifier,
+  vm: MainVM = viewModel(),
+  onExit: () -> Unit,
 ) {
-   val state by vm.stateFlow.collectAsStateWithLifecycle()
-   val context = LocalContext.current
+  val state by vm.stateFlow.collectAsStateWithLifecycle()
+  val context = LocalContext.current
 
-   Surface(modifier = modifier) {
-      Column(modifier = Modifier.fillMaxSize()) {
-         ContentView(
-            modifier = Modifier.weight(1f),
-            listNavigation = state.listNavigation,
-            selectedNavigationIndex = state.selectedNavigationIndex,
-         )
-         MainNavigationView(
-            listNavigation = state.listNavigation,
-            selectedNavigationIndex = state.selectedNavigationIndex,
-            onClickNavigation = { index ->
-               if (state.selectedNavigationIndex == index) {
-                  state.listNavigation.getOrNull(index)?.also { navigation ->
-                     FEvent.post(ReClickMainNavigation(navigation))
-                  }
-               }
-               vm.selectNavigation(index)
-            },
-         )
-      }
-   }
+  Surface(modifier = modifier) {
+    Column(modifier = Modifier.fillMaxSize()) {
+      ContentView(
+        modifier = Modifier.weight(1f),
+        listNavigation = state.listNavigation,
+        selectedNavigationIndex = state.selectedNavigationIndex,
+      )
+      MainNavigationView(
+        listNavigation = state.listNavigation,
+        selectedNavigationIndex = state.selectedNavigationIndex,
+        onClickNavigation = { index ->
+          if (state.selectedNavigationIndex == index) {
+            state.listNavigation.getOrNull(index)?.also { navigation ->
+              FEvent.post(ReClickMainNavigation(navigation))
+            }
+          }
+          vm.selectNavigation(index)
+        },
+      )
+    }
+  }
 
-   var backPressedTime by remember { mutableLongStateOf(0L) }
-   BackHandler {
-      val current = System.currentTimeMillis()
-      if (current - backPressedTime < 2_000) {
-         onExit()
-      } else {
-         Toast.makeText(context, "One more press to exit.", Toast.LENGTH_SHORT).show()
-      }
-      backPressedTime = current
-   }
+  var backPressedTime by remember { mutableLongStateOf(0L) }
+  BackHandler {
+    val current = System.currentTimeMillis()
+    if (current - backPressedTime < 2_000) {
+      onExit()
+    } else {
+      Toast.makeText(context, "One more press to exit.", Toast.LENGTH_SHORT).show()
+    }
+    backPressedTime = current
+  }
 }
 
 @Composable
 private fun ContentView(
-   modifier: Modifier = Modifier,
-   listNavigation: List<MainNavigation>,
-   selectedNavigationIndex: Int,
+  modifier: Modifier = Modifier,
+  listNavigation: List<MainNavigation>,
+  selectedNavigationIndex: Int,
 ) {
-   TabContainer(
-      modifier = modifier.fillMaxSize(),
-      selectedKey = listNavigation[selectedNavigationIndex],
-   ) {
-      listNavigation.forEachIndexed { index, item ->
-         tab(item) {
-            FSetActive(index == selectedNavigationIndex) {
-               when (item) {
-                  MainNavigation.Home -> MainHomeScreen()
-                  MainNavigation.Records -> MapRecordsScreen()
-                  MainNavigation.ChatBox -> ChatBoxScreen()
-                  MainNavigation.More -> MainMoreScreen()
-               }
-            }
-         }
+  TabContainer(
+    modifier = modifier.fillMaxSize(),
+    selectedKey = listNavigation[selectedNavigationIndex],
+  ) {
+    listNavigation.forEachIndexed { index, item ->
+      tab(item) {
+        FSetActive(index == selectedNavigationIndex) {
+          when (item) {
+            MainNavigation.Home -> MainHomeScreen()
+            MainNavigation.Records -> MapRecordsScreen()
+            MainNavigation.ChatBox -> ChatBoxScreen()
+            MainNavigation.More -> MainMoreScreen()
+          }
+        }
       }
-   }
+    }
+  }
 }

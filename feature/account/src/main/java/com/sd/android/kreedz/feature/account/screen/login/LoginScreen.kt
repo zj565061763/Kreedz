@@ -28,64 +28,64 @@ import com.sd.android.kreedz.feature.common.ui.ComLoadingDialog
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun LoginScreen(
-   modifier: Modifier = Modifier,
-   vm: LoginVM = viewModel(),
-   onClickBack: () -> Unit,
+  modifier: Modifier = Modifier,
+  vm: LoginVM = viewModel(),
+  onClickBack: () -> Unit,
 ) {
-   val state by vm.stateFlow.collectAsStateWithLifecycle()
-   val context = LocalContext.current
+  val state by vm.stateFlow.collectAsStateWithLifecycle()
+  val context = LocalContext.current
 
-   Scaffold(
-      modifier = modifier,
-      topBar = {
-         TopAppBar(
-            title = {
-               Text(text = "Login")
-            },
-            navigationIcon = {
-               IconButton(onClick = onClickBack) {
-                  Icon(
-                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                     contentDescription = "Back",
-                  )
-               }
-            },
-         )
-      }
-   ) { padding ->
-      LoginInputView(
-         modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(padding)
-            .padding(16.dp),
-         usernameState = vm.usernameState,
-         passwordState = vm.passwordState,
-         onClickLogin = { vm.login() },
-         onClickForgotPassword = {
-            AppRouter.recoverPassword(context)
-         },
-         onClickForgotUsername = {
-            AppRouter.recoverUsername(context)
-         },
-         onClickRegister = {
-            AppRouter.register(context)
-         },
+  Scaffold(
+    modifier = modifier,
+    topBar = {
+      TopAppBar(
+        title = {
+          Text(text = "Login")
+        },
+        navigationIcon = {
+          IconButton(onClick = onClickBack) {
+            Icon(
+              imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+              contentDescription = "Back",
+            )
+          }
+        },
       )
-   }
+    }
+  ) { padding ->
+    LoginInputView(
+      modifier = Modifier
+        .fillMaxSize()
+        .verticalScroll(rememberScrollState())
+        .padding(padding)
+        .padding(16.dp),
+      usernameState = vm.usernameState,
+      passwordState = vm.passwordState,
+      onClickLogin = { vm.login() },
+      onClickForgotPassword = {
+        AppRouter.recoverPassword(context)
+      },
+      onClickForgotUsername = {
+        AppRouter.recoverUsername(context)
+      },
+      onClickRegister = {
+        AppRouter.register(context)
+      },
+    )
+  }
 
-   if (state.isLoggingIn) {
-      ComLoadingDialog {
-         vm.cancelLogin()
-      }
-   }
+  if (state.isLoggingIn) {
+    ComLoadingDialog {
+      vm.cancelLogin()
+    }
+  }
 
-   val onClickBackUpdated by rememberUpdatedState(onClickBack)
-   if (state.isLoginSuccess) {
-      LaunchedEffect(Unit) {
-         onClickBackUpdated()
-      }
-   }
+  val onClickBackUpdated by rememberUpdatedState(onClickBack)
+  if (state.isLoginSuccess) {
+    LaunchedEffect(Unit) {
+      onClickBackUpdated()
+    }
+  }
 
-   vm.effectFlow.ComEffect()
+  vm.effectFlow.ComEffect()
 }

@@ -26,59 +26,59 @@ import com.sd.android.kreedz.feature.common.ui.ComLoadingDialog
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun RegisterScreen(
-   modifier: Modifier = Modifier,
-   vm: RegisterVM = viewModel(),
-   onClickBack: () -> Unit,
+  modifier: Modifier = Modifier,
+  vm: RegisterVM = viewModel(),
+  onClickBack: () -> Unit,
 ) {
-   val state by vm.stateFlow.collectAsStateWithLifecycle()
+  val state by vm.stateFlow.collectAsStateWithLifecycle()
 
-   Scaffold(
-      modifier = modifier,
-      topBar = {
-         TopAppBar(
-            title = {
-               Text(text = "Register")
-            },
-            navigationIcon = {
-               IconButton(onClick = onClickBack) {
-                  Icon(
-                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                     contentDescription = "Back",
-                  )
-               }
-            },
-         )
-      }
-   ) { padding ->
-      RegisterInputView(
-         modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(padding)
-            .padding(16.dp),
-         emailState = vm.emailState,
-         nicknameState = vm.nicknameState,
-         usernameState = vm.usernameState,
-         passwordState = vm.passwordState,
-         confirmPasswordState = vm.confirmPasswordState,
-         onClickRegister = {
-            vm.register()
-         },
+  Scaffold(
+    modifier = modifier,
+    topBar = {
+      TopAppBar(
+        title = {
+          Text(text = "Register")
+        },
+        navigationIcon = {
+          IconButton(onClick = onClickBack) {
+            Icon(
+              imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+              contentDescription = "Back",
+            )
+          }
+        },
       )
-   }
+    }
+  ) { padding ->
+    RegisterInputView(
+      modifier = Modifier
+        .fillMaxSize()
+        .verticalScroll(rememberScrollState())
+        .padding(padding)
+        .padding(16.dp),
+      emailState = vm.emailState,
+      nicknameState = vm.nicknameState,
+      usernameState = vm.usernameState,
+      passwordState = vm.passwordState,
+      confirmPasswordState = vm.confirmPasswordState,
+      onClickRegister = {
+        vm.register()
+      },
+    )
+  }
 
-   if (state.isRegistering) {
-      ComLoadingDialog {
-         vm.cancelRegister()
-      }
-   }
+  if (state.isRegistering) {
+    ComLoadingDialog {
+      vm.cancelRegister()
+    }
+  }
 
-   val onClickBackUpdated by rememberUpdatedState(onClickBack)
-   if (state.isRegisterSuccess) {
-      LaunchedEffect(Unit) {
-         onClickBackUpdated()
-      }
-   }
+  val onClickBackUpdated by rememberUpdatedState(onClickBack)
+  if (state.isRegisterSuccess) {
+    LaunchedEffect(Unit) {
+      onClickBackUpdated()
+    }
+  }
 
-   vm.effectFlow.ComEffect()
+  vm.effectFlow.ComEffect()
 }

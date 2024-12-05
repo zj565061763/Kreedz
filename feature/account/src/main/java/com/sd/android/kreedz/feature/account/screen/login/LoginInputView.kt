@@ -40,193 +40,193 @@ import com.sd.lib.compose.input.fSecure
 
 @Composable
 internal fun LoginInputView(
-   modifier: Modifier = Modifier,
-   usernameState: TextFieldState,
-   passwordState: TextFieldState,
-   onClickLogin: () -> Unit,
-   onClickForgotPassword: () -> Unit,
-   onClickForgotUsername: () -> Unit,
-   onClickRegister: () -> Unit,
+  modifier: Modifier = Modifier,
+  usernameState: TextFieldState,
+  passwordState: TextFieldState,
+  onClickLogin: () -> Unit,
+  onClickForgotPassword: () -> Unit,
+  onClickForgotUsername: () -> Unit,
+  onClickRegister: () -> Unit,
 ) {
-   val usernameFocus = remember { FocusRequester() }
-   LaunchedEffect(usernameFocus) {
-      usernameFocus.requestFocus()
-   }
+  val usernameFocus = remember { FocusRequester() }
+  LaunchedEffect(usernameFocus) {
+    usernameFocus.requestFocus()
+  }
 
-   Column(
-      modifier = modifier.fillMaxWidth(),
-      horizontalAlignment = Alignment.CenterHorizontally,
-   ) {
-      InputUsernameView(
-         state = usernameState,
-         modifier = Modifier
-            .fillMaxWidth()
-            .focusRequester(usernameFocus)
-      )
+  Column(
+    modifier = modifier.fillMaxWidth(),
+    horizontalAlignment = Alignment.CenterHorizontally,
+  ) {
+    InputUsernameView(
+      state = usernameState,
+      modifier = Modifier
+        .fillMaxWidth()
+        .focusRequester(usernameFocus)
+    )
 
-      Spacer(Modifier.height(24.dp))
-      InputPasswordView(
-         state = passwordState,
-         onKeyboardDone = onClickLogin,
-         modifier = Modifier.fillMaxWidth(),
-      )
+    Spacer(Modifier.height(24.dp))
+    InputPasswordView(
+      state = passwordState,
+      onKeyboardDone = onClickLogin,
+      modifier = Modifier.fillMaxWidth(),
+    )
 
-      Spacer(Modifier.height(16.dp))
-      ForgotView(
-         onClickForgotPassword = onClickForgotPassword,
-         onClickForgotUsername = onClickForgotUsername,
-         onClickRegister = onClickRegister,
-         modifier = Modifier.align(Alignment.End),
-      )
+    Spacer(Modifier.height(16.dp))
+    ForgotView(
+      onClickForgotPassword = onClickForgotPassword,
+      onClickForgotUsername = onClickForgotUsername,
+      onClickRegister = onClickRegister,
+      modifier = Modifier.align(Alignment.End),
+    )
 
-      Spacer(Modifier.height(16.dp))
-      Button(
-         onClick = onClickLogin,
-         enabled = usernameState.text.isNotBlank() && passwordState.text.isNotEmpty(),
-         modifier = Modifier.widthIn(160.dp),
-      ) {
-         Text(text = "Login")
-      }
-   }
+    Spacer(Modifier.height(16.dp))
+    Button(
+      onClick = onClickLogin,
+      enabled = usernameState.text.isNotBlank() && passwordState.text.isNotEmpty(),
+      modifier = Modifier.widthIn(160.dp),
+    ) {
+      Text(text = "Login")
+    }
+  }
 }
 
 @Composable
 private fun InputUsernameView(
-   modifier: Modifier = Modifier,
-   state: TextFieldState,
+  modifier: Modifier = Modifier,
+  state: TextFieldState,
 ) {
-   FTextField(
-      modifier = modifier,
-      state = state,
-      textStyle = TextStyle(
-         fontSize = 16.sp,
-         lineHeight = (1.5).em,
-      ),
-      keyboardOptions = KeyboardOptions.Default.copy(
-         imeAction = ImeAction.Next,
-      ),
-      label = {
-         Text(text = "Username")
-      },
-      trailingIcon = {
-         FTextFieldIconClear(modifier = Modifier.padding(end = 8.dp))
-      },
-   )
+  FTextField(
+    modifier = modifier,
+    state = state,
+    textStyle = TextStyle(
+      fontSize = 16.sp,
+      lineHeight = (1.5).em,
+    ),
+    keyboardOptions = KeyboardOptions.Default.copy(
+      imeAction = ImeAction.Next,
+    ),
+    label = {
+      Text(text = "Username")
+    },
+    trailingIcon = {
+      FTextFieldIconClear(modifier = Modifier.padding(end = 8.dp))
+    },
+  )
 }
 
 @Composable
 private fun InputPasswordView(
-   modifier: Modifier = Modifier,
-   state: TextFieldState,
-   onKeyboardDone: () -> Unit,
+  modifier: Modifier = Modifier,
+  state: TextFieldState,
+  onKeyboardDone: () -> Unit,
 ) {
-   var passwordVisible by remember { mutableStateOf(false) }
+  var passwordVisible by remember { mutableStateOf(false) }
 
-   FSecureTextField(
-      modifier = modifier,
-      state = state,
-      textObfuscationMode = if (passwordVisible) TextObfuscationMode.Visible else TextObfuscationMode.RevealLastTyped,
-      textStyle = TextStyle(
-         fontSize = 16.sp,
-         lineHeight = (1.5).em,
-      ),
-      keyboardOptions = KeyboardOptions.fSecure().copy(
-         imeAction = ImeAction.Done,
-      ),
-      onKeyboardAction = {
-         onKeyboardDone()
-      },
-      label = {
-         Text(text = "Password")
-      },
-      trailingIcon = {
-         if (state.text.isNotEmpty()) {
-            TextButton(
-               onClick = { passwordVisible = !passwordVisible },
-            ) {
-               Text(
-                  text = if (passwordVisible) "hide" else "show",
-                  color = AppTextColor.small,
-               )
-            }
-         }
-      },
-   )
+  FSecureTextField(
+    modifier = modifier,
+    state = state,
+    textObfuscationMode = if (passwordVisible) TextObfuscationMode.Visible else TextObfuscationMode.RevealLastTyped,
+    textStyle = TextStyle(
+      fontSize = 16.sp,
+      lineHeight = (1.5).em,
+    ),
+    keyboardOptions = KeyboardOptions.fSecure().copy(
+      imeAction = ImeAction.Done,
+    ),
+    onKeyboardAction = {
+      onKeyboardDone()
+    },
+    label = {
+      Text(text = "Password")
+    },
+    trailingIcon = {
+      if (state.text.isNotEmpty()) {
+        TextButton(
+          onClick = { passwordVisible = !passwordVisible },
+        ) {
+          Text(
+            text = if (passwordVisible) "hide" else "show",
+            color = AppTextColor.small,
+          )
+        }
+      }
+    },
+  )
 }
 
 @Composable
 private fun ForgotView(
-   modifier: Modifier = Modifier,
-   onClickForgotPassword: () -> Unit,
-   onClickForgotUsername: () -> Unit,
-   onClickRegister: () -> Unit,
+  modifier: Modifier = Modifier,
+  onClickForgotPassword: () -> Unit,
+  onClickForgotUsername: () -> Unit,
+  onClickRegister: () -> Unit,
 ) {
-   Column(
-      modifier = modifier,
-      horizontalAlignment = Alignment.End,
-   ) {
-      TextButton(
-         onClick = onClickForgotPassword,
-         contentPadding = PaddingValues(
-            vertical = 0.dp,
-            horizontal = 12.dp,
-         ),
-         modifier = Modifier
-            .defaultMinSize(0.dp, 0.dp)
-            .height(28.dp),
-      ) {
-         Text(
-            text = "Forgot password?",
-            color = AppTextColor.small,
-         )
-      }
+  Column(
+    modifier = modifier,
+    horizontalAlignment = Alignment.End,
+  ) {
+    TextButton(
+      onClick = onClickForgotPassword,
+      contentPadding = PaddingValues(
+        vertical = 0.dp,
+        horizontal = 12.dp,
+      ),
+      modifier = Modifier
+        .defaultMinSize(0.dp, 0.dp)
+        .height(28.dp),
+    ) {
+      Text(
+        text = "Forgot password?",
+        color = AppTextColor.small,
+      )
+    }
 
-      TextButton(
-         onClick = onClickForgotUsername,
-         contentPadding = PaddingValues(
-            vertical = 0.dp,
-            horizontal = 12.dp,
-         ),
-         modifier = Modifier
-            .defaultMinSize(0.dp, 0.dp)
-            .height(28.dp),
-      ) {
-         Text(
-            text = "Forgot username?",
-            color = AppTextColor.small,
-         )
-      }
+    TextButton(
+      onClick = onClickForgotUsername,
+      contentPadding = PaddingValues(
+        vertical = 0.dp,
+        horizontal = 12.dp,
+      ),
+      modifier = Modifier
+        .defaultMinSize(0.dp, 0.dp)
+        .height(28.dp),
+    ) {
+      Text(
+        text = "Forgot username?",
+        color = AppTextColor.small,
+      )
+    }
 
-      TextButton(
-         onClick = onClickRegister,
-         contentPadding = PaddingValues(
-            vertical = 0.dp,
-            horizontal = 12.dp,
-         ),
-         modifier = Modifier
-            .defaultMinSize(0.dp, 0.dp)
-            .height(28.dp),
-      ) {
-         Text(
-            text = "Register",
-            color = AppTextColor.small,
-         )
-      }
-   }
+    TextButton(
+      onClick = onClickRegister,
+      contentPadding = PaddingValues(
+        vertical = 0.dp,
+        horizontal = 12.dp,
+      ),
+      modifier = Modifier
+        .defaultMinSize(0.dp, 0.dp)
+        .height(28.dp),
+    ) {
+      Text(
+        text = "Register",
+        color = AppTextColor.small,
+      )
+    }
+  }
 }
 
 @Preview
 @Composable
 private fun Preview() {
-   AppTheme {
-      LoginInputView(
-         modifier = Modifier.padding(16.dp),
-         usernameState = rememberTextFieldState(),
-         passwordState = rememberTextFieldState(),
-         onClickLogin = {},
-         onClickForgotPassword = {},
-         onClickForgotUsername = {},
-         onClickRegister = {},
-      )
-   }
+  AppTheme {
+    LoginInputView(
+      modifier = Modifier.padding(16.dp),
+      usernameState = rememberTextFieldState(),
+      passwordState = rememberTextFieldState(),
+      onClickLogin = {},
+      onClickForgotPassword = {},
+      onClickForgotUsername = {},
+      onClickRegister = {},
+    )
+  }
 }

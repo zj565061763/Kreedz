@@ -15,88 +15,88 @@ import com.sd.lib.compose.constraintlayout.goneIf
 
 @Composable
 fun UserAchievementsItemView(
-   modifier: Modifier = Modifier,
-   title: String,
-   rank: Int?,
-   date: String?,
+  modifier: Modifier = Modifier,
+  title: String,
+  rank: Int?,
+  date: String?,
 ) {
-   ConstraintLayout(
-      modifier = modifier
-         .fillMaxWidth()
-         .padding(8.dp)
-   ) {
-      val (refRank, refTitle, refDate) = createRefs()
+  ConstraintLayout(
+    modifier = modifier
+      .fillMaxWidth()
+      .padding(8.dp)
+  ) {
+    val (refRank, refTitle, refDate) = createRefs()
 
-      // Rank
-      ComTournamentIconView(
-         rank = rank ?: 0,
-         modifier = Modifier.constrainAs(refRank) {
-            top.linkTo(parent.top)
-            start.linkTo(parent.start)
-            goneIf(rank == null)
-         }
-      )
+    // Rank
+    ComTournamentIconView(
+      rank = rank ?: 0,
+      modifier = Modifier.constrainAs(refRank) {
+        top.linkTo(parent.top)
+        start.linkTo(parent.start)
+        goneIf(rank == null)
+      }
+    )
 
-      // Title
-      Text(
-         text = title,
-         fontSize = 14.sp,
-         modifier = Modifier.constrainAs(refTitle) {
-            top.linkTo(parent.top)
-            start.linkTo(refRank.end, 6.dp)
-         }
-      )
+    // Title
+    Text(
+      text = title,
+      fontSize = 14.sp,
+      modifier = Modifier.constrainAs(refTitle) {
+        top.linkTo(parent.top)
+        start.linkTo(refRank.end, 6.dp)
+      }
+    )
 
-      // Date
-      Text(
-         text = date ?: "",
-         fontSize = 12.sp,
-         color = AppTextColor.medium,
-         modifier = Modifier.constrainAs(refDate) {
-            top.linkTo(refTitle.bottom, 6.dp)
-            start.linkTo(refTitle.start)
-            goneIf(date.isNullOrBlank())
-         }
-      )
-   }
+    // Date
+    Text(
+      text = date ?: "",
+      fontSize = 12.sp,
+      color = AppTextColor.medium,
+      modifier = Modifier.constrainAs(refDate) {
+        top.linkTo(refTitle.bottom, 6.dp)
+        start.linkTo(refTitle.start)
+        goneIf(date.isNullOrBlank())
+      }
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun Preview() {
-   UserAchievementsItemView(
-      title = "XJ Spring Tournament 2v2 2021",
-      rank = 1,
-      date = "25/04/2021",
-   )
+  UserAchievementsItemView(
+    title = "XJ Spring Tournament 2v2 2021",
+    rank = 1,
+    date = "25/04/2021",
+  )
 }
 
 @Preview
 @Composable
 private fun PreviewEmptyDate() {
-   UserAchievementsItemView(
-      title = "XJ Spring Tournament 2v2 2021",
-      rank = 1,
-      date = null,
-   )
+  UserAchievementsItemView(
+    title = "XJ Spring Tournament 2v2 2021",
+    rank = 1,
+    date = null,
+  )
 }
 
 @Preview
 @Composable
 private fun PreviewEmptyRank() {
-   UserAchievementsItemView(
-      title = "XJ Spring Tournament 2v2 2021",
-      rank = null,
-      date = "25/04/2021",
-   )
+  UserAchievementsItemView(
+    title = "XJ Spring Tournament 2v2 2021",
+    rank = null,
+    date = "25/04/2021",
+  )
 }
 
 @Preview
 @Composable
 private fun PreviewEmptyDateAndRank() {
-   UserAchievementsItemView(
-      title = "XJ Spring Tournament 2v2 2021",
-      rank = null,
-      date = null,
-   )
+  UserAchievementsItemView(
+    title = "XJ Spring Tournament 2v2 2021",
+    rank = null,
+    date = null,
+  )
 }

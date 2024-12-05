@@ -11,42 +11,42 @@ import kotlinx.coroutines.withContext
 fun GameServerRepository(): GameServerRepository = GameServerRepositoryImpl()
 
 interface GameServerRepository {
-   suspend fun getGameServers(): List<GameServerModel>
+  suspend fun getGameServers(): List<GameServerModel>
 }
 
 private class GameServerRepositoryImpl : GameServerRepository {
-   private val _netDataSource = NetDataSource()
+  private val _netDataSource = NetDataSource()
 
-   override suspend fun getGameServers(): List<GameServerModel> {
-      val data = _netDataSource.getGameServers()
-      return withContext(Dispatchers.IO) {
-         data.asSequence()
-            .map { it.asGameServerModel() }
-            .filter { it.map.isNotBlank() }
-            .filter { it.address.isNotBlank() }
-            .distinctBy { it.address }
-            .toList()
-      }
-   }
+  override suspend fun getGameServers(): List<GameServerModel> {
+    val data = _netDataSource.getGameServers()
+    return withContext(Dispatchers.IO) {
+      data.asSequence()
+        .map { it.asGameServerModel() }
+        .filter { it.map.isNotBlank() }
+        .filter { it.address.isNotBlank() }
+        .distinctBy { it.address }
+        .toList()
+    }
+  }
 }
 
 private fun NetGameServer.asGameServerModel(): GameServerModel {
-   return GameServerModel(
-      name = name,
-      address = addr,
-      map = map,
-      mapImage = "https://kz-rush.ru/xr_images/maps/cs16/$map.jpg",
-      players = players,
-      maxPlayers = maxPlayers,
-      mapId = mapId,
-      record = records?.firstOrNull()?.asGameServerRecordModel(),
-   )
+  return GameServerModel(
+    name = name,
+    address = addr,
+    map = map,
+    mapImage = "https://kz-rush.ru/xr_images/maps/cs16/$map.jpg",
+    players = players,
+    maxPlayers = maxPlayers,
+    mapId = mapId,
+    record = records?.firstOrNull()?.asGameServerRecordModel(),
+  )
 }
 
 private fun NetGameServerRecord.asGameServerRecordModel(): GameServerRecordModel {
-   return GameServerRecordModel(
-      playerName = playerName,
-      playerCountry = playerCountry,
-      timeStr = time,
-   )
+  return GameServerRecordModel(
+    playerName = playerName,
+    playerCountry = playerCountry,
+    timeStr = time,
+  )
 }

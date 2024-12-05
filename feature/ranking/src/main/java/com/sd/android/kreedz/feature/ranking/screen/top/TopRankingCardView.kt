@@ -28,159 +28,159 @@ import com.sd.android.kreedz.feature.common.ui.ComCountryImageView
 
 @Composable
 internal fun TopRankingCardView(
-   modifier: Modifier = Modifier,
-   title: String,
-   onClickMore: () -> Unit,
-   content: @Composable ColumnScope.() -> Unit,
+  modifier: Modifier = Modifier,
+  title: String,
+  onClickMore: () -> Unit,
+  content: @Composable ColumnScope.() -> Unit,
 ) {
-   Card(modifier = modifier) {
-      TitleView(
-         text = title,
-         onClick = onClickMore,
-      )
-      content()
-      Spacer(modifier = Modifier.height(8.dp))
-   }
+  Card(modifier = modifier) {
+    TitleView(
+      text = title,
+      onClick = onClickMore,
+    )
+    content()
+    Spacer(modifier = Modifier.height(8.dp))
+  }
 }
 
 @Composable
 internal fun TopRankingCardItemView(
-   modifier: Modifier = Modifier,
-   country: String?,
-   text: String,
-   number: String,
+  modifier: Modifier = Modifier,
+  country: String?,
+  text: String,
+  number: String,
 ) {
-   SlotItemView(
-      modifier = modifier,
-      left = {
-         ComCountryImageView(
-            country = country,
-            modifier = Modifier.width(20.dp),
-         )
-      },
-      center = {
-         Text(
-            text = text,
-            fontSize = 14.sp,
-         )
-      },
-      right = {
-         Text(
-            text = number,
-            fontSize = 14.sp,
-         )
-      },
-   )
+  SlotItemView(
+    modifier = modifier,
+    left = {
+      ComCountryImageView(
+        country = country,
+        modifier = Modifier.width(20.dp),
+      )
+    },
+    center = {
+      Text(
+        text = text,
+        fontSize = 14.sp,
+      )
+    },
+    right = {
+      Text(
+        text = number,
+        fontSize = 14.sp,
+      )
+    },
+  )
 }
 
 @Composable
 private fun SlotItemView(
-   modifier: Modifier = Modifier,
-   left: @Composable () -> Unit,
-   center: @Composable () -> Unit,
-   right: @Composable () -> Unit,
+  modifier: Modifier = Modifier,
+  left: @Composable () -> Unit,
+  center: @Composable () -> Unit,
+  right: @Composable () -> Unit,
 ) {
-   Box(
-      modifier = modifier
-         .fillMaxWidth()
-         .heightIn(36.dp)
-   ) {
-      Box(
-         modifier = Modifier
-            .align(Alignment.CenterStart)
-            .padding(start = 16.dp)
-      ) {
-         left()
-      }
+  Box(
+    modifier = modifier
+      .fillMaxWidth()
+      .heightIn(36.dp)
+  ) {
+    Box(
+      modifier = Modifier
+        .align(Alignment.CenterStart)
+        .padding(start = 16.dp)
+    ) {
+      left()
+    }
 
-      Box(
-         modifier = Modifier.align(Alignment.Center)
-      ) {
-         center()
-      }
+    Box(
+      modifier = Modifier.align(Alignment.Center)
+    ) {
+      center()
+    }
 
-      Box(
-         modifier = Modifier
-            .align(Alignment.CenterEnd)
-            .padding(end = 16.dp)
-      ) {
-         right()
-      }
-   }
+    Box(
+      modifier = Modifier
+        .align(Alignment.CenterEnd)
+        .padding(end = 16.dp)
+    ) {
+      right()
+    }
+  }
 }
 
 @Composable
 private fun TitleView(
-   modifier: Modifier = Modifier,
-   text: String,
-   onClick: () -> Unit,
+  modifier: Modifier = Modifier,
+  text: String,
+  onClick: () -> Unit,
 ) {
-   Box(
-      modifier = modifier
-         .fillMaxWidth()
-         .clickable { onClick() }
-         .padding(horizontal = 8.dp)
-         .padding(top = 12.dp, bottom = 8.dp),
-   ) {
-      Text(
-         text = text,
-         fontSize = 16.sp,
-         fontWeight = FontWeight.Medium,
-         modifier = Modifier.align(Alignment.CenterStart),
-      )
+  Box(
+    modifier = modifier
+      .fillMaxWidth()
+      .clickable { onClick() }
+      .padding(horizontal = 8.dp)
+      .padding(top = 12.dp, bottom = 8.dp),
+  ) {
+    Text(
+      text = text,
+      fontSize = 16.sp,
+      fontWeight = FontWeight.Medium,
+      modifier = Modifier.align(Alignment.CenterStart),
+    )
 
-      Icon(
-         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-         contentDescription = "More",
-         modifier = Modifier.align(Alignment.CenterEnd),
-      )
-   }
+    Icon(
+      imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+      contentDescription = "More",
+      modifier = Modifier.align(Alignment.CenterEnd),
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewCardView() {
-   AppTheme {
-      TopRankingCardView(
-         title = "Player",
-         onClickMore = {},
-         content = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-               TopRankingCardItemView(
-                  country = "ru",
-                  text = "topoviygus",
-                  number = "175",
-               )
-               TopRankingCardItemView(
-                  country = "cz",
-                  text = "shooting-star",
-                  number = "126",
-               )
-            }
-         },
-      )
-   }
+  AppTheme {
+    TopRankingCardView(
+      title = "Player",
+      onClickMore = {},
+      content = {
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+          TopRankingCardItemView(
+            country = "ru",
+            text = "topoviygus",
+            number = "175",
+          )
+          TopRankingCardItemView(
+            country = "cz",
+            text = "shooting-star",
+            number = "126",
+          )
+        }
+      },
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewTitleView() {
-   AppTheme {
-      TitleView(
-         text = "title",
-         onClick = {},
-      )
-   }
+  AppTheme {
+    TitleView(
+      text = "title",
+      onClick = {},
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewItemView() {
-   AppTheme {
-      TopRankingCardItemView(
-         country = "cn",
-         text = "zhengjun",
-         number = "100",
-      )
-   }
+  AppTheme {
+    TopRankingCardItemView(
+      country = "cn",
+      text = "zhengjun",
+      number = "100",
+    )
+  }
 }

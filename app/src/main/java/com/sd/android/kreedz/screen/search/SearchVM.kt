@@ -17,75 +17,75 @@ import kotlinx.coroutines.flow.onEach
 
 @OptIn(FlowPreview::class)
 class SearchVM : BaseViewModel<SearchVM.State, Any>(State()) {
-   private val _repository = SearchRepository()
-   private val _loader = FLoader()
+  private val _repository = SearchRepository()
+  private val _loader = FLoader()
 
-   val inputState = TextFieldState()
+  val inputState = TextFieldState()
 
-   fun clickSearch() {
-      vmLaunch {
-         _loader.tryLoad {
-            searchKeyword(state.keyword)
-         }
+  fun clickSearch() {
+    vmLaunch {
+      _loader.tryLoad {
+        searchKeyword(state.keyword)
       }
-   }
+    }
+  }
 
-   private fun search() {
-      vmLaunch {
-         _loader.load {
-            searchKeyword(state.keyword)
-         }
+  private fun search() {
+    vmLaunch {
+      _loader.load {
+        searchKeyword(state.keyword)
       }
-   }
+    }
+  }
 
-   private suspend fun searchKeyword(keyword: String) {
-      if (keyword.isEmpty()) return
-      fNetRetry {
-         _repository.search(keyword)
-      }.onSuccess { data ->
-         updateState {
-            it.copy(
-               listUser = data.listUser,
-               listNews = data.listNews,
-            )
-         }
-      }.onFailure { error ->
-         sendEffect(error)
+  private suspend fun searchKeyword(keyword: String) {
+    if (keyword.isEmpty()) return
+    fNetRetry {
+      _repository.search(keyword)
+    }.onSuccess { data ->
+      updateState {
+        it.copy(
+          listUser = data.listUser,
+          listNews = data.listNews,
+        )
       }
-   }
+    }.onFailure { error ->
+      sendEffect(error)
+    }
+  }
 
-   init {
-      vmLaunch {
-         _loader.loadingFlow.collect { data ->
-            updateState {
-               it.copy(isSearching = data)
-            }
-         }
+  init {
+    vmLaunch {
+      _loader.loadingFlow.collect { data ->
+        updateState {
+          it.copy(isSearching = data)
+        }
       }
+    }
 
-      vmLaunch {
-         snapshotFlow { inputState.text }
-            .map { keyword ->
-               if (keyword.length < 3 || keyword.isBlank()) {
-                  ""
-               } else {
-                  keyword
-               }
-            }
-            .distinctUntilChanged()
-            .onEach { keyword ->
-               _loader.cancel()
-               updateState { State(keyword = keyword.toString()) }
-            }
-            .debounce(1_000)
-            .collect { search() }
-      }
-   }
+    vmLaunch {
+      snapshotFlow { inputState.text }
+        .map { keyword ->
+          if (keyword.length < 3 || keyword.isBlank()) {
+            ""
+          } else {
+            keyword
+          }
+        }
+        .distinctUntilChanged()
+        .onEach { keyword ->
+          _loader.cancel()
+          updateState { State(keyword = keyword.toString()) }
+        }
+        .debounce(1_000)
+        .collect { search() }
+    }
+  }
 
-   data class State(
-      val keyword: String = "",
-      val isSearching: Boolean = false,
-      val listUser: List<SearchUserModel>? = null,
-      val listNews: List<SearchNewsModel>? = null,
-   )
+  data class State(
+    val keyword: String = "",
+    val isSearching: Boolean = false,
+    val listUser: List<SearchUserModel>? = null,
+    val listNews: List<SearchNewsModel>? = null,
+  )
 }

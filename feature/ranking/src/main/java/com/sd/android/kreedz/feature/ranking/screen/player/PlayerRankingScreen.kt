@@ -18,40 +18,40 @@ import com.sd.android.kreedz.feature.ranking.screen.ranking.RankingScreenView
 
 @Composable
 internal fun PlayerRankingScreen(
-   modifier: Modifier = Modifier,
-   vm: PlayerRankingVM = viewModel(),
-   onClickBack: () -> Unit,
+  modifier: Modifier = Modifier,
+  vm: PlayerRankingVM = viewModel(),
+  onClickBack: () -> Unit,
 ) {
-   val state by vm.stateFlow.collectAsStateWithLifecycle()
-   val context = LocalContext.current
+  val state by vm.stateFlow.collectAsStateWithLifecycle()
+  val context = LocalContext.current
 
-   RankingScreenView(
-      modifier = modifier,
-      title = "Player",
-      isLoading = state.isLoading,
-      onSelectDate = { vm.refresh(it) },
-      onClickBack = onClickBack,
-      onRefresh = { vm.refresh(it) },
-   ) {
-      items(state.rankings) { item ->
-         Card(shape = MaterialTheme.shapes.extraSmall) {
-            RankingItemView(
-               rank = item.rank,
-               country = item.country,
-               countryText = item.playerName,
-               recordNumber = item.recordNumber,
-               percentNumber = item.percentNumber,
-               modifier = Modifier.clickable {
-                  AppRouter.user(context, item.playerId)
-               }
-            )
-         }
+  RankingScreenView(
+    modifier = modifier,
+    title = "Player",
+    isLoading = state.isLoading,
+    onSelectDate = { vm.refresh(it) },
+    onClickBack = onClickBack,
+    onRefresh = { vm.refresh(it) },
+  ) {
+    items(state.rankings) { item ->
+      Card(shape = MaterialTheme.shapes.extraSmall) {
+        RankingItemView(
+          rank = item.rank,
+          country = item.country,
+          countryText = item.playerName,
+          recordNumber = item.recordNumber,
+          percentNumber = item.percentNumber,
+          modifier = Modifier.clickable {
+            AppRouter.user(context, item.playerId)
+          }
+        )
       }
-   }
+    }
+  }
 
-   LaunchedEffect(vm) {
-      vm.refresh(null)
-   }
+  LaunchedEffect(vm) {
+    vm.refresh(null)
+  }
 
-   vm.effectFlow.ComEffect()
+  vm.effectFlow.ComEffect()
 }

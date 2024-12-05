@@ -19,55 +19,55 @@ import com.sd.android.kreedz.feature.common.R
 
 @Composable
 fun ComCountryContentView(
-   country: String?,
-   modifier: Modifier = Modifier,
-   imageWidth: Dp = 20.dp,
-   content: @Composable RowScope.() -> Unit,
+  country: String?,
+  modifier: Modifier = Modifier,
+  imageWidth: Dp = 20.dp,
+  content: @Composable RowScope.() -> Unit,
 ) {
-   Row(
-      modifier = modifier,
-      verticalAlignment = Alignment.CenterVertically,
-   ) {
-      ComCountryImageView(
-         country = country,
-         modifier = Modifier.width(imageWidth),
-      )
-      content()
-   }
+  Row(
+    modifier = modifier,
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    ComCountryImageView(
+      country = country,
+      modifier = Modifier.width(imageWidth),
+    )
+    content()
+  }
 }
 
 @Composable
 fun ComCountryImageView(
-   country: String?,
-   modifier: Modifier = Modifier,
+  country: String?,
+  modifier: Modifier = Modifier,
 ) {
-   val imageId = countryImage(country)
-   Image(
-      modifier = modifier,
-      painter = painterResource(imageId),
-      contentDescription = "Country $country",
-      contentScale = ContentScale.FillWidth,
-   )
+  val imageId = countryImage(country)
+  Image(
+    modifier = modifier,
+    painter = painterResource(imageId),
+    contentDescription = "Country $country",
+    contentScale = ContentScale.FillWidth,
+  )
 }
 
 @Composable
 private fun countryImage(country: String?): Int {
-   if (country.isNullOrBlank()) return R.drawable.country_unknown
-   val context = LocalContext.current
-   val name = "country_$country".lowercase()
-   return remember(context, name) {
-      context.resources.getIdentifier(
-         name,
-         "drawable",
-         context.packageName
-      )
-   }.takeUnless { it == 0 } ?: R.drawable.country_unknown
+  if (country.isNullOrBlank()) return R.drawable.country_unknown
+  val context = LocalContext.current
+  val name = "country_$country".lowercase()
+  return remember(context, name) {
+    context.resources.getIdentifier(
+      name,
+      "drawable",
+      context.packageName
+    )
+  }.takeUnless { it == 0 } ?: R.drawable.country_unknown
 }
 
 @Preview
 @Composable
 private fun PreviewView() {
-   ComCountryContentView("cn") {
-      Text(text = "zhengjun")
-   }
+  ComCountryContentView("cn") {
+    Text(text = "zhengjun")
+  }
 }

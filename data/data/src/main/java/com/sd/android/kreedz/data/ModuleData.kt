@@ -9,21 +9,21 @@ import com.sd.lib.xlog.FLogger
 import com.sd.lib.xlog.lw
 
 object ModuleData : FLogger {
-   fun init(
-      context: Context,
-      isRelease: Boolean,
-   ) {
-      initDatastore(context)
-      ModuleDatabase.init(context, isRelease)
-      ModuleNetwork.init(context, isRelease)
-   }
+  fun init(
+    context: Context,
+    isRelease: Boolean,
+  ) {
+    initDatastore(context)
+    ModuleDatabase.init(context, isRelease)
+    ModuleNetwork.init(context, isRelease)
+  }
 }
 
 private fun initDatastore(context: Context) {
-   FDatastore.init(context)
-   fGlobalLaunch {
-      FDatastore.errorFlow.collect { e ->
-         ModuleData.lw { "datastore error ${e.stackTraceToString()}" }
-      }
-   }
+  FDatastore.init(context)
+  fGlobalLaunch {
+    FDatastore.errorFlow.collect { e ->
+      ModuleData.lw { "datastore error ${e.stackTraceToString()}" }
+    }
+  }
 }

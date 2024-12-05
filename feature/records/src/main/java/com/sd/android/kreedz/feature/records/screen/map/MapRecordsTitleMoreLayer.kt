@@ -25,70 +25,70 @@ import com.sd.lib.compose.layer.relativeAlignment
 
 @Composable
 internal fun MapRecordsTitleMoreLayer(
-   layerTag: String,
-   attach: Boolean,
-   onDetachRequest: () -> Unit,
-   onClickLongjumps: () -> Unit,
+  layerTag: String,
+  attach: Boolean,
+  onDetachRequest: () -> Unit,
+  onClickLongjumps: () -> Unit,
 ) {
-   TargetLayer(
-      target = LayerTarget.Tag(layerTag),
-      attach = attach,
-      onDetachRequest = { onDetachRequest() },
-      alignment = TargetAlignment.BottomEnd,
-      detachOnTouchBackground = true,
-      backgroundColor = Color.Black.copy(0.1f),
-      alignmentOffsetX = TargetAlignmentOffset.Target(0.5f).relativeAlignment(),
-   ) {
-      MoreMenusView(
-         onClickLongjumps = onClickLongjumps
-      )
-   }
+  TargetLayer(
+    target = LayerTarget.Tag(layerTag),
+    attach = attach,
+    onDetachRequest = { onDetachRequest() },
+    alignment = TargetAlignment.BottomEnd,
+    detachOnTouchBackground = true,
+    backgroundColor = Color.Black.copy(0.1f),
+    alignmentOffsetX = TargetAlignmentOffset.Target(0.5f).relativeAlignment(),
+  ) {
+    MoreMenusView(
+      onClickLongjumps = onClickLongjumps
+    )
+  }
 }
 
 @Composable
 private fun MoreMenusView(
-   modifier: Modifier = Modifier,
-   onClickLongjumps: () -> Unit,
+  modifier: Modifier = Modifier,
+  onClickLongjumps: () -> Unit,
 ) {
-   Column(
-      modifier = modifier.background(
-         color = MaterialTheme.colorScheme.surface,
-      )
-   ) {
-      MoreMenusItemView(
-         text = "Longjumps",
-         onClick = onClickLongjumps,
-      )
-   }
+  Column(
+    modifier = modifier.background(
+      color = MaterialTheme.colorScheme.surface,
+    )
+  ) {
+    MoreMenusItemView(
+      text = "Longjumps",
+      onClick = onClickLongjumps,
+    )
+  }
 }
 
 @Composable
 private fun MoreMenusItemView(
-   modifier: Modifier = Modifier,
-   text: String,
-   onClick: () -> Unit,
+  modifier: Modifier = Modifier,
+  text: String,
+  onClick: () -> Unit,
 ) {
-   Box(
-      contentAlignment = Alignment.CenterStart,
-      modifier = modifier
-         .height(48.dp)
-         .clickable { onClick() }
-         .padding(horizontal = 16.dp),
-   ) {
-      Text(
-         text = text,
-         fontSize = 14.sp,
-         color = AppTextColor.medium,
-      )
-   }
+  Box(
+    contentAlignment = Alignment.CenterStart,
+    modifier = modifier
+      .height(48.dp)
+      .clickable { onClick() }
+      .padding(horizontal = 16.dp),
+  ) {
+    Text(
+      text = text,
+      fontSize = 14.sp,
+      color = AppTextColor.medium,
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewMoreMenusView() {
-   AppTheme {
-      MoreMenusView(
-         onClickLongjumps = {},
-      )
-   }
+  AppTheme {
+    MoreMenusView(
+      onClickLongjumps = {},
+    )
+  }
 }

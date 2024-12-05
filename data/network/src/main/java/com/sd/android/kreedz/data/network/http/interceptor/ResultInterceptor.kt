@@ -10,44 +10,44 @@ import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 
 internal class ResultInterceptor : AppApiInterceptor() {
-   private val _failureResponseAdapter = fMoshi.adapter(NetFailureResponse::class.java)
+  private val _failureResponseAdapter = fMoshi.adapter(NetFailureResponse::class.java)
 
-   override fun interceptImpl(chain: Interceptor.Chain, annotation: AppApi): Response {
-      val request = chain.request()
+  override fun interceptImpl(chain: Interceptor.Chain, annotation: AppApi): Response {
+    val request = chain.request()
 
-      val response = chain.proceed(request)
-      if (!response.isSuccessful) {
-         when (response.code) {
-            429 -> throw HttpTooManyRequestsException()
-            else -> return response.handleFailureResponse()
-         }
+    val response = chain.proceed(request)
+    if (!response.isSuccessful) {
+      when (response.code) {
+        429 -> throw HttpTooManyRequestsException()
+        else -> return response.handleFailureResponse()
       }
+    }
 
-      val body = response.body
-         ?: return response.newBuilder()
-            .body("".toResponseBody())
-            .build()
+    val body = response.body
+      ?: return response.newBuilder()
+        .body("".toResponseBody())
+        .build()
 
-      return if (annotation.resultLog) {
-         val bodyString = body.string()
-         request.logDebug { "result：$bodyString" }
-         response.newBuilder()
-            .body(bodyString.toResponseBody(body.contentType()))
-            .build()
-      } else {
-         response
-      }
-   }
+    return if (annotation.resultLog) {
+      val bodyString = body.string()
+      request.logDebug { "result：$bodyString" }
+      response.newBuilder()
+        .body(bodyString.toResponseBody(body.contentType()))
+        .build()
+    } else {
+      response
+    }
+  }
 
-   private fun Response.handleFailureResponse(): Response {
-      val failureResponse = runCatching {
-         val json = body?.string() ?: ""
-         checkNotNull(_failureResponseAdapter.fromJson(json))
-      }.getOrNull() ?: return this
+  private fun Response.handleFailureResponse(): Response {
+    val failureResponse = runCatching {
+      val json = body?.string() ?: ""
+      checkNotNull(_failureResponseAdapter.fromJson(json))
+    }.getOrNull() ?: return this
 
-      val message = failureResponse.message
-      if (message.isBlank()) return this
+    val message = failureResponse.message
+    if (message.isBlank()) return this
 
-      throw HttpMessageException(message)
-   }
+    throw HttpMessageException(message)
+  }
 }

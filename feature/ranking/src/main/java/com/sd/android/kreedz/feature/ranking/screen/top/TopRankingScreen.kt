@@ -20,76 +20,76 @@ import com.sd.android.kreedz.feature.common.ui.ComEffect
 
 @Composable
 fun TopRankingScreen(
-   modifier: Modifier = Modifier,
-   vm: TopRankingVM = viewModel(),
+  modifier: Modifier = Modifier,
+  vm: TopRankingVM = viewModel(),
 ) {
-   val state by vm.stateFlow.collectAsStateWithLifecycle()
-   val context = LocalContext.current
+  val state by vm.stateFlow.collectAsStateWithLifecycle()
+  val context = LocalContext.current
 
-   AppPullToRefresh(
-      modifier = modifier.fillMaxSize(),
-      isRefreshing = state.isLoading,
-      onRefresh = { vm.refresh() },
-   ) {
-      ListView(
-         topPlayer = state.topPlayer,
-         topCountry = state.topCountry,
-         onClickPlayer = {
-            AppRouter.user(context, it.playerId)
-         },
-         onClickMorePlayer = {
-            AppRouter.playerRanking(context)
-         },
-         onClickMoreCountry = {
-            AppRouter.countryRanking(context)
-         },
-      )
-   }
+  AppPullToRefresh(
+    modifier = modifier.fillMaxSize(),
+    isRefreshing = state.isLoading,
+    onRefresh = { vm.refresh() },
+  ) {
+    ListView(
+      topPlayer = state.topPlayer,
+      topCountry = state.topCountry,
+      onClickPlayer = {
+        AppRouter.user(context, it.playerId)
+      },
+      onClickMorePlayer = {
+        AppRouter.playerRanking(context)
+      },
+      onClickMoreCountry = {
+        AppRouter.countryRanking(context)
+      },
+    )
+  }
 
-   LaunchedEffect(vm) {
-      vm.init()
-   }
+  LaunchedEffect(vm) {
+    vm.init()
+  }
 
-   vm.effectFlow.ComEffect()
+  vm.effectFlow.ComEffect()
 }
 
 @Composable
 private fun ListView(
-   modifier: Modifier = Modifier,
-   topPlayer: List<TopPlayerRankingModel>,
-   topCountry: List<TopCountryRankingModel>,
-   onClickPlayer: (TopPlayerRankingModel) -> Unit,
-   onClickMorePlayer: () -> Unit,
-   onClickMoreCountry: () -> Unit,
+  modifier: Modifier = Modifier,
+  topPlayer: List<TopPlayerRankingModel>,
+  topCountry: List<TopCountryRankingModel>,
+  onClickPlayer: (TopPlayerRankingModel) -> Unit,
+  onClickMorePlayer: () -> Unit,
+  onClickMoreCountry: () -> Unit,
 ) {
-   LazyColumn(
-      modifier = modifier.fillMaxSize(),
-      contentPadding = PaddingValues(12.dp),
-      verticalArrangement = Arrangement.spacedBy(12.dp),
-   ) {
-      if (topPlayer.isNotEmpty()) {
-         item(
-            key = "player",
-            contentType = "player",
-         ) {
-            TopPlayerView(
-               topPlayer = topPlayer,
-               onClickPlayer = onClickPlayer,
-               onClickMore = onClickMorePlayer,
-            )
-         }
+  LazyColumn(
+    modifier = modifier.fillMaxSize(),
+    contentPadding = PaddingValues(12.dp),
+    verticalArrangement = Arrangement.spacedBy(12.dp),
+  ) {
+    if (topPlayer.isNotEmpty()) {
+      item(
+        key = "player",
+        contentType = "player",
+      ) {
+        TopPlayerView(
+          topPlayer = topPlayer,
+          onClickPlayer = onClickPlayer,
+          onClickMore = onClickMorePlayer,
+        )
       }
+    }
 
-      if (topCountry.isNotEmpty()) {
-         item(
-            key = "country",
-            contentType = "country",
-         ) {
-            TopRankingCountryView(
-               topCountry = topCountry,
-               onClickMore = onClickMoreCountry,
-            )
-         }
+    if (topCountry.isNotEmpty()) {
+      item(
+        key = "country",
+        contentType = "country",
+      ) {
+        TopRankingCountryView(
+          topCountry = topCountry,
+          onClickMore = onClickMoreCountry,
+        )
       }
-   }
+    }
+  }
 }

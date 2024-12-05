@@ -8,35 +8,35 @@ import com.sd.lib.coroutines.FLoader
 import com.sd.lib.date.FDate
 
 internal class CountryRankingVM : BaseViewModel<CountryRankingVM.State, Any>(State()) {
-   private val _repository = RankingRepository()
-   private val _loader = FLoader()
+  private val _repository = RankingRepository()
+  private val _loader = FLoader()
 
-   fun refresh(date: FDate?) {
-      vmLaunch {
-         _loader.load {
-            val rankings = _repository.getCountryRanking(date?.toString())
-            updateState {
-               it.copy(rankings = rankings)
-            }
-         }.onFailure { error ->
-            sendEffect(error)
-         }
+  fun refresh(date: FDate?) {
+    vmLaunch {
+      _loader.load {
+        val rankings = _repository.getCountryRanking(date?.toString())
+        updateState {
+          it.copy(rankings = rankings)
+        }
+      }.onFailure { error ->
+        sendEffect(error)
       }
-   }
+    }
+  }
 
-   init {
-      vmLaunch {
-         _loader.loadingFlow.collect { data ->
-            updateState {
-               it.copy(isLoading = data)
-            }
-         }
+  init {
+    vmLaunch {
+      _loader.loadingFlow.collect { data ->
+        updateState {
+          it.copy(isLoading = data)
+        }
       }
-   }
+    }
+  }
 
-   @Immutable
-   data class State(
-      val isLoading: Boolean = false,
-      val rankings: List<CountryRankingModel> = emptyList(),
-   )
+  @Immutable
+  data class State(
+    val isLoading: Boolean = false,
+    val rankings: List<CountryRankingModel> = emptyList(),
+  )
 }

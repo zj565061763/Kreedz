@@ -37,167 +37,167 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserRecordsView(
-   modifier: Modifier = Modifier,
-   onDismissRequest: () -> Unit,
-   currentRecords: List<UserRecordModel>,
-   previousRecords: List<UserRecordModel>,
-   onClickItem: (mapId: String) -> Unit,
+  modifier: Modifier = Modifier,
+  onDismissRequest: () -> Unit,
+  currentRecords: List<UserRecordModel>,
+  previousRecords: List<UserRecordModel>,
+  onClickItem: (mapId: String) -> Unit,
 ) {
-   var selectedTabIndex by remember { mutableIntStateOf(0) }
-   val tabs = remember {
-      UserRecordsTab.entries.map {
-         UserRecordsTabModel(tab = it)
+  var selectedTabIndex by remember { mutableIntStateOf(0) }
+  val tabs = remember {
+    UserRecordsTab.entries.map {
+      UserRecordsTabModel(tab = it)
+    }
+  }
+
+  val scope = rememberCoroutineScope()
+  val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+  val pagerState = rememberPagerState { tabs.size }
+  pagerState.FSettledPage { selectedTabIndex = it }
+
+  ModalBottomSheet(
+    modifier = modifier.fillMaxSize(),
+    onDismissRequest = onDismissRequest,
+    sheetState = sheetState,
+  ) {
+    TabView(
+      modifier = Modifier.fillMaxWidth(),
+      tabs = tabs,
+      selectedTabIndex = selectedTabIndex,
+      onClickTab = {
+        scope.launch {
+          pagerState.animateScrollToPage(it)
+        }
+      },
+    )
+    HorizontalPager(
+      state = pagerState,
+      beyondViewportPageCount = tabs.size,
+      modifier = Modifier
+        .fillMaxWidth()
+        .weight(1f),
+    ) { index ->
+      val records = when (tabs[index].tab) {
+        UserRecordsTab.Current -> currentRecords
+        UserRecordsTab.Previous -> previousRecords
       }
-   }
-
-   val scope = rememberCoroutineScope()
-   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-   val pagerState = rememberPagerState { tabs.size }
-   pagerState.FSettledPage { selectedTabIndex = it }
-
-   ModalBottomSheet(
-      modifier = modifier.fillMaxSize(),
-      onDismissRequest = onDismissRequest,
-      sheetState = sheetState,
-   ) {
-      TabView(
-         modifier = Modifier.fillMaxWidth(),
-         tabs = tabs,
-         selectedTabIndex = selectedTabIndex,
-         onClickTab = {
-            scope.launch {
-               pagerState.animateScrollToPage(it)
-            }
-         },
+      UserRecordsListView(
+        records = records,
+        onClickItem = {
+          it.mapId?.also { mapId ->
+            onClickItem(mapId)
+          }
+        },
       )
-      HorizontalPager(
-         state = pagerState,
-         beyondViewportPageCount = tabs.size,
-         modifier = Modifier
-            .fillMaxWidth()
-            .weight(1f),
-      ) { index ->
-         val records = when (tabs[index].tab) {
-            UserRecordsTab.Current -> currentRecords
-            UserRecordsTab.Previous -> previousRecords
-         }
-         UserRecordsListView(
-            records = records,
-            onClickItem = {
-               it.mapId?.also { mapId ->
-                  onClickItem(mapId)
-               }
-            },
-         )
-      }
-   }
+    }
+  }
 
-   val numberOfCurrentRecords = currentRecords.size
-   val numberOfPreviousRecords = previousRecords.size
-   LaunchedEffect(
-      tabs,
-      numberOfCurrentRecords,
-      numberOfPreviousRecords,
-   ) {
-      tabs.forEach { item ->
-         when (item.tab) {
-            UserRecordsTab.Current -> item.number = numberOfCurrentRecords.toString()
-            UserRecordsTab.Previous -> item.number = numberOfPreviousRecords.toString()
-         }
+  val numberOfCurrentRecords = currentRecords.size
+  val numberOfPreviousRecords = previousRecords.size
+  LaunchedEffect(
+    tabs,
+    numberOfCurrentRecords,
+    numberOfPreviousRecords,
+  ) {
+    tabs.forEach { item ->
+      when (item.tab) {
+        UserRecordsTab.Current -> item.number = numberOfCurrentRecords.toString()
+        UserRecordsTab.Previous -> item.number = numberOfPreviousRecords.toString()
       }
-   }
+    }
+  }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TabView(
-   modifier: Modifier = Modifier,
-   tabs: List<UserRecordsTabModel>,
-   selectedTabIndex: Int,
-   onClickTab: (Int) -> Unit,
+  modifier: Modifier = Modifier,
+  tabs: List<UserRecordsTabModel>,
+  selectedTabIndex: Int,
+  onClickTab: (Int) -> Unit,
 ) {
-   PrimaryTabRow(
-      modifier = modifier.fillMaxWidth(),
-      selectedTabIndex = selectedTabIndex,
-      containerColor = Color.Transparent,
-      divider = {},
-      indicator = {
-         TabRowDefaults.PrimaryIndicator(
-            modifier = Modifier.tabIndicatorOffset(selectedTabIndex),
-            width = 36.dp,
-         )
-      },
-   ) {
-      tabs.forEachIndexed { index, item ->
-         Tab(
-            selected = index == selectedTabIndex,
-            onClick = { onClickTab(index) },
-         ) {
-            TabItemView(
-               title = item.title(),
-               number = item.number,
-            )
-         }
+  PrimaryTabRow(
+    modifier = modifier.fillMaxWidth(),
+    selectedTabIndex = selectedTabIndex,
+    containerColor = Color.Transparent,
+    divider = {},
+    indicator = {
+      TabRowDefaults.PrimaryIndicator(
+        modifier = Modifier.tabIndicatorOffset(selectedTabIndex),
+        width = 36.dp,
+      )
+    },
+  ) {
+    tabs.forEachIndexed { index, item ->
+      Tab(
+        selected = index == selectedTabIndex,
+        onClick = { onClickTab(index) },
+      ) {
+        TabItemView(
+          title = item.title(),
+          number = item.number,
+        )
       }
-   }
+    }
+  }
 }
 
 @Composable
 private fun TabItemView(
-   modifier: Modifier = Modifier,
-   title: String,
-   number: String,
+  modifier: Modifier = Modifier,
+  title: String,
+  number: String,
 ) {
-   Box(
-      modifier = modifier
-         .fillMaxWidth()
-         .heightIn(48.dp),
-      contentAlignment = Alignment.Center,
-   ) {
-      Text(
-         text = "$title ($number)",
-         fontSize = 14.sp,
-         fontWeight = FontWeight.Medium,
-      )
-   }
+  Box(
+    modifier = modifier
+      .fillMaxWidth()
+      .heightIn(48.dp),
+    contentAlignment = Alignment.Center,
+  ) {
+    Text(
+      text = "$title ($number)",
+      fontSize = 14.sp,
+      fontWeight = FontWeight.Medium,
+    )
+  }
 }
 
 private enum class UserRecordsTab {
-   Current,
-   Previous,
+  Current,
+  Previous,
 }
 
 @Stable
 private data class UserRecordsTabModel(
-   val tab: UserRecordsTab,
+  val tab: UserRecordsTab,
 ) {
-   var number: String by mutableStateOf("0")
+  var number: String by mutableStateOf("0")
 
-   fun title(): String {
-      return when (tab) {
-         UserRecordsTab.Current -> "Current Records"
-         UserRecordsTab.Previous -> "Previous Records"
-      }
-   }
+  fun title(): String {
+    return when (tab) {
+      UserRecordsTab.Current -> "Current Records"
+      UserRecordsTab.Previous -> "Previous Records"
+    }
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewTabView() {
-   val tabs = listOf(
-      UserRecordsTabModel(
-         tab = UserRecordsTab.Current,
-      ).apply { number = "171" },
-      UserRecordsTabModel(
-         tab = UserRecordsTab.Previous,
-      ).apply { number = "264" }
-   )
+  val tabs = listOf(
+    UserRecordsTabModel(
+      tab = UserRecordsTab.Current,
+    ).apply { number = "171" },
+    UserRecordsTabModel(
+      tab = UserRecordsTab.Previous,
+    ).apply { number = "264" }
+  )
 
-   AppTheme {
-      TabView(
-         tabs = tabs,
-         selectedTabIndex = 0,
-         onClickTab = { },
-      )
-   }
+  AppTheme {
+    TabView(
+      tabs = tabs,
+      selectedTabIndex = 0,
+      onClickTab = { },
+    )
+  }
 }

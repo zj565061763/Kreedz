@@ -7,12 +7,12 @@ import com.sd.android.kreedz.core.router.AppRouter
 
 @Router(path = AppRouter.COUNTRY_RANKING)
 internal class CountryRankingActivity : BaseActivity() {
-   @Composable
-   override fun ContentImpl() {
-      CountryRankingScreen(
-         onClickBack = {
-            finish()
-         }
-      )
-   }
+  @Composable
+  override fun ContentImpl() {
+    CountryRankingScreen(
+      onClickBack = {
+        finish()
+      }
+    )
+  }
 }

@@ -11,36 +11,36 @@ import kotlinx.coroutines.flow.StateFlow
 fun AppRepository(): AppRepository = AppRepositoryImpl
 
 interface AppRepository {
-   fun isLightModeFlow(): StateFlow<Boolean>
-   suspend fun toggleLightMode()
-   suspend fun sync()
+  fun isLightModeFlow(): StateFlow<Boolean>
+  suspend fun toggleLightMode()
+  suspend fun sync()
 }
 
 private object AppRepositoryImpl : AppRepository, FLogger {
-   private val _onlineRepository = OnlineRepository()
+  private val _onlineRepository = OnlineRepository()
 
-   override fun isLightModeFlow(): StateFlow<Boolean> {
-      return LocalAppConfig.isLightModeFlow
-   }
+  override fun isLightModeFlow(): StateFlow<Boolean> {
+    return LocalAppConfig.isLightModeFlow
+  }
 
-   override suspend fun toggleLightMode() {
-      LocalAppConfig.toggleLightMode()
-   }
+  override suspend fun toggleLightMode() {
+    LocalAppConfig.toggleLightMode()
+  }
 
-   override suspend fun sync() {
-      _onlineRepository.sync()
-   }
+  override suspend fun sync() {
+    _onlineRepository.sync()
+  }
 
-   init {
-      fGlobalLaunch {
-         fAppOnStart {
-            li { "App onStart" }
-         }
+  init {
+    fGlobalLaunch {
+      fAppOnStart {
+        li { "App onStart" }
       }
-      fGlobalLaunch {
-         fAppOnStop {
-            li { "App onStop" }
-         }
+    }
+    fGlobalLaunch {
+      fAppOnStop {
+        li { "App onStop" }
       }
-   }
+    }
+  }
 }

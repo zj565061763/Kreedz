@@ -9,19 +9,19 @@ import com.sd.lib.compose.utils.fIntentExtra
 
 @Router(path = AppRouter.MAP)
 class MapActivity : BaseActivity() {
-   @Composable
-   override fun ContentImpl() {
-      val id = fIntentExtra { it.getStringExtra("id") }
-      if (id.isNullOrBlank()) {
-         FFinish()
-         return
-      }
+  @Composable
+  override fun ContentImpl() {
+    val id = fIntentExtra { it.getStringExtra("id") }
+    if (id.isNullOrBlank()) {
+      FFinish()
+      return
+    }
 
-      MapScreen(
-         mapId = id,
-         onClickBack = {
-            finish()
-         }
-      )
-   }
+    MapScreen(
+      mapId = id,
+      onClickBack = {
+        finish()
+      }
+    )
+  }
 }

@@ -26,81 +26,81 @@ import androidx.compose.ui.unit.sp
 import com.sd.android.kreedz.core.ui.AppTheme
 
 enum class MainHomeTab {
-   News,
-   Release,
-   Ranking,
-   Servers,
-   Blog,
-   Team,
+  News,
+  Release,
+  Ranking,
+  Servers,
+  Blog,
+  Team,
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainHomeTabView(
-   modifier: Modifier = Modifier,
-   tabs: List<MainHomeTab>,
-   selectedTabIndex: Int,
-   onClickTab: (Int) -> Unit,
-   onClickSearch: () -> Unit,
+  modifier: Modifier = Modifier,
+  tabs: List<MainHomeTab>,
+  selectedTabIndex: Int,
+  onClickTab: (Int) -> Unit,
+  onClickSearch: () -> Unit,
 ) {
-   Row(
-      modifier = modifier,
-      verticalAlignment = Alignment.CenterVertically,
-   ) {
-      PrimaryScrollableTabRow(
-         modifier = Modifier.weight(1f),
-         selectedTabIndex = selectedTabIndex,
-         containerColor = Color.Transparent,
-         edgePadding = 0.dp,
-         divider = {},
-         indicator = {
-            if (selectedTabIndex in tabs.indices) {
-               TabRowDefaults.PrimaryIndicator(
-                  Modifier.tabIndicatorOffset(selectedTabIndex),
-               )
-            }
-         },
-      ) {
-         tabs.forEachIndexed { index, item ->
-            Box(
-               modifier = Modifier
-                  .height(40.dp)
-                  .clickable { onClickTab(index) }
-                  .padding(horizontal = 8.dp)
-            ) {
-               Text(
-                  text = item.name,
-                  fontSize = 18.sp,
-                  fontWeight = FontWeight.Medium,
-                  modifier = Modifier.align(Alignment.Center),
-               )
-            }
-         }
+  Row(
+    modifier = modifier,
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    PrimaryScrollableTabRow(
+      modifier = Modifier.weight(1f),
+      selectedTabIndex = selectedTabIndex,
+      containerColor = Color.Transparent,
+      edgePadding = 0.dp,
+      divider = {},
+      indicator = {
+        if (selectedTabIndex in tabs.indices) {
+          TabRowDefaults.PrimaryIndicator(
+            Modifier.tabIndicatorOffset(selectedTabIndex),
+          )
+        }
+      },
+    ) {
+      tabs.forEachIndexed { index, item ->
+        Box(
+          modifier = Modifier
+            .height(40.dp)
+            .clickable { onClickTab(index) }
+            .padding(horizontal = 8.dp)
+        ) {
+          Text(
+            text = item.name,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.align(Alignment.Center),
+          )
+        }
       }
+    }
 
-      IconButton(
-         onClick = onClickSearch,
-         colors = IconButtonDefaults.iconButtonColors(
-            contentColor = MaterialTheme.colorScheme.primary,
-         )
-      ) {
-         Icon(
-            imageVector = Icons.Default.Search,
-            contentDescription = "Search",
-         )
-      }
-   }
+    IconButton(
+      onClick = onClickSearch,
+      colors = IconButtonDefaults.iconButtonColors(
+        contentColor = MaterialTheme.colorScheme.primary,
+      )
+    ) {
+      Icon(
+        imageVector = Icons.Default.Search,
+        contentDescription = "Search",
+      )
+    }
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewTabsView() {
-   AppTheme {
-      MainHomeTabView(
-         tabs = MainHomeTab.entries,
-         selectedTabIndex = 0,
-         onClickTab = {},
-         onClickSearch = {},
-      )
-   }
+  AppTheme {
+    MainHomeTabView(
+      tabs = MainHomeTab.entries,
+      selectedTabIndex = 0,
+      onClickTab = {},
+      onClickSearch = {},
+    )
+  }
 }

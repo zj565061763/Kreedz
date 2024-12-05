@@ -7,34 +7,34 @@ import com.sd.lib.date.fCurrentDate
 
 internal class RankingDateVM : BaseViewModel<RankingDateVM.State, Unit>(State()) {
 
-   fun showSelectDate() {
-      updateState {
-         it.copy(showSelectDate = true)
-      }
-   }
+  fun showSelectDate() {
+    updateState {
+      it.copy(showSelectDate = true)
+    }
+  }
 
-   fun selectDate(date: FDate?) {
-      if (!state.showSelectDate) return
+  fun selectDate(date: FDate?) {
+    if (!state.showSelectDate) return
 
-      if (date == null) {
-         updateState { it.copy(showSelectDate = false) }
-         return
-      }
+    if (date == null) {
+      updateState { it.copy(showSelectDate = false) }
+      return
+    }
 
-      val overflow = date >= fCurrentDate()
-      updateState {
-         it.copy(
-            showSelectDate = false,
-            selectedDate = if (overflow) null else date,
-            selectedDateStr = if (overflow) "" else date.toString(),
-         )
-      }
-   }
+    val overflow = date >= fCurrentDate()
+    updateState {
+      it.copy(
+        showSelectDate = false,
+        selectedDate = if (overflow) null else date,
+        selectedDateStr = if (overflow) "" else date.toString(),
+      )
+    }
+  }
 
-   @Immutable
-   data class State(
-      val showSelectDate: Boolean = false,
-      val selectedDate: FDate? = null,
-      val selectedDateStr: String = "",
-   )
+  @Immutable
+  data class State(
+    val showSelectDate: Boolean = false,
+    val selectedDate: FDate? = null,
+    val selectedDateStr: String = "",
+  )
 }

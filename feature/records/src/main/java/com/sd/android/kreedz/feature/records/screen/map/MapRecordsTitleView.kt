@@ -28,89 +28,89 @@ import com.sd.lib.compose.layer.layerTag
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MapRecordsTitleView(
-   modifier: Modifier = Modifier,
-   scrollBehavior: TopAppBarScrollBehavior?,
-   textFieldState: TextFieldState,
-   onClickIconSort: () -> Unit,
-   onClickLongjumps: () -> Unit,
+  modifier: Modifier = Modifier,
+  scrollBehavior: TopAppBarScrollBehavior?,
+  textFieldState: TextFieldState,
+  onClickIconSort: () -> Unit,
+  onClickLongjumps: () -> Unit,
 ) {
-   var showMoreMenusLayer by remember { mutableStateOf(false) }
+  var showMoreMenusLayer by remember { mutableStateOf(false) }
 
-   TopAppBar(
-      modifier = modifier,
-      colors = TopAppBarDefaults.topAppBarColors().let {
-         it.copy(scrolledContainerColor = it.containerColor)
-      },
-      title = {
-         TitleView(
-            textFieldState = textFieldState,
-            onClickIconMore = { showMoreMenusLayer = true },
-            onClickIconSort = onClickIconSort,
-         )
-      },
-      scrollBehavior = scrollBehavior,
-   )
+  TopAppBar(
+    modifier = modifier,
+    colors = TopAppBarDefaults.topAppBarColors().let {
+      it.copy(scrolledContainerColor = it.containerColor)
+    },
+    title = {
+      TitleView(
+        textFieldState = textFieldState,
+        onClickIconMore = { showMoreMenusLayer = true },
+        onClickIconSort = onClickIconSort,
+      )
+    },
+    scrollBehavior = scrollBehavior,
+  )
 
-   MapRecordsTitleMoreLayer(
-      layerTag = MORE_MENU_TAG,
-      attach = showMoreMenusLayer,
-      onDetachRequest = { showMoreMenusLayer = false },
-      onClickLongjumps = {
-         showMoreMenusLayer = false
-         onClickLongjumps()
-      }
-   )
+  MapRecordsTitleMoreLayer(
+    layerTag = MORE_MENU_TAG,
+    attach = showMoreMenusLayer,
+    onDetachRequest = { showMoreMenusLayer = false },
+    onClickLongjumps = {
+      showMoreMenusLayer = false
+      onClickLongjumps()
+    }
+  )
 }
 
 @Composable
 private fun TitleView(
-   modifier: Modifier = Modifier,
-   textFieldState: TextFieldState,
-   onClickIconSort: () -> Unit,
-   onClickIconMore: () -> Unit,
+  modifier: Modifier = Modifier,
+  textFieldState: TextFieldState,
+  onClickIconSort: () -> Unit,
+  onClickIconMore: () -> Unit,
 ) {
-   ConstraintLayout(
-      modifier = modifier.fillMaxWidth()
-   ) {
-      val (refSearch, refIcons) = createRefs()
+  ConstraintLayout(
+    modifier = modifier.fillMaxWidth()
+  ) {
+    val (refSearch, refIcons) = createRefs()
 
-      // search
-      MapRecordsTitleSearchView(
-         textFieldState = textFieldState,
-         modifier = Modifier.constrainAs(refSearch) {
-            centerVerticallyTo(parent)
-            start.linkTo(parent.start)
-            width = Dimension.percent(0.6f)
-         }
-      )
-
-      Row(
-         verticalAlignment = Alignment.CenterVertically,
-         modifier = Modifier.constrainAs(refIcons) {
-            centerVerticallyTo(parent)
-            end.linkTo(parent.end)
-         }
-      ) {
-         // sort
-         IconButton(onClick = onClickIconSort) {
-            Icon(
-               imageVector = Icons.AutoMirrored.Filled.List,
-               contentDescription = null,
-            )
-         }
-
-         // more
-         IconButton(
-            onClick = onClickIconMore,
-            modifier = Modifier.layerTag(MORE_MENU_TAG),
-         ) {
-            Icon(
-               imageVector = Icons.Default.MoreVert,
-               contentDescription = null,
-            )
-         }
+    // search
+    MapRecordsTitleSearchView(
+      textFieldState = textFieldState,
+      modifier = Modifier.constrainAs(refSearch) {
+        centerVerticallyTo(parent)
+        start.linkTo(parent.start)
+        width = Dimension.percent(0.6f)
       }
-   }
+    )
+
+    Row(
+      verticalAlignment = Alignment.CenterVertically,
+      modifier = Modifier.constrainAs(refIcons) {
+        centerVerticallyTo(parent)
+        end.linkTo(parent.end)
+      }
+    ) {
+      // sort
+      IconButton(onClick = onClickIconSort) {
+        Icon(
+          imageVector = Icons.AutoMirrored.Filled.List,
+          contentDescription = null,
+        )
+      }
+
+      // more
+      IconButton(
+        onClick = onClickIconMore,
+        modifier = Modifier.layerTag(MORE_MENU_TAG),
+      ) {
+        Icon(
+          imageVector = Icons.Default.MoreVert,
+          contentDescription = null,
+        )
+      }
+    }
+  }
 }
 
 private const val MORE_MENU_TAG = "main_records_more_menu_tag"
@@ -119,12 +119,12 @@ private const val MORE_MENU_TAG = "main_records_more_menu_tag"
 @Preview
 @Composable
 private fun PreviewTitleView() {
-   AppTheme {
-      MapRecordsTitleView(
-         scrollBehavior = null,
-         textFieldState = TextFieldState("666666"),
-         onClickIconSort = {},
-         onClickLongjumps = {},
-      )
-   }
+  AppTheme {
+    MapRecordsTitleView(
+      scrollBehavior = null,
+      textFieldState = TextFieldState("666666"),
+      onClickIconSort = {},
+      onClickLongjumps = {},
+    )
+  }
 }

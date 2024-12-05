@@ -10,31 +10,31 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ComBrightnessModeView(
-   content: @Composable BrightnessModeViewScope.() -> Unit,
+  content: @Composable BrightnessModeViewScope.() -> Unit,
 ) {
-   val repository = remember { AppRepository() }
-   val coroutineScope = rememberCoroutineScope()
-   val isLight by repository.isLightModeFlow().collectAsStateWithLifecycle()
+  val repository = remember { AppRepository() }
+  val coroutineScope = rememberCoroutineScope()
+  val isLight by repository.isLightModeFlow().collectAsStateWithLifecycle()
 
-   val scopeImpl = remember(isLight) {
-      object : BrightnessModeViewScope {
-         override val isLightMode: Boolean
-            get() = isLight
+  val scopeImpl = remember(isLight) {
+    object : BrightnessModeViewScope {
+      override val isLightMode: Boolean
+        get() = isLight
 
-         override fun toggleMode() {
-            coroutineScope.launch {
-               repository.toggleLightMode()
-            }
-         }
+      override fun toggleMode() {
+        coroutineScope.launch {
+          repository.toggleLightMode()
+        }
       }
-   }
+    }
+  }
 
-   with(scopeImpl) {
-      content()
-   }
+  with(scopeImpl) {
+    content()
+  }
 }
 
 interface BrightnessModeViewScope {
-   val isLightMode: Boolean
-   fun toggleMode()
+  val isLightMode: Boolean
+  fun toggleMode()
 }

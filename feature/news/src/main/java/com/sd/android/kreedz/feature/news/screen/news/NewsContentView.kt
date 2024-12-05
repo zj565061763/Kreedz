@@ -6,11 +6,11 @@ import com.sd.android.kreedz.feature.common.ui.ComHtmlView
 
 @Composable
 internal fun NewsContentView(
-   modifier: Modifier = Modifier,
-   html: String,
+  modifier: Modifier = Modifier,
+  html: String,
 ) {
-   ComHtmlView(
-      modifier = modifier,
-      html = html,
-   )
+  ComHtmlView(
+    modifier = modifier,
+    html = html,
+  )
 }

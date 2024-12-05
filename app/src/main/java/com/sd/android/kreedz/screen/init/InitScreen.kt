@@ -9,15 +9,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun InitScreen(
-   vm: InitVM = viewModel(),
-   onFinish: () -> Unit,
+  vm: InitVM = viewModel(),
+  onFinish: () -> Unit,
 ) {
-   val onFinishUpdated by rememberUpdatedState(onFinish)
-   val state by vm.stateFlow.collectAsStateWithLifecycle()
+  val onFinishUpdated by rememberUpdatedState(onFinish)
+  val state by vm.stateFlow.collectAsStateWithLifecycle()
 
-   LaunchedEffect(state, state.finish) {
-      if (state.finish) {
-         onFinishUpdated()
-      }
-   }
+  LaunchedEffect(state, state.finish) {
+    if (state.finish) {
+      onFinishUpdated()
+    }
+  }
 }

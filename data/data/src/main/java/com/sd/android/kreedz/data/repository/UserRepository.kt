@@ -21,105 +21,105 @@ import kotlinx.coroutines.withContext
 fun UserRepository(): UserRepository = UserRepositoryImpl()
 
 interface UserRepository {
-   suspend fun getUserProfile(id: String): UserProfileModel
-   suspend fun getUserRecordsStats(id: String): UserRecordStatsModel
+  suspend fun getUserProfile(id: String): UserProfileModel
+  suspend fun getUserRecordsStats(id: String): UserRecordStatsModel
 }
 
 private class UserRepositoryImpl : UserRepository {
-   private val _netDataSource = NetDataSource()
-   private val _daoUser = DaoUserRepository()
+  private val _netDataSource = NetDataSource()
+  private val _daoUser = DaoUserRepository()
 
-   override suspend fun getUserProfile(id: String): UserProfileModel {
-      require(id.isNotBlank()) { "User id is blank" }
-      val data = _netDataSource.getUserProfile(id)
-      _daoUser.insertOrIgnore(
-         UserEntity(
-            id = data.id.takeUnless { it.isBlank() } ?: id,
-            nickname = data.pseudo,
-            country = data.countryCode,
-         )
+  override suspend fun getUserProfile(id: String): UserProfileModel {
+    require(id.isNotBlank()) { "User id is blank" }
+    val data = _netDataSource.getUserProfile(id)
+    _daoUser.insertOrIgnore(
+      UserEntity(
+        id = data.id.takeUnless { it.isBlank() } ?: id,
+        nickname = data.pseudo,
+        country = data.countryCode,
       )
-      return withContext(Dispatchers.IO) {
-         data.asUserProfileModel()
-      }
-   }
+    )
+    return withContext(Dispatchers.IO) {
+      data.asUserProfileModel()
+    }
+  }
 
-   override suspend fun getUserRecordsStats(id: String): UserRecordStatsModel {
-      require(id.isNotBlank()) { "User id is blank" }
-      val data = _netDataSource.getUserRecordsStats(id)
-      return withContext(Dispatchers.IO) {
-         data.asUserRecordStatsModel()
-      }
-   }
+  override suspend fun getUserRecordsStats(id: String): UserRecordStatsModel {
+    require(id.isNotBlank()) { "User id is blank" }
+    val data = _netDataSource.getUserRecordsStats(id)
+    return withContext(Dispatchers.IO) {
+      data.asUserRecordStatsModel()
+    }
+  }
 }
 
 private fun NetUserProfile.asUserProfileModel(): UserProfileModel {
-   return UserProfileModel(
-      nickname = pseudo,
-      previousNickname = previousPseudo ?: emptyList(),
-      country = countryCode,
-      countryName = countryName,
-      regDateStr = registrationDate ?: "",
-      lastVisit = lastVisit ?: "",
-      siteVisits = visitsSince ?: "",
-      chatBoxComments = chatboxComments ?: "",
-      roles = roles ?: emptyList(),
-      recentActivity = recentActivity?.map { it.asUserRecentActivityModel() } ?: emptyList(),
-      recentRecords = recentRecords?.map { it.asUserRecentRecordModel() } ?: emptyList(),
-      achievements = achievements?.map { it.asUserAchievementModel() } ?: emptyList(),
-   )
+  return UserProfileModel(
+    nickname = pseudo,
+    previousNickname = previousPseudo ?: emptyList(),
+    country = countryCode,
+    countryName = countryName,
+    regDateStr = registrationDate ?: "",
+    lastVisit = lastVisit ?: "",
+    siteVisits = visitsSince ?: "",
+    chatBoxComments = chatboxComments ?: "",
+    roles = roles ?: emptyList(),
+    recentActivity = recentActivity?.map { it.asUserRecentActivityModel() } ?: emptyList(),
+    recentRecords = recentRecords?.map { it.asUserRecentRecordModel() } ?: emptyList(),
+    achievements = achievements?.map { it.asUserAchievementModel() } ?: emptyList(),
+  )
 }
 
 private fun NetUserRecentActivity.asUserRecentActivityModel(): UserRecentActivityModel {
-   return UserRecentActivityModel(
-      activityDateStr = activityDate,
-      isChatBoxComment = isChatBoxComment,
-      isNewsComment = isComment,
-      newsId = newsId,
-      newsName = commentNewsName,
-   )
+  return UserRecentActivityModel(
+    activityDateStr = activityDate,
+    isChatBoxComment = isChatBoxComment,
+    isNewsComment = isComment,
+    newsId = newsId,
+    newsName = commentNewsName,
+  )
 }
 
 private fun NetUserRecentRecord.asUserRecentRecordModel(): UserRecentRecordModel {
-   return UserRecentRecordModel(
-      mapName = mapName,
-      timeStr = time,
-      currentRecord = currentRecord,
-      dateStr = releaseDate,
-      mapId = mapId,
-      newsId = newsId,
-      newsName = newsName,
-   )
+  return UserRecentRecordModel(
+    mapName = mapName,
+    timeStr = time,
+    currentRecord = currentRecord,
+    dateStr = releaseDate,
+    mapId = mapId,
+    newsId = newsId,
+    newsName = newsName,
+  )
 }
 
 private fun NetUserAchievement.asUserAchievementModel(): UserAchievementModel {
-   return UserAchievementModel(
-      title = description,
-      rank = rank,
-      dateStr = achievementDate,
-      newsId = newsId,
-   )
+  return UserAchievementModel(
+    title = description,
+    rank = rank,
+    dateStr = achievementDate,
+    newsId = newsId,
+  )
 }
 
 private fun NetUserRecordStats.asUserRecordStatsModel(): UserRecordStatsModel {
-   return UserRecordStatsModel(
-      rank = rank,
-      numberCurrentRecords = numberCurrentRecords,
-      numberTotalRecords = numberTotalRecords,
-      numberDifferentMaps = numberDifferentMaps,
-      firstRecord = firstRecord?.asUserRecordModel(),
-      lastRecord = lastRecord?.asUserRecordModel(),
-      currentRecords = currentRecords?.map { it.asUserRecordModel() },
-      previousRecords = previousRecords?.map { it.asUserRecordModel() },
-   )
+  return UserRecordStatsModel(
+    rank = rank,
+    numberCurrentRecords = numberCurrentRecords,
+    numberTotalRecords = numberTotalRecords,
+    numberDifferentMaps = numberDifferentMaps,
+    firstRecord = firstRecord?.asUserRecordModel(),
+    lastRecord = lastRecord?.asUserRecordModel(),
+    currentRecords = currentRecords?.map { it.asUserRecordModel() },
+    previousRecords = previousRecords?.map { it.asUserRecordModel() },
+  )
 }
 
 private fun NetUserRecord.asUserRecordModel(): UserRecordModel {
-   return UserRecordModel(
-      mapName = mapName,
-      timeStr = time,
-      dateStr = date,
-      mapId = mapId,
-      timeDifferenceStr = timeDifference,
-   )
+  return UserRecordModel(
+    mapName = mapName,
+    timeStr = time,
+    dateStr = date,
+    mapId = mapId,
+    timeDifferenceStr = timeDifference,
+  )
 }

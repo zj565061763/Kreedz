@@ -17,86 +17,86 @@ import com.sd.android.kreedz.feature.more.R
 
 @Composable
 fun MainMoreLinksView(
-   modifier: Modifier = Modifier,
+  modifier: Modifier = Modifier,
 ) {
-   Row(
-      modifier = modifier.fillMaxWidth(),
-      verticalAlignment = Alignment.CenterVertically,
-      horizontalArrangement = Arrangement.SpaceEvenly,
-   ) {
-      SteamLinkView()
-      DiscordLinkView()
-      YoutubeLinkView()
-      TwitchLinkView()
-   }
+  Row(
+    modifier = modifier.fillMaxWidth(),
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.SpaceEvenly,
+  ) {
+    SteamLinkView()
+    DiscordLinkView()
+    YoutubeLinkView()
+    TwitchLinkView()
+  }
 }
 
 @Composable
 private fun SteamLinkView(
-   modifier: Modifier = Modifier,
+  modifier: Modifier = Modifier,
 ) {
-   LinkView(
-      modifier = modifier,
-      icon = R.drawable.link_steam,
-      link = "https://steamcommunity.com/groups/Xtreme-Jumps",
-   )
+  LinkView(
+    modifier = modifier,
+    icon = R.drawable.link_steam,
+    link = "https://steamcommunity.com/groups/Xtreme-Jumps",
+  )
 }
 
 @Composable
 private fun DiscordLinkView(
-   modifier: Modifier = Modifier,
+  modifier: Modifier = Modifier,
 ) {
-   LinkView(
-      modifier = modifier,
-      icon = R.drawable.link_discord,
-      link = "https://discord.gg/AkggjC8PhF",
-   )
+  LinkView(
+    modifier = modifier,
+    icon = R.drawable.link_discord,
+    link = "https://discord.gg/AkggjC8PhF",
+  )
 }
 
 @Composable
 private fun YoutubeLinkView(
-   modifier: Modifier = Modifier,
+  modifier: Modifier = Modifier,
 ) {
-   LinkView(
-      modifier = modifier,
-      icon = R.drawable.link_youtube,
-      link = "https://www.youtube.com/XtremeJumps",
-   )
+  LinkView(
+    modifier = modifier,
+    icon = R.drawable.link_youtube,
+    link = "https://www.youtube.com/XtremeJumps",
+  )
 }
 
 @Composable
 private fun TwitchLinkView(
-   modifier: Modifier = Modifier,
+  modifier: Modifier = Modifier,
 ) {
-   LinkView(
-      modifier = modifier,
-      icon = R.drawable.link_twitch,
-      link = "https://www.twitch.tv/xtremejumps",
-   )
+  LinkView(
+    modifier = modifier,
+    icon = R.drawable.link_twitch,
+    link = "https://www.twitch.tv/xtremejumps",
+  )
 }
 
 @Composable
 private fun LinkView(
-   modifier: Modifier = Modifier,
-   @DrawableRes icon: Int,
-   link: String,
+  modifier: Modifier = Modifier,
+  @DrawableRes icon: Int,
+  link: String,
 ) {
-   val uriHandler = LocalUriHandler.current
-   IconButton(
-      modifier = modifier,
-      onClick = {
-         fsUri.openUri(link, uriHandler)
-      },
-   ) {
-      Icon(
-         painter = painterResource(icon),
-         contentDescription = link,
-      )
-   }
+  val uriHandler = LocalUriHandler.current
+  IconButton(
+    modifier = modifier,
+    onClick = {
+      fsUri.openUri(link, uriHandler)
+    },
+  ) {
+    Icon(
+      painter = painterResource(icon),
+      contentDescription = link,
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun Preview() {
-   MainMoreLinksView()
+  MainMoreLinksView()
 }

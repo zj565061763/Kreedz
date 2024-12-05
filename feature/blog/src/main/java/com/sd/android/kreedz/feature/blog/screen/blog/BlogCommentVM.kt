@@ -5,7 +5,7 @@ import com.sd.android.kreedz.data.repository.NewsRepository
 import com.sd.android.kreedz.feature.news.screen.comments.NewsCommentVM
 
 internal class BlogCommentVM : NewsCommentVM() {
-   override fun newsRepository(): NewsRepository {
-      return BlogRepository()
-   }
+  override fun newsRepository(): NewsRepository {
+    return BlogRepository()
+  }
 }

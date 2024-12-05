@@ -19,41 +19,41 @@ import com.sd.android.kreedz.core.export.fsUri
 
 @Composable
 fun ComYoutubeButton(
-   link: String?,
-   modifier: Modifier = Modifier,
+  link: String?,
+  modifier: Modifier = Modifier,
 ) {
-   val uriHandler = LocalUriHandler.current
-   IconButton(
-      modifier = modifier.size(24.dp),
-      onClick = {
-         fsUri.openUri(link, uriHandler)
-      },
-   ) {
-      YoutubeImageView()
-   }
+  val uriHandler = LocalUriHandler.current
+  IconButton(
+    modifier = modifier.size(24.dp),
+    onClick = {
+      fsUri.openUri(link, uriHandler)
+    },
+  ) {
+    YoutubeImageView()
+  }
 }
 
 @Composable
 private fun YoutubeImageView(
-   modifier: Modifier = Modifier,
+  modifier: Modifier = Modifier,
 ) {
-   Box(
-      modifier = modifier
-         .size(16.dp)
-         .background(color = Color(0xFFEF4444), shape = CircleShape),
-      contentAlignment = Alignment.Center,
-   ) {
-      Icon(
-         modifier = Modifier.size(12.dp),
-         imageVector = Icons.Default.PlayArrow,
-         contentDescription = "Play youtube video",
-         tint = Color.White,
-      )
-   }
+  Box(
+    modifier = modifier
+      .size(16.dp)
+      .background(color = Color(0xFFEF4444), shape = CircleShape),
+    contentAlignment = Alignment.Center,
+  ) {
+    Icon(
+      modifier = Modifier.size(12.dp),
+      imageVector = Icons.Default.PlayArrow,
+      contentDescription = "Play youtube video",
+      tint = Color.White,
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewView() {
-   ComYoutubeButton("url")
+  ComYoutubeButton("url")
 }

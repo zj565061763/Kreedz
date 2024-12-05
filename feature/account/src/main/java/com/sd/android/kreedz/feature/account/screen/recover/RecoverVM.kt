@@ -6,46 +6,46 @@ import com.sd.lib.coroutines.FLoader
 import com.sd.lib.coroutines.tryLoad
 
 internal abstract class RecoverVM : BaseViewModel<RecoverVM.State, Any>(State()) {
-   private val _loader = FLoader()
+  private val _loader = FLoader()
 
-   val emailState = TextFieldState()
+  val emailState = TextFieldState()
 
-   fun recover() {
-      vmLaunch {
-         val email = emailState.text.toString()
-         if (email.isBlank()) return@vmLaunch
-         _loader.tryLoad {
-            recover(email)
-         }.onSuccess {
-            updateState {
-               it.copy(isLoadingSuccess = true)
-            }
-         }.onFailure { error ->
-            sendEffect(error)
-         }
+  fun recover() {
+    vmLaunch {
+      val email = emailState.text.toString()
+      if (email.isBlank()) return@vmLaunch
+      _loader.tryLoad {
+        recover(email)
+      }.onSuccess {
+        updateState {
+          it.copy(isLoadingSuccess = true)
+        }
+      }.onFailure { error ->
+        sendEffect(error)
       }
-   }
+    }
+  }
 
-   fun cancelRecover() {
-      vmLaunch {
-         _loader.cancel()
+  fun cancelRecover() {
+    vmLaunch {
+      _loader.cancel()
+    }
+  }
+
+  protected abstract suspend fun recover(email: String)
+
+  init {
+    vmLaunch {
+      _loader.loadingFlow.collect { data ->
+        updateState {
+          it.copy(isLoading = data)
+        }
       }
-   }
+    }
+  }
 
-   protected abstract suspend fun recover(email: String)
-
-   init {
-      vmLaunch {
-         _loader.loadingFlow.collect { data ->
-            updateState {
-               it.copy(isLoading = data)
-            }
-         }
-      }
-   }
-
-   data class State(
-      val isLoading: Boolean = false,
-      val isLoadingSuccess: Boolean = false,
-   )
+  data class State(
+    val isLoading: Boolean = false,
+    val isLoadingSuccess: Boolean = false,
+  )
 }

@@ -9,13 +9,13 @@ import com.sd.android.kreedz.data.repository.AppRepository
 
 @Router(path = AppRouter.MAIN)
 class MainActivity : BaseActivity() {
-   @Composable
-   override fun ContentImpl() {
-      LaunchedEffect(Unit) {
-         AppRepository().sync()
-      }
-      MainScreen(
-         onExit = { finish() }
-      )
-   }
+  @Composable
+  override fun ContentImpl() {
+    LaunchedEffect(Unit) {
+      AppRepository().sync()
+    }
+    MainScreen(
+      onExit = { finish() }
+    )
+  }
 }

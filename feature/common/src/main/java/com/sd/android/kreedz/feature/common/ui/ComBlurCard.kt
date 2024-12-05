@@ -19,36 +19,36 @@ import com.sd.lib.compose.utils.fEnabled
 
 @Composable
 fun ComBlurCard(
-   modifier: Modifier = Modifier,
-   onClick: (() -> Unit)? = null,
-   padding: PaddingValues = PaddingValues(horizontal = 4.dp, vertical = 1.dp),
-   content: @Composable RowScope.() -> Unit,
+  modifier: Modifier = Modifier,
+  onClick: (() -> Unit)? = null,
+  padding: PaddingValues = PaddingValues(horizontal = 4.dp, vertical = 1.dp),
+  content: @Composable RowScope.() -> Unit,
 ) {
-   Card(
-      modifier = modifier,
-      shape = MaterialTheme.shapes.extraSmall,
-      colors = CardDefaults.cardColors(
-         containerColor = Color.Black.copy(0.3f),
-         contentColor = Color.White,
-      )
-   ) {
-      Row(
-         modifier = Modifier
-            .fEnabled(onClick != null) {
-               clickable { onClick?.invoke() }
-            }
-            .padding(padding),
-         verticalAlignment = Alignment.CenterVertically,
-      ) {
-         content()
-      }
-   }
+  Card(
+    modifier = modifier,
+    shape = MaterialTheme.shapes.extraSmall,
+    colors = CardDefaults.cardColors(
+      containerColor = Color.Black.copy(0.3f),
+      contentColor = Color.White,
+    )
+  ) {
+    Row(
+      modifier = Modifier
+        .fEnabled(onClick != null) {
+          clickable { onClick?.invoke() }
+        }
+        .padding(padding),
+      verticalAlignment = Alignment.CenterVertically,
+    ) {
+      content()
+    }
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewCard() {
-   ComBlurCard {
-      Text(text = "2024-10-10")
-   }
+  ComBlurCard {
+    Text(text = "2024-10-10")
+  }
 }

@@ -19,36 +19,36 @@ import kotlinx.coroutines.flow.filter
 
 @Composable
 fun LatestNewsScreenView(
-   modifier: Modifier = Modifier,
-   items: LazyPagingItems<NewsModel>,
-   onClickItem: (newsId: String) -> Unit,
+  modifier: Modifier = Modifier,
+  items: LazyPagingItems<NewsModel>,
+  onClickItem: (newsId: String) -> Unit,
 ) {
-   val lazyListState = rememberLazyListState()
+  val lazyListState = rememberLazyListState()
 
-   AppPullToRefresh(
-      modifier = modifier.fillMaxSize(),
-      isRefreshing = items.fIsRefreshing(),
-      onRefresh = { items.refresh() },
-   ) {
-      LatestNewsListView(
-         lazyListState = lazyListState,
-         news = items,
-         onClickItem = onClickItem,
-      )
-      items.FUIStateRefresh(
-         stateError = {
-            ComErrorView(error = it)
-         }
-      )
-   }
-
-   if (fIsActive()) {
-      LaunchedEffect(lazyListState) {
-         FEvent.flowOf<ReClickMainNavigation>()
-            .filter { it.navigation == MainNavigation.Home }
-            .collect {
-               lazyListState.scrollToItem(0)
-            }
+  AppPullToRefresh(
+    modifier = modifier.fillMaxSize(),
+    isRefreshing = items.fIsRefreshing(),
+    onRefresh = { items.refresh() },
+  ) {
+    LatestNewsListView(
+      lazyListState = lazyListState,
+      news = items,
+      onClickItem = onClickItem,
+    )
+    items.FUIStateRefresh(
+      stateError = {
+        ComErrorView(error = it)
       }
-   }
+    )
+  }
+
+  if (fIsActive()) {
+    LaunchedEffect(lazyListState) {
+      FEvent.flowOf<ReClickMainNavigation>()
+        .filter { it.navigation == MainNavigation.Home }
+        .collect {
+          lazyListState.scrollToItem(0)
+        }
+    }
+  }
 }

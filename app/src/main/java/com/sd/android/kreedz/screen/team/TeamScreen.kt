@@ -14,28 +14,28 @@ import com.sd.android.kreedz.feature.common.ui.ComEffect
 
 @Composable
 internal fun TeamScreen(
-   modifier: Modifier = Modifier,
-   vm: TeamVM = viewModel(),
+  modifier: Modifier = Modifier,
+  vm: TeamVM = viewModel(),
 ) {
-   val state by vm.stateFlow.collectAsStateWithLifecycle()
-   val context = LocalContext.current
+  val state by vm.stateFlow.collectAsStateWithLifecycle()
+  val context = LocalContext.current
 
-   AppPullToRefresh(
-      modifier = modifier.fillMaxSize(),
-      isRefreshing = state.isLoading,
-      onRefresh = { vm.refresh() },
-   ) {
-      TeamListView(
-         roles = state.roles,
-         onClickUser = {
-            AppRouter.user(context, it)
-         },
-      )
-   }
+  AppPullToRefresh(
+    modifier = modifier.fillMaxSize(),
+    isRefreshing = state.isLoading,
+    onRefresh = { vm.refresh() },
+  ) {
+    TeamListView(
+      roles = state.roles,
+      onClickUser = {
+        AppRouter.user(context, it)
+      },
+    )
+  }
 
-   LaunchedEffect(vm) {
-      vm.init()
-   }
+  LaunchedEffect(vm) {
+    vm.init()
+  }
 
-   vm.effectFlow.ComEffect()
+  vm.effectFlow.ComEffect()
 }

@@ -17,40 +17,40 @@ import kotlinx.coroutines.flow.map
 fun OnlineRepository(): OnlineRepository = OnlineRepositoryImpl
 
 interface OnlineRepository {
-   fun getOnlineUsersFlow(): Flow<OnlineUsersModel>
-   suspend fun sync()
+  fun getOnlineUsersFlow(): Flow<OnlineUsersModel>
+  suspend fun sync()
 }
 
 private object OnlineRepositoryImpl : OnlineRepository, FLogger {
 
-   override fun getOnlineUsersFlow(): Flow<OnlineUsersModel> {
-      return NetOnlineUsersDataSource.onlineUsersFlow
-         .map { data ->
-            OnlineUsersModel(
-               guestsCount = data?.userCount ?: 0,
-               users = data?.users?.map(NetOnlineUser::asUserWithIconsModel) ?: emptyList()
-            )
-         }.flowOn(Dispatchers.IO)
-   }
+  override fun getOnlineUsersFlow(): Flow<OnlineUsersModel> {
+    return NetOnlineUsersDataSource.onlineUsersFlow
+      .map { data ->
+        OnlineUsersModel(
+          guestsCount = data?.userCount ?: 0,
+          users = data?.users?.map(NetOnlineUser::asUserWithIconsModel) ?: emptyList()
+        )
+      }.flowOn(Dispatchers.IO)
+  }
 
-   override suspend fun sync() {
-      // Do nothing
-   }
+  override suspend fun sync() {
+    // Do nothing
+  }
 
-   init {
-      fGlobalLaunch {
-         LocalUserAccountModel.userIdFlow.collect { userId ->
-            NetOnlineUsersDataSource.setUserId(userId ?: "")
-         }
+  init {
+    fGlobalLaunch {
+      LocalUserAccountModel.userIdFlow.collect { userId ->
+        NetOnlineUsersDataSource.setUserId(userId ?: "")
       }
-   }
+    }
+  }
 }
 
 private fun NetOnlineUser.asUserWithIconsModel(): UserWithIconsModel {
-   return UserWithIconsModel(
-      id = id,
-      nickname = pseudo,
-      country = country,
-      icons = icons?.asUserIconsModel() ?: UserIconsModel.Default,
-   )
+  return UserWithIconsModel(
+    id = id,
+    nickname = pseudo,
+    country = country,
+    icons = icons?.asUserIconsModel() ?: UserIconsModel.Default,
+  )
 }

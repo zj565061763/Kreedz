@@ -20,74 +20,74 @@ import com.sd.android.kreedz.data.model.SearchNewsModel
 import com.sd.lib.compose.annotated.fAnnotatedTargets
 
 fun LazyListScope.searchResultNews(
-   keyword: String,
-   listNews: List<SearchNewsModel>?,
-   onClickNews: (SearchNewsModel) -> Unit,
+  keyword: String,
+  listNews: List<SearchNewsModel>?,
+  onClickNews: (SearchNewsModel) -> Unit,
 ) {
-   if (listNews == null) return
+  if (listNews == null) return
 
-   searchResultTitle(
-      title = "News",
-      count = listNews.size,
-   )
+  searchResultTitle(
+    title = "News",
+    count = listNews.size,
+  )
 
-   items(listNews) { item ->
-      Card(shape = MaterialTheme.shapes.extraSmall) {
-         ItemView(
-            keyword = keyword,
-            title = item.title,
-            dateStr = item.dateStr,
-            extract = item.extract,
-            modifier = Modifier
-               .clickable { onClickNews(item) }
-               .padding(8.dp),
-         )
-      }
-   }
+  items(listNews) { item ->
+    Card(shape = MaterialTheme.shapes.extraSmall) {
+      ItemView(
+        keyword = keyword,
+        title = item.title,
+        dateStr = item.dateStr,
+        extract = item.extract,
+        modifier = Modifier
+          .clickable { onClickNews(item) }
+          .padding(8.dp),
+      )
+    }
+  }
 }
 
 @Composable
 private fun ItemView(
-   modifier: Modifier = Modifier,
-   keyword: String,
-   title: String,
-   dateStr: String,
-   extract: String,
+  modifier: Modifier = Modifier,
+  keyword: String,
+  title: String,
+  dateStr: String,
+  extract: String,
 ) {
-   Column(
-      modifier = modifier,
-      verticalArrangement = Arrangement.spacedBy(4.dp)
-   ) {
-      Text(
-         text = title,
-         fontSize = 14.sp,
-         lineHeight = 18.sp,
-         fontWeight = FontWeight.Medium,
-      )
-      Text(
-         text = dateStr,
-         color = AppTextColor.small,
-         fontSize = 12.sp,
-      )
-      Text(
-         text = extract.fAnnotatedTargets(
-            targets = listOf(keyword),
-            ignoreCase = true,
-         ),
-         fontSize = 12.sp,
-         lineHeight = 18.sp,
-         color = AppTextColor.medium,
-      )
-   }
+  Column(
+    modifier = modifier,
+    verticalArrangement = Arrangement.spacedBy(4.dp)
+  ) {
+    Text(
+      text = title,
+      fontSize = 14.sp,
+      lineHeight = 18.sp,
+      fontWeight = FontWeight.Medium,
+    )
+    Text(
+      text = dateStr,
+      color = AppTextColor.small,
+      fontSize = 12.sp,
+    )
+    Text(
+      text = extract.fAnnotatedTargets(
+        targets = listOf(keyword),
+        ignoreCase = true,
+      ),
+      fontSize = 12.sp,
+      lineHeight = 18.sp,
+      color = AppTextColor.medium,
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewItemView() {
-   ItemView(
-      keyword = "colcolx",
-      title = "WR RELEASE #818 - 28 new world records",
-      dateStr = "25/08/2024 17:51",
-      extract = "...<p><strong>[user]88542|hk|colcolx[/user]</strong></p>...",
-   )
+  ItemView(
+    keyword = "colcolx",
+    title = "WR RELEASE #818 - 28 new world records",
+    dateStr = "25/08/2024 17:51",
+    extract = "...<p><strong>[user]88542|hk|colcolx[/user]</strong></p>...",
+  )
 }

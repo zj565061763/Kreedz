@@ -22,147 +22,147 @@ import com.sd.lib.compose.utils.fEnabled
 
 @Composable
 fun ComUserIconsView(
-   modifier: Modifier = Modifier,
-   icons: UserIconsModel,
-   enableClick: Boolean = true,
+  modifier: Modifier = Modifier,
+  icons: UserIconsModel,
+  enableClick: Boolean = true,
 ) {
-   Row(
-      modifier = modifier,
-      verticalAlignment = Alignment.CenterVertically,
-      horizontalArrangement = Arrangement.spacedBy(1.dp),
-   ) {
-      if (icons.isVip) {
-         VIPIcon(enableClick = enableClick)
-      }
+  Row(
+    modifier = modifier,
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.spacedBy(1.dp),
+  ) {
+    if (icons.isVip) {
+      VIPIcon(enableClick = enableClick)
+    }
 
-      if (icons.isRecordHolder) {
-         RecordHolderIcon(enableClick = enableClick)
-      }
+    if (icons.isRecordHolder) {
+      RecordHolderIcon(enableClick = enableClick)
+    }
 
-      if (icons.isLJRecordHolder) {
-         LJRecordHolderIcon(enableClick = enableClick)
-      }
+    if (icons.isLJRecordHolder) {
+      LJRecordHolderIcon(enableClick = enableClick)
+    }
 
-      when {
-         icons.isTournamentRank1 -> ComTournamentIconView(rank = 1)
-         icons.isTournamentRank2 -> ComTournamentIconView(rank = 2)
-         icons.isTournamentRank3 -> ComTournamentIconView(rank = 3)
-         else -> {}
-      }
+    when {
+      icons.isTournamentRank1 -> ComTournamentIconView(rank = 1)
+      icons.isTournamentRank2 -> ComTournamentIconView(rank = 2)
+      icons.isTournamentRank3 -> ComTournamentIconView(rank = 3)
+      else -> {}
+    }
 
-      if (icons.isMapper) {
-         MapperIcon(enableClick = enableClick)
-      }
+    if (icons.isMapper) {
+      MapperIcon(enableClick = enableClick)
+    }
 
-      if (icons.isMovieEditor) {
-         MovieEditorIcon(enableClick = enableClick)
-      }
-   }
+    if (icons.isMovieEditor) {
+      MovieEditorIcon(enableClick = enableClick)
+    }
+  }
 }
 
 @Composable
 private fun VIPIcon(
-   modifier: Modifier = Modifier,
-   enableClick: Boolean,
+  modifier: Modifier = Modifier,
+  enableClick: Boolean,
 ) {
-   IconView(
-      modifier = modifier,
-      id = R.drawable.vip,
-      contentDescription = "VIP",
-      enableClick = enableClick,
-   )
+  IconView(
+    modifier = modifier,
+    id = R.drawable.vip,
+    contentDescription = "VIP",
+    enableClick = enableClick,
+  )
 }
 
 @Composable
 private fun RecordHolderIcon(
-   modifier: Modifier = Modifier,
-   enableClick: Boolean,
+  modifier: Modifier = Modifier,
+  enableClick: Boolean,
 ) {
-   IconView(
-      modifier = modifier,
-      id = R.drawable.record_holder,
-      contentDescription = "Record Holder",
-      enableClick = enableClick,
-   )
+  IconView(
+    modifier = modifier,
+    id = R.drawable.record_holder,
+    contentDescription = "Record Holder",
+    enableClick = enableClick,
+  )
 }
 
 @Composable
 private fun LJRecordHolderIcon(
-   modifier: Modifier = Modifier,
-   enableClick: Boolean,
+  modifier: Modifier = Modifier,
+  enableClick: Boolean,
 ) {
-   IconView(
-      modifier = modifier,
-      id = R.drawable.lj_record_holder,
-      contentDescription = "LJ Record Holder",
-      enableClick = enableClick,
-   )
+  IconView(
+    modifier = modifier,
+    id = R.drawable.lj_record_holder,
+    contentDescription = "LJ Record Holder",
+    enableClick = enableClick,
+  )
 }
 
 @Composable
 private fun MapperIcon(
-   modifier: Modifier = Modifier,
-   enableClick: Boolean,
+  modifier: Modifier = Modifier,
+  enableClick: Boolean,
 ) {
-   IconView(
-      modifier = modifier,
-      id = R.drawable.mapper,
-      contentDescription = "Mapper",
-      enableClick = enableClick,
-   )
+  IconView(
+    modifier = modifier,
+    id = R.drawable.mapper,
+    contentDescription = "Mapper",
+    enableClick = enableClick,
+  )
 }
 
 @Composable
 private fun MovieEditorIcon(
-   modifier: Modifier = Modifier,
-   enableClick: Boolean,
+  modifier: Modifier = Modifier,
+  enableClick: Boolean,
 ) {
-   IconView(
-      modifier = modifier,
-      id = R.drawable.movie_maker,
-      contentDescription = "Movie Editor",
-      enableClick = enableClick,
-   )
+  IconView(
+    modifier = modifier,
+    id = R.drawable.movie_maker,
+    contentDescription = "Movie Editor",
+    enableClick = enableClick,
+  )
 }
 
 @Composable
 private fun IconView(
-   @DrawableRes id: Int,
-   contentDescription: String?,
-   modifier: Modifier = Modifier,
-   imageWidth: Dp = 14.dp,
-   enableClick: Boolean,
+  @DrawableRes id: Int,
+  contentDescription: String?,
+  modifier: Modifier = Modifier,
+  imageWidth: Dp = 14.dp,
+  enableClick: Boolean,
 ) {
-   val context = LocalContext.current
-   Image(
-      modifier = modifier
-         .width(imageWidth)
-         .fEnabled(enableClick) {
-            clickable {
-               Toast
-                  .makeText(context, contentDescription, Toast.LENGTH_SHORT)
-                  .show()
-            }
-         },
-      painter = painterResource(id),
-      contentDescription = contentDescription,
-      contentScale = ContentScale.FillWidth,
-   )
+  val context = LocalContext.current
+  Image(
+    modifier = modifier
+      .width(imageWidth)
+      .fEnabled(enableClick) {
+        clickable {
+          Toast
+            .makeText(context, contentDescription, Toast.LENGTH_SHORT)
+            .show()
+        }
+      },
+    painter = painterResource(id),
+    contentDescription = contentDescription,
+    contentScale = ContentScale.FillWidth,
+  )
 }
 
 @Preview
 @Composable
 private fun PreviewView() {
-   ComUserIconsView(
-      icons = UserIconsModel(
-         isVip = true,
-         isRecordHolder = true,
-         isLJRecordHolder = true,
-         isTournamentRank1 = true,
-         isTournamentRank2 = true,
-         isTournamentRank3 = true,
-         isMapper = true,
-         isMovieEditor = true,
-      )
-   )
+  ComUserIconsView(
+    icons = UserIconsModel(
+      isVip = true,
+      isRecordHolder = true,
+      isLJRecordHolder = true,
+      isTournamentRank1 = true,
+      isTournamentRank2 = true,
+      isTournamentRank3 = true,
+      isMapper = true,
+      isMovieEditor = true,
+    )
+  )
 }

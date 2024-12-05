@@ -12,32 +12,32 @@ import kotlinx.coroutines.flow.stateIn
 
 @DatastoreType("local_app_config")
 internal data class LocalAppConfig(
-   val isLightMode: Boolean = true,
-   val lastLoginUsername: String = "",
+  val isLightMode: Boolean = true,
+  val lastLoginUsername: String = "",
 ) {
-   companion object {
-      private val _store = FDatastore.get(LocalAppConfig::class.java).withDefault { LocalAppConfig() }
+  companion object {
+    private val _store = FDatastore.get(LocalAppConfig::class.java).withDefault { LocalAppConfig() }
 
-      val isLightModeFlow: StateFlow<Boolean> = _store.flow
-         .map { it.isLightMode }
-         .stateIn(
-            scope = fAppLifecycleScope,
-            started = SharingStarted.Lazily,
-            initialValue = true,
-         )
+    val isLightModeFlow: StateFlow<Boolean> = _store.flow
+      .map { it.isLightMode }
+      .stateIn(
+        scope = fAppLifecycleScope,
+        started = SharingStarted.Lazily,
+        initialValue = true,
+      )
 
-      suspend fun setLastLoginUsername(username: String) {
-         _store.update { it.copy(lastLoginUsername = username) }
+    suspend fun setLastLoginUsername(username: String) {
+      _store.update { it.copy(lastLoginUsername = username) }
+    }
+
+    suspend fun getLastLoginUsername(): String {
+      return _store.get().lastLoginUsername
+    }
+
+    suspend fun toggleLightMode() {
+      _store.update {
+        it.copy(isLightMode = !it.isLightMode)
       }
-
-      suspend fun getLastLoginUsername(): String {
-         return _store.get().lastLoginUsername
-      }
-
-      suspend fun toggleLightMode() {
-         _store.update {
-            it.copy(isLightMode = !it.isLightMode)
-         }
-      }
-   }
+    }
+  }
 }

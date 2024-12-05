@@ -15,31 +15,31 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun AppTheme(
-   isLight: Boolean = true,
-   content: @Composable () -> Unit,
+  isLight: Boolean = true,
+  content: @Composable () -> Unit,
 ) {
-   MaterialTheme(
-      colorScheme = if (isLight) AppLightScheme else AppDarkScheme,
-      typography = AppTypography,
-      content = {
-         CompositionLocalProvider(
-            LocalContentColor provides MaterialTheme.colorScheme.onSurface
-         ) {
-            content()
-         }
-      },
-   )
+  MaterialTheme(
+    colorScheme = if (isLight) AppLightScheme else AppDarkScheme,
+    typography = AppTypography,
+    content = {
+      CompositionLocalProvider(
+        LocalContentColor provides MaterialTheme.colorScheme.onSurface
+      ) {
+        content()
+      }
+    },
+  )
 }
 
 object AppTextColor {
-   val primary: Color
-      @Composable @ReadOnlyComposable get() = MaterialTheme.colorScheme.primary
+  val primary: Color
+    @Composable @ReadOnlyComposable get() = MaterialTheme.colorScheme.primary
 
-   val medium: Color
-      @Composable @ReadOnlyComposable get() = MaterialTheme.colorScheme.onSurface.copy(0.75f)
+  val medium: Color
+    @Composable @ReadOnlyComposable get() = MaterialTheme.colorScheme.onSurface.copy(0.75f)
 
-   val small: Color
-      @Composable @ReadOnlyComposable get() = MaterialTheme.colorScheme.onSurface.copy(0.45f)
+  val small: Color
+    @Composable @ReadOnlyComposable get() = MaterialTheme.colorScheme.onSurface.copy(0.45f)
 }
 
 private val primaryLight = Color(0xFF8F4C38)
@@ -115,150 +115,150 @@ private val surfaceContainerHighDark = Color(0xFF322825)
 private val surfaceContainerHighestDark = Color(0xFF3D322F)
 
 private val AppLightScheme = lightColorScheme(
-   primary = primaryLight,
-   onPrimary = onPrimaryLight,
-   primaryContainer = primaryContainerLight,
-   onPrimaryContainer = onPrimaryContainerLight,
-   secondary = secondaryLight,
-   onSecondary = onSecondaryLight,
-   secondaryContainer = secondaryContainerLight,
-   onSecondaryContainer = onSecondaryContainerLight,
-   tertiary = tertiaryLight,
-   onTertiary = onTertiaryLight,
-   tertiaryContainer = tertiaryContainerLight,
-   onTertiaryContainer = onTertiaryContainerLight,
-   error = errorLight,
-   onError = onErrorLight,
-   errorContainer = errorContainerLight,
-   onErrorContainer = onErrorContainerLight,
-   background = backgroundLight,
-   onBackground = onBackgroundLight,
-   surface = surfaceLight,
-   onSurface = onSurfaceLight,
-   surfaceVariant = surfaceVariantLight,
-   onSurfaceVariant = onSurfaceVariantLight,
-   outline = outlineLight,
-   outlineVariant = outlineVariantLight,
-   scrim = scrimLight,
-   inverseSurface = inverseSurfaceLight,
-   inverseOnSurface = inverseOnSurfaceLight,
-   inversePrimary = inversePrimaryLight,
-   surfaceDim = surfaceDimLight,
-   surfaceBright = surfaceBrightLight,
-   surfaceContainerLowest = surfaceContainerLowestLight,
-   surfaceContainerLow = surfaceContainerLowLight,
-   surfaceContainer = surfaceContainerLight,
-   surfaceContainerHigh = surfaceContainerHighLight,
-   surfaceContainerHighest = surfaceContainerHighestLight,
+  primary = primaryLight,
+  onPrimary = onPrimaryLight,
+  primaryContainer = primaryContainerLight,
+  onPrimaryContainer = onPrimaryContainerLight,
+  secondary = secondaryLight,
+  onSecondary = onSecondaryLight,
+  secondaryContainer = secondaryContainerLight,
+  onSecondaryContainer = onSecondaryContainerLight,
+  tertiary = tertiaryLight,
+  onTertiary = onTertiaryLight,
+  tertiaryContainer = tertiaryContainerLight,
+  onTertiaryContainer = onTertiaryContainerLight,
+  error = errorLight,
+  onError = onErrorLight,
+  errorContainer = errorContainerLight,
+  onErrorContainer = onErrorContainerLight,
+  background = backgroundLight,
+  onBackground = onBackgroundLight,
+  surface = surfaceLight,
+  onSurface = onSurfaceLight,
+  surfaceVariant = surfaceVariantLight,
+  onSurfaceVariant = onSurfaceVariantLight,
+  outline = outlineLight,
+  outlineVariant = outlineVariantLight,
+  scrim = scrimLight,
+  inverseSurface = inverseSurfaceLight,
+  inverseOnSurface = inverseOnSurfaceLight,
+  inversePrimary = inversePrimaryLight,
+  surfaceDim = surfaceDimLight,
+  surfaceBright = surfaceBrightLight,
+  surfaceContainerLowest = surfaceContainerLowestLight,
+  surfaceContainerLow = surfaceContainerLowLight,
+  surfaceContainer = surfaceContainerLight,
+  surfaceContainerHigh = surfaceContainerHighLight,
+  surfaceContainerHighest = surfaceContainerHighestLight,
 )
 
 private val AppDarkScheme = darkColorScheme(
-   primary = primaryDark,
-   onPrimary = onPrimaryDark,
-   primaryContainer = primaryContainerDark,
-   onPrimaryContainer = onPrimaryContainerDark,
-   secondary = secondaryDark,
-   onSecondary = onSecondaryDark,
-   secondaryContainer = secondaryContainerDark,
-   onSecondaryContainer = onSecondaryContainerDark,
-   tertiary = tertiaryDark,
-   onTertiary = onTertiaryDark,
-   tertiaryContainer = tertiaryContainerDark,
-   onTertiaryContainer = onTertiaryContainerDark,
-   error = errorDark,
-   onError = onErrorDark,
-   errorContainer = errorContainerDark,
-   onErrorContainer = onErrorContainerDark,
-   background = backgroundDark,
-   onBackground = onBackgroundDark,
-   surface = surfaceDark,
-   onSurface = onSurfaceDark,
-   surfaceVariant = surfaceVariantDark,
-   onSurfaceVariant = onSurfaceVariantDark,
-   outline = outlineDark,
-   outlineVariant = outlineVariantDark,
-   scrim = scrimDark,
-   inverseSurface = inverseSurfaceDark,
-   inverseOnSurface = inverseOnSurfaceDark,
-   inversePrimary = inversePrimaryDark,
-   surfaceDim = surfaceDimDark,
-   surfaceBright = surfaceBrightDark,
-   surfaceContainerLowest = surfaceContainerLowestDark,
-   surfaceContainerLow = surfaceContainerLowDark,
-   surfaceContainer = surfaceContainerDark,
-   surfaceContainerHigh = surfaceContainerHighDark,
-   surfaceContainerHighest = surfaceContainerHighestDark,
+  primary = primaryDark,
+  onPrimary = onPrimaryDark,
+  primaryContainer = primaryContainerDark,
+  onPrimaryContainer = onPrimaryContainerDark,
+  secondary = secondaryDark,
+  onSecondary = onSecondaryDark,
+  secondaryContainer = secondaryContainerDark,
+  onSecondaryContainer = onSecondaryContainerDark,
+  tertiary = tertiaryDark,
+  onTertiary = onTertiaryDark,
+  tertiaryContainer = tertiaryContainerDark,
+  onTertiaryContainer = onTertiaryContainerDark,
+  error = errorDark,
+  onError = onErrorDark,
+  errorContainer = errorContainerDark,
+  onErrorContainer = onErrorContainerDark,
+  background = backgroundDark,
+  onBackground = onBackgroundDark,
+  surface = surfaceDark,
+  onSurface = onSurfaceDark,
+  surfaceVariant = surfaceVariantDark,
+  onSurfaceVariant = onSurfaceVariantDark,
+  outline = outlineDark,
+  outlineVariant = outlineVariantDark,
+  scrim = scrimDark,
+  inverseSurface = inverseSurfaceDark,
+  inverseOnSurface = inverseOnSurfaceDark,
+  inversePrimary = inversePrimaryDark,
+  surfaceDim = surfaceDimDark,
+  surfaceBright = surfaceBrightDark,
+  surfaceContainerLowest = surfaceContainerLowestDark,
+  surfaceContainerLow = surfaceContainerLowDark,
+  surfaceContainer = surfaceContainerDark,
+  surfaceContainerHigh = surfaceContainerHighDark,
+  surfaceContainerHighest = surfaceContainerHighestDark,
 )
 
 private val AppTypography = run {
-   val default = Typography()
-   val defaultLineHeight = (1.0).em
-   val defaultLetterSpacing = (0.1).sp
-   Typography(
-      displayLarge = default.displayLarge.copy(
-         lineHeight = defaultLineHeight,
-         letterSpacing = defaultLetterSpacing,
-      ),
-      displayMedium = default.displayMedium.copy(
-         lineHeight = defaultLineHeight,
-         letterSpacing = defaultLetterSpacing,
-      ),
-      displaySmall = default.displaySmall.copy(
-         lineHeight = defaultLineHeight,
-         letterSpacing = defaultLetterSpacing,
-      ),
+  val default = Typography()
+  val defaultLineHeight = (1.0).em
+  val defaultLetterSpacing = (0.1).sp
+  Typography(
+    displayLarge = default.displayLarge.copy(
+      lineHeight = defaultLineHeight,
+      letterSpacing = defaultLetterSpacing,
+    ),
+    displayMedium = default.displayMedium.copy(
+      lineHeight = defaultLineHeight,
+      letterSpacing = defaultLetterSpacing,
+    ),
+    displaySmall = default.displaySmall.copy(
+      lineHeight = defaultLineHeight,
+      letterSpacing = defaultLetterSpacing,
+    ),
 
-      headlineLarge = default.headlineLarge.copy(
-         lineHeight = defaultLineHeight,
-         letterSpacing = defaultLetterSpacing,
-      ),
-      headlineMedium = default.headlineMedium.copy(
-         lineHeight = defaultLineHeight,
-         letterSpacing = defaultLetterSpacing,
-      ),
-      headlineSmall = default.headlineSmall.copy(
-         lineHeight = defaultLineHeight,
-         letterSpacing = defaultLetterSpacing,
-      ),
+    headlineLarge = default.headlineLarge.copy(
+      lineHeight = defaultLineHeight,
+      letterSpacing = defaultLetterSpacing,
+    ),
+    headlineMedium = default.headlineMedium.copy(
+      lineHeight = defaultLineHeight,
+      letterSpacing = defaultLetterSpacing,
+    ),
+    headlineSmall = default.headlineSmall.copy(
+      lineHeight = defaultLineHeight,
+      letterSpacing = defaultLetterSpacing,
+    ),
 
-      titleLarge = default.titleLarge.copy(
-         lineHeight = defaultLineHeight,
-         letterSpacing = defaultLetterSpacing,
-      ),
-      titleMedium = default.titleMedium.copy(
-         lineHeight = defaultLineHeight,
-         letterSpacing = defaultLetterSpacing,
-      ),
-      titleSmall = default.titleSmall.copy(
-         lineHeight = defaultLineHeight,
-         letterSpacing = defaultLetterSpacing,
-      ),
+    titleLarge = default.titleLarge.copy(
+      lineHeight = defaultLineHeight,
+      letterSpacing = defaultLetterSpacing,
+    ),
+    titleMedium = default.titleMedium.copy(
+      lineHeight = defaultLineHeight,
+      letterSpacing = defaultLetterSpacing,
+    ),
+    titleSmall = default.titleSmall.copy(
+      lineHeight = defaultLineHeight,
+      letterSpacing = defaultLetterSpacing,
+    ),
 
-      bodyLarge = default.bodyLarge.copy(
-         lineHeight = defaultLineHeight,
-         letterSpacing = defaultLetterSpacing,
-      ),
-      bodyMedium = default.bodyMedium.copy(
-         lineHeight = defaultLineHeight,
-         letterSpacing = defaultLetterSpacing,
-      ),
-      bodySmall = default.bodySmall.copy(
-         lineHeight = defaultLineHeight,
-         letterSpacing = defaultLetterSpacing,
-      ),
+    bodyLarge = default.bodyLarge.copy(
+      lineHeight = defaultLineHeight,
+      letterSpacing = defaultLetterSpacing,
+    ),
+    bodyMedium = default.bodyMedium.copy(
+      lineHeight = defaultLineHeight,
+      letterSpacing = defaultLetterSpacing,
+    ),
+    bodySmall = default.bodySmall.copy(
+      lineHeight = defaultLineHeight,
+      letterSpacing = defaultLetterSpacing,
+    ),
 
-      labelLarge = default.labelLarge.copy(
-         lineHeight = defaultLineHeight,
-         letterSpacing = defaultLetterSpacing,
-         fontWeight = FontWeight.Medium,
-      ),
-      labelMedium = default.labelMedium.copy(
-         lineHeight = defaultLineHeight,
-         letterSpacing = defaultLetterSpacing,
-      ),
-      labelSmall = default.labelSmall.copy(
-         lineHeight = defaultLineHeight,
-         letterSpacing = defaultLetterSpacing,
-      ),
-   )
+    labelLarge = default.labelLarge.copy(
+      lineHeight = defaultLineHeight,
+      letterSpacing = defaultLetterSpacing,
+      fontWeight = FontWeight.Medium,
+    ),
+    labelMedium = default.labelMedium.copy(
+      lineHeight = defaultLineHeight,
+      letterSpacing = defaultLetterSpacing,
+    ),
+    labelSmall = default.labelSmall.copy(
+      lineHeight = defaultLineHeight,
+      letterSpacing = defaultLetterSpacing,
+    ),
+  )
 }

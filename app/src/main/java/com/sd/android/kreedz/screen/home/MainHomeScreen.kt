@@ -30,79 +30,79 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainHomeScreen(
-   modifier: Modifier = Modifier,
-   vm: MainHomeVM = viewModel(),
+  modifier: Modifier = Modifier,
+  vm: MainHomeVM = viewModel(),
 ) {
-   val state by vm.stateFlow.collectAsStateWithLifecycle()
-   val scope = rememberCoroutineScope()
-   val context = LocalContext.current
+  val state by vm.stateFlow.collectAsStateWithLifecycle()
+  val scope = rememberCoroutineScope()
+  val context = LocalContext.current
 
-   val pagerState = rememberPagerState { state.tabs.size }
-   pagerState.FCurrentPage { vm.selectTab(it) }
+  val pagerState = rememberPagerState { state.tabs.size }
+  pagerState.FCurrentPage { vm.selectTab(it) }
 
-   Scaffold(
-      modifier = modifier.fillMaxSize(),
-      topBar = {
-         TopAppBar(
-            expandedHeight = 48.dp,
-            title = {
-               MainHomeTabView(
-                  tabs = state.tabs,
-                  selectedTabIndex = state.selectedTabIndex,
-                  onClickTab = { index ->
-                     scope.launch {
-                        pagerState.animateScrollToPage(index)
-                     }
-                  },
-                  onClickSearch = {
-                     AppRouter.search(context = context)
-                  },
-               )
+  Scaffold(
+    modifier = modifier.fillMaxSize(),
+    topBar = {
+      TopAppBar(
+        expandedHeight = 48.dp,
+        title = {
+          MainHomeTabView(
+            tabs = state.tabs,
+            selectedTabIndex = state.selectedTabIndex,
+            onClickTab = { index ->
+              scope.launch {
+                pagerState.animateScrollToPage(index)
+              }
             },
-         )
-      },
-   ) { padding ->
-      HorizontalPager(
-         state = pagerState,
-         beyondViewportPageCount = state.tabs.size,
-         modifier = Modifier
-            .fillMaxSize()
-            .padding(padding),
-      ) { index ->
-         pagerState.FSetActivePage(index) {
-            state.tabs.getOrNull(index)?.also { tab ->
-               when (tab) {
-                  MainHomeTab.News -> {
-                     LatestNewsScreen()
-                  }
-                  MainHomeTab.Release -> {
-                     FActiveAtLeastOnce {
-                        LatestReleaseScreen()
-                     }
-                  }
-                  MainHomeTab.Ranking -> {
-                     FActiveAtLeastOnce {
-                        TopRankingScreen()
-                     }
-                  }
-                  MainHomeTab.Servers -> {
-                     FActiveAtLeastOnce {
-                        GameServerScreen()
-                     }
-                  }
-                  MainHomeTab.Blog -> {
-                     FActiveAtLeastOnce {
-                        LatestBlogScreen()
-                     }
-                  }
-                  MainHomeTab.Team -> {
-                     FActiveAtLeastOnce {
-                        TeamScreen()
-                     }
-                  }
-               }
+            onClickSearch = {
+              AppRouter.search(context = context)
+            },
+          )
+        },
+      )
+    },
+  ) { padding ->
+    HorizontalPager(
+      state = pagerState,
+      beyondViewportPageCount = state.tabs.size,
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(padding),
+    ) { index ->
+      pagerState.FSetActivePage(index) {
+        state.tabs.getOrNull(index)?.also { tab ->
+          when (tab) {
+            MainHomeTab.News -> {
+              LatestNewsScreen()
             }
-         }
+            MainHomeTab.Release -> {
+              FActiveAtLeastOnce {
+                LatestReleaseScreen()
+              }
+            }
+            MainHomeTab.Ranking -> {
+              FActiveAtLeastOnce {
+                TopRankingScreen()
+              }
+            }
+            MainHomeTab.Servers -> {
+              FActiveAtLeastOnce {
+                GameServerScreen()
+              }
+            }
+            MainHomeTab.Blog -> {
+              FActiveAtLeastOnce {
+                LatestBlogScreen()
+              }
+            }
+            MainHomeTab.Team -> {
+              FActiveAtLeastOnce {
+                TeamScreen()
+              }
+            }
+          }
+        }
       }
-   }
+    }
+  }
 }

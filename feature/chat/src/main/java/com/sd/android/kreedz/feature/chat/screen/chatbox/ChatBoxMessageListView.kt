@@ -36,147 +36,147 @@ import com.sd.lib.compose.utils.fClick
 
 @Composable
 internal fun ChatBoxMessageListView(
-   modifier: Modifier = Modifier,
-   lazyListState: LazyListState,
-   messages: LazyPagingItems<ChatBoxItemModel>,
-   onClickAuthor: (userId: String) -> Unit,
-   onClickMessage: (ChatBoxMessageModel) -> Unit,
+  modifier: Modifier = Modifier,
+  lazyListState: LazyListState,
+  messages: LazyPagingItems<ChatBoxItemModel>,
+  onClickAuthor: (userId: String) -> Unit,
+  onClickMessage: (ChatBoxMessageModel) -> Unit,
 ) {
-   LazyColumn(
-      modifier = modifier.fillMaxSize(),
-      state = lazyListState,
-      contentPadding = PaddingValues(8.dp),
-      verticalArrangement = Arrangement.spacedBy(8.dp),
-   ) {
-      fPagingItems(
-         items = messages,
-         contentType = messages.itemContentType {
-            when (it) {
-               is ChatBoxMessageModel -> "message"
-               is ChatBoxDateModel -> "date"
-            }
-         }
-      ) { _, item ->
-         when (item) {
-            is ChatBoxMessageModel -> {
-               Card(shape = MaterialTheme.shapes.extraSmall) {
-                  ItemView(
-                     country = item.author.country,
-                     countryText = item.author.nickname,
-                     dateTime = item.timeStr,
-                     message = item.message,
-                     icons = item.author.icons,
-                     onClickAuthor = {
-                        onClickAuthor(item.author.id)
-                     },
-                     modifier = Modifier.fClick {
-                        onClickMessage(item)
-                     }
-                  )
-               }
-            }
-
-            is ChatBoxDateModel -> {
-               Text(
-                  text = item.dateStr,
-                  fontSize = 16.sp,
-                  fontWeight = FontWeight.Medium,
-                  modifier = Modifier.padding(
-                     horizontal = 8.dp,
-                     vertical = 4.dp,
-                  ),
-               )
-            }
-         }
+  LazyColumn(
+    modifier = modifier.fillMaxSize(),
+    state = lazyListState,
+    contentPadding = PaddingValues(8.dp),
+    verticalArrangement = Arrangement.spacedBy(8.dp),
+  ) {
+    fPagingItems(
+      items = messages,
+      contentType = messages.itemContentType {
+        when (it) {
+          is ChatBoxMessageModel -> "message"
+          is ChatBoxDateModel -> "date"
+        }
       }
+    ) { _, item ->
+      when (item) {
+        is ChatBoxMessageModel -> {
+          Card(shape = MaterialTheme.shapes.extraSmall) {
+            ItemView(
+              country = item.author.country,
+              countryText = item.author.nickname,
+              dateTime = item.timeStr,
+              message = item.message,
+              icons = item.author.icons,
+              onClickAuthor = {
+                onClickAuthor(item.author.id)
+              },
+              modifier = Modifier.fClick {
+                onClickMessage(item)
+              }
+            )
+          }
+        }
 
-      fPagingAppend(
-         items = messages,
-      )
-   }
+        is ChatBoxDateModel -> {
+          Text(
+            text = item.dateStr,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.padding(
+              horizontal = 8.dp,
+              vertical = 4.dp,
+            ),
+          )
+        }
+      }
+    }
+
+    fPagingAppend(
+      items = messages,
+    )
+  }
 }
 
 @Composable
 private fun ItemView(
-   modifier: Modifier = Modifier,
-   country: String?,
-   countryText: String?,
-   dateTime: String,
-   message: String,
-   icons: UserIconsModel,
-   onClickAuthor: () -> Unit,
+  modifier: Modifier = Modifier,
+  country: String?,
+  countryText: String?,
+  dateTime: String,
+  message: String,
+  icons: UserIconsModel,
+  onClickAuthor: () -> Unit,
 ) {
-   ConstraintLayout(
-      modifier = modifier
-         .fillMaxWidth()
-         .padding(8.dp)
-   ) {
-      val (refUser, refDateTime, refMessage, refIcons) = createRefs()
+  ConstraintLayout(
+    modifier = modifier
+      .fillMaxWidth()
+      .padding(8.dp)
+  ) {
+    val (refUser, refDateTime, refMessage, refIcons) = createRefs()
 
-      ComCountryTextViewLarge(
-         country = country,
-         text = countryText,
-         modifier = Modifier
-            .constrainAs(refUser) {
-               top.linkTo(parent.top)
-               start.linkTo(parent.start)
-            }
-            .clickable { onClickAuthor() }
-      )
+    ComCountryTextViewLarge(
+      country = country,
+      text = countryText,
+      modifier = Modifier
+        .constrainAs(refUser) {
+          top.linkTo(parent.top)
+          start.linkTo(parent.start)
+        }
+        .clickable { onClickAuthor() }
+    )
 
-      Text(
-         text = dateTime,
-         fontSize = 12.sp,
-         color = AppTextColor.medium,
-         modifier = Modifier.constrainAs(refDateTime) {
-            top.linkTo(parent.top)
-            end.linkTo(parent.end)
-         }
-      )
-
-      Box(
-         modifier = Modifier.constrainAs(refMessage) {
-            top.linkTo(refUser.bottom, 6.dp)
-            start.linkTo(refUser.start)
-         }
-      ) {
-         SelectionContainer {
-            Text(
-               text = message.comAnnotatedLink(),
-               fontSize = 14.sp,
-               color = AppTextColor.medium,
-            )
-         }
+    Text(
+      text = dateTime,
+      fontSize = 12.sp,
+      color = AppTextColor.medium,
+      modifier = Modifier.constrainAs(refDateTime) {
+        top.linkTo(parent.top)
+        end.linkTo(parent.end)
       }
+    )
 
-      ComUserIconsView(
-         icons = icons,
-         modifier = Modifier.constrainAs(refIcons) {
-            centerVerticallyTo(refUser)
-            start.linkTo(refUser.end, 2.dp)
-         }
-      )
-   }
+    Box(
+      modifier = Modifier.constrainAs(refMessage) {
+        top.linkTo(refUser.bottom, 6.dp)
+        start.linkTo(refUser.start)
+      }
+    ) {
+      SelectionContainer {
+        Text(
+          text = message.comAnnotatedLink(),
+          fontSize = 14.sp,
+          color = AppTextColor.medium,
+        )
+      }
+    }
+
+    ComUserIconsView(
+      icons = icons,
+      modifier = Modifier.constrainAs(refIcons) {
+        centerVerticallyTo(refUser)
+        start.linkTo(refUser.end, 2.dp)
+      }
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewItemView() {
-   ItemView(
-      country = "cn",
-      countryText = "zhengjun",
-      dateTime = "10/10/2024",
-      message = "Welcome to kreedz https://www.youtube.com",
-      icons = UserIconsModel(
-         isVip = true,
-         isRecordHolder = true,
-         isLJRecordHolder = true,
-         isTournamentRank1 = true,
-         isTournamentRank2 = true,
-         isTournamentRank3 = true,
-         isMapper = true,
-         isMovieEditor = true,
-      ),
-      onClickAuthor = {},
-   )
+  ItemView(
+    country = "cn",
+    countryText = "zhengjun",
+    dateTime = "10/10/2024",
+    message = "Welcome to kreedz https://www.youtube.com",
+    icons = UserIconsModel(
+      isVip = true,
+      isRecordHolder = true,
+      isLJRecordHolder = true,
+      isTournamentRank1 = true,
+      isTournamentRank2 = true,
+      isTournamentRank3 = true,
+      isMapper = true,
+      isMovieEditor = true,
+    ),
+    onClickAuthor = {},
+  )
 }

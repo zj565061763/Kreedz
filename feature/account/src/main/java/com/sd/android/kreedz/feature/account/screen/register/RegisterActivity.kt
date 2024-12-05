@@ -7,12 +7,12 @@ import com.sd.android.kreedz.core.router.AppRouter
 
 @Router(path = AppRouter.REGISTER)
 internal class RegisterActivity : BaseActivity() {
-   @Composable
-   override fun ContentImpl() {
-      RegisterScreen(
-         onClickBack = {
-            finish()
-         },
-      )
-   }
+  @Composable
+  override fun ContentImpl() {
+    RegisterScreen(
+      onClickBack = {
+        finish()
+      },
+    )
+  }
 }

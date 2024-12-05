@@ -22,52 +22,52 @@ import com.sd.android.kreedz.feature.common.ui.ComTextLabelView
 
 @Composable
 internal fun MapRecordsListView(
-   modifier: Modifier = Modifier,
-   records: List<MapRecordModel>,
-   keywords: List<String>,
-   lazyListState: LazyListState,
-   onClickItem: (MapRecordModel) -> Unit,
-   onClickPlayer: (UserModel) -> Unit,
+  modifier: Modifier = Modifier,
+  records: List<MapRecordModel>,
+  keywords: List<String>,
+  lazyListState: LazyListState,
+  onClickItem: (MapRecordModel) -> Unit,
+  onClickPlayer: (UserModel) -> Unit,
 ) {
-   LazyColumn(
-      modifier = modifier.fillMaxSize(),
-      state = lazyListState,
-      verticalArrangement = Arrangement.spacedBy(8.dp),
-      contentPadding = PaddingValues(8.dp),
-   ) {
-      item(
-         key = "items count",
-         contentType = "items count",
-      ) {
-         Box(modifier = Modifier.fillParentMaxWidth()) {
-            ComTextLabelView(
-               text = records.size.toString(),
-               label = "items",
-               textColor = AppTextColor.small,
-               textFontSize = 12.sp,
-               modifier = Modifier.align(Alignment.Center),
-            )
-         }
+  LazyColumn(
+    modifier = modifier.fillMaxSize(),
+    state = lazyListState,
+    verticalArrangement = Arrangement.spacedBy(8.dp),
+    contentPadding = PaddingValues(8.dp),
+  ) {
+    item(
+      key = "items count",
+      contentType = "items count",
+    ) {
+      Box(modifier = Modifier.fillParentMaxWidth()) {
+        ComTextLabelView(
+          text = records.size.toString(),
+          label = "items",
+          textColor = AppTextColor.small,
+          textFontSize = 12.sp,
+          modifier = Modifier.align(Alignment.Center),
+        )
       }
+    }
 
-      items(
-         items = records,
-         key = { it.map.id },
-      ) { item ->
-         Card(
-            shape = MaterialTheme.shapes.extraSmall,
-            onClick = { onClickItem(item) }
-         ) {
-            ComMapRecordsItemView(
-               item = item,
-               keywords = keywords,
-               onClickPlayer = {
-                  item.record?.player?.also { player ->
-                     onClickPlayer(player)
-                  }
-               }
-            )
-         }
+    items(
+      items = records,
+      key = { it.map.id },
+    ) { item ->
+      Card(
+        shape = MaterialTheme.shapes.extraSmall,
+        onClick = { onClickItem(item) }
+      ) {
+        ComMapRecordsItemView(
+          item = item,
+          keywords = keywords,
+          onClickPlayer = {
+            item.record?.player?.also { player ->
+              onClickPlayer(player)
+            }
+          }
+        )
       }
-   }
+    }
+  }
 }

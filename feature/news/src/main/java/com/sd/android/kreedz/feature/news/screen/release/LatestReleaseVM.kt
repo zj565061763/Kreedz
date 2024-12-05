@@ -7,52 +7,52 @@ import com.sd.android.kreedz.data.repository.LatestReleaseRepository
 import com.sd.lib.coroutines.FLoader
 
 class LatestReleaseVM : BaseViewModel<LatestReleaseVM.State, Any>(State()) {
-   private val _repository = LatestReleaseRepository()
-   private val _loader = FLoader()
+  private val _repository = LatestReleaseRepository()
+  private val _loader = FLoader()
 
-   fun init() {
-      if (state.records.isEmpty()) {
-         refresh()
+  fun init() {
+    if (state.records.isEmpty()) {
+      refresh()
+    }
+  }
+
+  fun refresh() {
+    vmLaunch {
+      _loader.load {
+        _repository.sync()
+      }.onFailure { error ->
+        sendEffect(error)
       }
-   }
+    }
+  }
 
-   fun refresh() {
-      vmLaunch {
-         _loader.load {
-            _repository.sync()
-         }.onFailure { error ->
-            sendEffect(error)
-         }
+  init {
+    vmLaunch {
+      _loader.loadingFlow.collect { data ->
+        updateState {
+          it.copy(isLoading = data)
+        }
       }
-   }
+    }
 
-   init {
-      vmLaunch {
-         _loader.loadingFlow.collect { data ->
-            updateState {
-               it.copy(isLoading = data)
-            }
-         }
+    vmLaunch {
+      _repository.getLatestReleaseFlow().collect { data ->
+        updateState {
+          it.copy(
+            newsId = data.newsId,
+            newsName = data.newsName,
+            records = data.records,
+          )
+        }
       }
+    }
+  }
 
-      vmLaunch {
-         _repository.getLatestReleaseFlow().collect { data ->
-            updateState {
-               it.copy(
-                  newsId = data.newsId,
-                  newsName = data.newsName,
-                  records = data.records,
-               )
-            }
-         }
-      }
-   }
-
-   @Immutable
-   data class State(
-      val isLoading: Boolean = false,
-      val newsId: String? = null,
-      val newsName: String? = null,
-      val records: List<LatestRecordGroupModel> = emptyList(),
-   )
+  @Immutable
+  data class State(
+    val isLoading: Boolean = false,
+    val newsId: String? = null,
+    val newsName: String? = null,
+    val records: List<LatestRecordGroupModel> = emptyList(),
+  )
 }

@@ -17,70 +17,70 @@ import java.io.IOException
 import java.util.concurrent.atomic.AtomicBoolean
 
 internal class AuthInterceptor : AppApiInterceptor() {
-   private var _isRefreshToken = AtomicBoolean()
-   private val _continuations = FContinuations<Unit>()
+  private var _isRefreshToken = AtomicBoolean()
+  private val _continuations = FContinuations<Unit>()
 
-   override fun interceptImpl(chain: Interceptor.Chain, annotation: AppApi): Response {
-      val request = chain.request()
-      val response = chain.proceed(request)
-      return if (response.code == 401) {
-         runBlocking { handleUnauthorized(chain, request) }
-      } else {
-         response
-      }
-   }
+  override fun interceptImpl(chain: Interceptor.Chain, annotation: AppApi): Response {
+    val request = chain.request()
+    val response = chain.proceed(request)
+    return if (response.code == 401) {
+      runBlocking { handleUnauthorized(chain, request) }
+    } else {
+      response
+    }
+  }
 
-   private suspend fun handleUnauthorized(
-      chain: Interceptor.Chain,
-      request: Request,
-   ): Response {
-      return if (_isRefreshToken.compareAndSet(false, true)) {
-         try {
-            refreshToken(chain, request).let { success ->
-               if (success) {
-                  _continuations.resumeAll(Unit)
-                  chain.proceed(request)
-               } else {
-                  FEvent.post(EHttpUnauthorized())
-                  throw HttpUnauthorizedException()
-               }
-            }
-         } finally {
-            _isRefreshToken.set(false)
-            _continuations.cancelAll()
-         }
-      } else {
-         runCatching {
-            request.logDebug { "awaitRefreshToken" }
-            _continuations.await()
-            request.logDebug { "awaitRefreshToken resumed" }
-         }.onFailure { e ->
-            request.logDebug { "awaitRefreshToken error:${e.stackTraceToString()}" }
-            throw IOException(e)
-         }
-         chain.proceed(request)
+  private suspend fun handleUnauthorized(
+    chain: Interceptor.Chain,
+    request: Request,
+  ): Response {
+    return if (_isRefreshToken.compareAndSet(false, true)) {
+      try {
+        refreshToken(chain, request).let { success ->
+          if (success) {
+            _continuations.resumeAll(Unit)
+            chain.proceed(request)
+          } else {
+            FEvent.post(EHttpUnauthorized())
+            throw HttpUnauthorizedException()
+          }
+        }
+      } finally {
+        _isRefreshToken.set(false)
+        _continuations.cancelAll()
       }
-   }
+    } else {
+      runCatching {
+        request.logDebug { "awaitRefreshToken" }
+        _continuations.await()
+        request.logDebug { "awaitRefreshToken resumed" }
+      }.onFailure { e ->
+        request.logDebug { "awaitRefreshToken error:${e.stackTraceToString()}" }
+        throw IOException(e)
+      }
+      chain.proceed(request)
+    }
+  }
 
-   private suspend fun refreshToken(
-      chain: Interceptor.Chain,
-      request: Request,
-   ): Boolean {
-      check(_isRefreshToken.get())
-      return fNetRetry {
-         request.logDebug { "refreshToken" }
-         request.newBuilder()
-            .url(fsHttpUrl.getRefreshTokenUrl())
-            .method("POST", "".toRequestBody())
-            .build()
-            .let { chain.proceed(it) }
-            .also { it.closeQuietly() }
-      }.onSuccess { data ->
-         request.logDebug { "refreshToken success code:${data.code}" }
-      }.onFailure { error ->
-         request.logDebug { "refreshToken error:${error.stackTraceToString()}" }
-      }.let {
-         it.getOrNull()?.isSuccessful == true
-      }
-   }
+  private suspend fun refreshToken(
+    chain: Interceptor.Chain,
+    request: Request,
+  ): Boolean {
+    check(_isRefreshToken.get())
+    return fNetRetry {
+      request.logDebug { "refreshToken" }
+      request.newBuilder()
+        .url(fsHttpUrl.getRefreshTokenUrl())
+        .method("POST", "".toRequestBody())
+        .build()
+        .let { chain.proceed(it) }
+        .also { it.closeQuietly() }
+    }.onSuccess { data ->
+      request.logDebug { "refreshToken success code:${data.code}" }
+    }.onFailure { error ->
+      request.logDebug { "refreshToken error:${error.stackTraceToString()}" }
+    }.let {
+      it.getOrNull()?.isSuccessful == true
+    }
+  }
 }

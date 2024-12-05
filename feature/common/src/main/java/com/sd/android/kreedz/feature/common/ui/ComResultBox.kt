@@ -8,25 +8,25 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun ComResultBox(
-   modifier: Modifier = Modifier,
-   isLoading: Boolean,
-   result: Result<*>?,
-   onFailure: @Composable (Throwable) -> Unit,
-   onSuccess: @Composable () -> Unit,
+  modifier: Modifier = Modifier,
+  isLoading: Boolean,
+  result: Result<*>?,
+  onFailure: @Composable (Throwable) -> Unit,
+  onSuccess: @Composable () -> Unit,
 ) {
-   Box(
-      modifier = modifier,
-      contentAlignment = Alignment.Center,
-   ) {
-      if (isLoading) {
-         CircularProgressIndicator()
-      } else {
-         result?.onFailure {
-            onFailure(it)
-         }
-         result?.onSuccess {
-            onSuccess()
-         }
+  Box(
+    modifier = modifier,
+    contentAlignment = Alignment.Center,
+  ) {
+    if (isLoading) {
+      CircularProgressIndicator()
+    } else {
+      result?.onFailure {
+        onFailure(it)
       }
-   }
+      result?.onSuccess {
+        onSuccess()
+      }
+    }
+  }
 }

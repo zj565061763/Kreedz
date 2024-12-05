@@ -57,446 +57,446 @@ import org.jsoup.nodes.TextNode
 
 @Composable
 fun ComHtmlView(
-   modifier: Modifier = Modifier,
-   html: String,
-   lineHeight: TextUnit = 20.sp,
+  modifier: Modifier = Modifier,
+  html: String,
+  lineHeight: TextUnit = 20.sp,
 ) {
-   BoxWithConstraints(modifier = modifier) {
-      val result = parseHtml(
-         html = html,
-         lineHeight = lineHeight,
-         maxWidth = maxWidth,
-      )
-      Text(
-         text = result.text,
-         inlineContent = result.inlineContent,
-         color = AppTextColor.medium,
-         fontSize = 14.sp,
-         lineHeight = lineHeight,
-      )
-   }
+  BoxWithConstraints(modifier = modifier) {
+    val result = parseHtml(
+      html = html,
+      lineHeight = lineHeight,
+      maxWidth = maxWidth,
+    )
+    Text(
+      text = result.text,
+      inlineContent = result.inlineContent,
+      color = AppTextColor.medium,
+      fontSize = 14.sp,
+      lineHeight = lineHeight,
+    )
+  }
 }
 
 @Composable
 private fun parseHtml(
-   html: String,
-   lineHeight: TextUnit,
-   maxWidth: Dp,
+  html: String,
+  lineHeight: TextUnit,
+  maxWidth: Dp,
 ): ComposeHtml.Result {
-   val colorScheme = MaterialTheme.colorScheme
-   val context = LocalContext.current
-   val uriHandler = LocalUriHandler.current
-   val density = LocalDensity.current
+  val colorScheme = MaterialTheme.colorScheme
+  val context = LocalContext.current
+  val uriHandler = LocalUriHandler.current
+  val density = LocalDensity.current
 
-   val composeHtml = rememberComposeHtml().apply {
-      Factory("a") {
-         AppTag_a(
-            style = SpanStyle(
-               color = colorScheme.primary,
-               textDecoration = TextDecoration.Underline,
-            ),
-            onClickUrl = {
-               fsUri.openUri(it, uriHandler)
-            },
-            onClickBlog = {
-               AppRouter.blog(context, it)
-            },
-            onClickNews = {
-               AppRouter.news(context, it)
-            },
-            onClickUser = {
-               AppRouter.user(context, it)
-            },
-            onClickMap = {
-               AppRouter.map(context, it)
-            },
-         )
-      }
+  val composeHtml = rememberComposeHtml().apply {
+    Factory("a") {
+      AppTag_a(
+        style = SpanStyle(
+          color = colorScheme.primary,
+          textDecoration = TextDecoration.Underline,
+        ),
+        onClickUrl = {
+          fsUri.openUri(it, uriHandler)
+        },
+        onClickBlog = {
+          AppRouter.blog(context, it)
+        },
+        onClickNews = {
+          AppRouter.news(context, it)
+        },
+        onClickUser = {
+          AppRouter.user(context, it)
+        },
+        onClickMap = {
+          AppRouter.map(context, it)
+        },
+      )
+    }
 
-      Factory("user") {
-         AppTag_user(
-            style = SpanStyle(
-               fontWeight = FontWeight.SemiBold,
-            ),
-            onClickUser = {
-               AppRouter.user(context, it)
-            },
-         )
-      }
+    Factory("user") {
+      AppTag_user(
+        style = SpanStyle(
+          fontWeight = FontWeight.SemiBold,
+        ),
+        onClickUser = {
+          AppRouter.user(context, it)
+        },
+      )
+    }
 
-      Factory("map") {
-         AppTag_map(
-            style = SpanStyle(
-               color = colorScheme.primary,
-               fontWeight = FontWeight.Medium
-            ),
-            onClickMap = {
-               AppRouter.map(context, it)
-            },
-         )
-      }
+    Factory("map") {
+      AppTag_map(
+        style = SpanStyle(
+          color = colorScheme.primary,
+          fontWeight = FontWeight.Medium
+        ),
+        onClickMap = {
+          AppRouter.map(context, it)
+        },
+      )
+    }
 
-      Factory("timer") {
-         AppTag_timer(
-            style = SpanStyle(
-               color = colorScheme.primary,
-               fontWeight = FontWeight.Medium,
-            )
-         )
-      }
+    Factory("timer") {
+      AppTag_timer(
+        style = SpanStyle(
+          color = colorScheme.primary,
+          fontWeight = FontWeight.Medium,
+        )
+      )
+    }
 
-      Factory("ytLink") {
-         AppTag_ytLink()
-      }
+    Factory("ytLink") {
+      AppTag_ytLink()
+    }
 
-      Factory("flag") {
-         AppTag_flag()
-      }
+    Factory("flag") {
+      AppTag_flag()
+    }
 
-      Factory("iframe") {
-         AppTag_iframe(
-            style = SpanStyle(
-               color = colorScheme.primary,
-               textDecoration = TextDecoration.Underline,
-            ),
-            onClickUrl = {
-               fsUri.openUri(it, uriHandler)
-            },
-         )
-      }
+    Factory("iframe") {
+      AppTag_iframe(
+        style = SpanStyle(
+          color = colorScheme.primary,
+          textDecoration = TextDecoration.Underline,
+        ),
+        onClickUrl = {
+          fsUri.openUri(it, uriHandler)
+        },
+      )
+    }
 
-      Factory("url") {
-         AppTag_url(
-            style = SpanStyle(
-               color = colorScheme.primary,
-               textDecoration = TextDecoration.Underline,
-            ),
-            onClickUrl = {
-               fsUri.openUri(it, uriHandler)
-            },
-         )
-      }
+    Factory("url") {
+      AppTag_url(
+        style = SpanStyle(
+          color = colorScheme.primary,
+          textDecoration = TextDecoration.Underline,
+        ),
+        onClickUrl = {
+          fsUri.openUri(it, uriHandler)
+        },
+      )
+    }
 
-      Factory("img") {
-         AppTag_img(
-            density = density,
-            maxWidth = maxWidth,
-            lineHeight = lineHeight,
-         )
-      }
-   }
+    Factory("img") {
+      AppTag_img(
+        density = density,
+        maxWidth = maxWidth,
+        lineHeight = lineHeight,
+      )
+    }
+  }
 
-   var result by remember { mutableStateOf(ComposeHtml.Result.Empty) }
+  var result by remember { mutableStateOf(ComposeHtml.Result.Empty) }
 
-   LaunchedEffect(
-      composeHtml,
-      html,
-      colorScheme,
-      context,
-      uriHandler,
-      density,
-      maxWidth,
-      lineHeight,
-   ) {
-      withContext(Dispatchers.IO) {
-         val hookHtml = hookHtml(html)
-         result = composeHtml.parse(hookHtml)
-      }
-   }
+  LaunchedEffect(
+    composeHtml,
+    html,
+    colorScheme,
+    context,
+    uriHandler,
+    density,
+    maxWidth,
+    lineHeight,
+  ) {
+    withContext(Dispatchers.IO) {
+      val hookHtml = hookHtml(html)
+      result = composeHtml.parse(hookHtml)
+    }
+  }
 
-   return result
+  return result
 }
 
 private class AppTag_a(
-   private val style: SpanStyle,
-   private val onClickUrl: (url: String) -> Unit,
-   private val onClickBlog: (blogId: String) -> Unit,
-   private val onClickNews: (newsId: String) -> Unit,
-   private val onClickUser: (userId: String) -> Unit,
-   private val onClickMap: (mapId: String) -> Unit,
+  private val style: SpanStyle,
+  private val onClickUrl: (url: String) -> Unit,
+  private val onClickBlog: (blogId: String) -> Unit,
+  private val onClickNews: (newsId: String) -> Unit,
+  private val onClickUser: (userId: String) -> Unit,
+  private val onClickMap: (mapId: String) -> Unit,
 ) : ComposeHtml.Tag() {
-   override fun elementEnd(builder: AnnotatedString.Builder, element: Element, start: Int, end: Int) {
-      val url = element.attr("href")
-      val linkAnnotation = LinkAnnotation.Url(
-         url = url,
-         styles = TextLinkStyles(style),
-         linkInteractionListener = {
-            handleUrl(url)
-         },
-      )
-      builder.addLink(
-         url = linkAnnotation,
-         start = start,
-         end = end,
-      )
-   }
+  override fun elementEnd(builder: AnnotatedString.Builder, element: Element, start: Int, end: Int) {
+    val url = element.attr("href")
+    val linkAnnotation = LinkAnnotation.Url(
+      url = url,
+      styles = TextLinkStyles(style),
+      linkInteractionListener = {
+        handleUrl(url)
+      },
+    )
+    builder.addLink(
+      url = linkAnnotation,
+      start = start,
+      end = end,
+    )
+  }
 
-   private fun handleUrl(url: String) {
-      when {
-         url.startsWith("blog/") -> {
-            url.removePrefix("blog/").toIntOrNull()?.also { id ->
-               onClickBlog(id.toString())
-            }
-         }
-         url.startsWith("news/") -> {
-            url.removePrefix("news/").toIntOrNull()?.also { id ->
-               onClickNews(id.toString())
-            }
-         }
-         url.startsWith("/profile/") -> {
-            url.removePrefix("/profile/").toIntOrNull()?.also { id ->
-               onClickUser(id.toString())
-            }
-         }
-         url.startsWith("/record/") -> {
-            url.removePrefix("/record/").toIntOrNull()?.also { id ->
-               onClickMap(id.toString())
-            }
-         }
-         else -> onClickUrl(url)
+  private fun handleUrl(url: String) {
+    when {
+      url.startsWith("blog/") -> {
+        url.removePrefix("blog/").toIntOrNull()?.also { id ->
+          onClickBlog(id.toString())
+        }
       }
-   }
+      url.startsWith("news/") -> {
+        url.removePrefix("news/").toIntOrNull()?.also { id ->
+          onClickNews(id.toString())
+        }
+      }
+      url.startsWith("/profile/") -> {
+        url.removePrefix("/profile/").toIntOrNull()?.also { id ->
+          onClickUser(id.toString())
+        }
+      }
+      url.startsWith("/record/") -> {
+        url.removePrefix("/record/").toIntOrNull()?.also { id ->
+          onClickMap(id.toString())
+        }
+      }
+      else -> onClickUrl(url)
+    }
+  }
 }
 
 private class AppTag_user(
-   private val style: SpanStyle,
-   private val onClickUser: (userId: String) -> Unit,
+  private val style: SpanStyle,
+  private val onClickUser: (userId: String) -> Unit,
 ) : ComposeHtml.Tag() {
-   override fun elementText(builder: AnnotatedString.Builder, element: Element, textNode: TextNode) {
-      // [user]88542|hk|colcolx[/user]
-      val array = textNode.text().split("|")
+  override fun elementText(builder: AnnotatedString.Builder, element: Element, textNode: TextNode) {
+    // [user]88542|hk|colcolx[/user]
+    val array = textNode.text().split("|")
 
-      val id = array.getOrNull(0)
-      if (id.isNullOrBlank()) return
+    val id = array.getOrNull(0)
+    if (id.isNullOrBlank()) return
 
-      val country = array.getOrNull(1)
-      if (country.isNullOrBlank()) return
+    val country = array.getOrNull(1)
+    if (country.isNullOrBlank()) return
 
-      val nickname = array.getOrNull(2)
-      if (nickname.isNullOrBlank()) return
+    val nickname = array.getOrNull(2)
+    if (nickname.isNullOrBlank()) return
 
-      val linkAnnotation = LinkAnnotation.Clickable(
-         tag = id,
-         styles = TextLinkStyles(style),
-         linkInteractionListener = {
-            onClickUser(id)
-         }
-      )
-
-      builder.withLink(linkAnnotation) {
-         appendInlineContent(id = country)
-         append(nickname)
-         addInlineContent(
-            id = country,
-            placeholderWidth = 18.sp,
-            placeholderHeight = 1.em,
-            placeholderVerticalAlign = PlaceholderVerticalAlign.TextBottom,
-         ) {
-            Box(
-               contentAlignment = Alignment.Center,
-               modifier = Modifier
-                  .fillMaxSize()
-                  .padding(end = 2.dp),
-            ) {
-               ComCountryImageView(
-                  country = country,
-                  modifier = Modifier.fillMaxWidth(),
-               )
-            }
-         }
+    val linkAnnotation = LinkAnnotation.Clickable(
+      tag = id,
+      styles = TextLinkStyles(style),
+      linkInteractionListener = {
+        onClickUser(id)
       }
-   }
+    )
+
+    builder.withLink(linkAnnotation) {
+      appendInlineContent(id = country)
+      append(nickname)
+      addInlineContent(
+        id = country,
+        placeholderWidth = 18.sp,
+        placeholderHeight = 1.em,
+        placeholderVerticalAlign = PlaceholderVerticalAlign.TextBottom,
+      ) {
+        Box(
+          contentAlignment = Alignment.Center,
+          modifier = Modifier
+            .fillMaxSize()
+            .padding(end = 2.dp),
+        ) {
+          ComCountryImageView(
+            country = country,
+            modifier = Modifier.fillMaxWidth(),
+          )
+        }
+      }
+    }
+  }
 }
 
 private class AppTag_map(
-   private val style: SpanStyle,
-   private val onClickMap: (mapId: String) -> Unit,
+  private val style: SpanStyle,
+  private val onClickMap: (mapId: String) -> Unit,
 ) : ComposeHtml.Tag() {
-   override fun elementText(builder: AnnotatedString.Builder, element: Element, textNode: TextNode) {
-      // [map]794|8b1_brickngrass[/map]
-      val array = textNode.text().split("|")
+  override fun elementText(builder: AnnotatedString.Builder, element: Element, textNode: TextNode) {
+    // [map]794|8b1_brickngrass[/map]
+    val array = textNode.text().split("|")
 
-      val id = array.getOrNull(0)
-      if (id.isNullOrBlank()) return
+    val id = array.getOrNull(0)
+    if (id.isNullOrBlank()) return
 
-      val map = array.getOrNull(1)
-      if (map.isNullOrBlank()) return
+    val map = array.getOrNull(1)
+    if (map.isNullOrBlank()) return
 
-      val linkAnnotation = LinkAnnotation.Clickable(
-         tag = id,
-         styles = TextLinkStyles(style),
-         linkInteractionListener = {
-            onClickMap(id)
-         }
-      )
-
-      builder.withLink(linkAnnotation) {
-         append(map)
+    val linkAnnotation = LinkAnnotation.Clickable(
+      tag = id,
+      styles = TextLinkStyles(style),
+      linkInteractionListener = {
+        onClickMap(id)
       }
-   }
+    )
+
+    builder.withLink(linkAnnotation) {
+      append(map)
+    }
+  }
 }
 
 private class AppTag_timer(
-   private val style: SpanStyle,
+  private val style: SpanStyle,
 ) : ComposeHtml.Tag() {
-   override fun elementText(builder: AnnotatedString.Builder, element: Element, textNode: TextNode) {
-      // [timer]12243|03:39.44[/timer]
-      val array = textNode.text().split("|")
+  override fun elementText(builder: AnnotatedString.Builder, element: Element, textNode: TextNode) {
+    // [timer]12243|03:39.44[/timer]
+    val array = textNode.text().split("|")
 
-      val time = array.getOrNull(1)
-      if (time.isNullOrBlank()) return
+    val time = array.getOrNull(1)
+    if (time.isNullOrBlank()) return
 
-      builder.withStyle(style) {
-         append(time)
-         appendLine()
-      }
-   }
+    builder.withStyle(style) {
+      append(time)
+      appendLine()
+    }
+  }
 }
 
 private class AppTag_ytLink : ComposeHtml.Tag() {
-   override fun elementText(builder: AnnotatedString.Builder, element: Element, textNode: TextNode) {
-      // [ytLink]https://youtu.be/Cs6-G1Ka6mA?si=-dcGazmHM0u6fD6Q[/ytLink]
-      val text = textNode.text()
-      if (!text.startsWith("http")) return
+  override fun elementText(builder: AnnotatedString.Builder, element: Element, textNode: TextNode) {
+    // [ytLink]https://youtu.be/Cs6-G1Ka6mA?si=-dcGazmHM0u6fD6Q[/ytLink]
+    val text = textNode.text()
+    if (!text.startsWith("http")) return
 
-      builder.appendInlineContent(id = text)
-      addInlineContent(
-         id = text,
-         placeholderWidth = 24.sp,
-         placeholderHeight = 24.sp,
-         placeholderVerticalAlign = PlaceholderVerticalAlign.Bottom,
-         content = {
-            ComYoutubeButton(
-               link = text,
-               modifier = Modifier.size(24.dp),
-            )
-         },
-      )
-   }
+    builder.appendInlineContent(id = text)
+    addInlineContent(
+      id = text,
+      placeholderWidth = 24.sp,
+      placeholderHeight = 24.sp,
+      placeholderVerticalAlign = PlaceholderVerticalAlign.Bottom,
+      content = {
+        ComYoutubeButton(
+          link = text,
+          modifier = Modifier.size(24.dp),
+        )
+      },
+    )
+  }
 }
 
 private class AppTag_flag : ComposeHtml.Tag() {
-   override fun elementText(builder: AnnotatedString.Builder, element: Element, textNode: TextNode) {
-      // [flag]ru[/flag]
+  override fun elementText(builder: AnnotatedString.Builder, element: Element, textNode: TextNode) {
+    // [flag]ru[/flag]
 
-      val country = textNode.text()
-      if (country.isNullOrBlank()) return
+    val country = textNode.text()
+    if (country.isNullOrBlank()) return
 
-      builder.appendInlineContent(id = country)
-      addInlineContent(
-         id = country,
-         placeholderWidth = 18.sp,
-         placeholderHeight = 1.em,
-         placeholderVerticalAlign = PlaceholderVerticalAlign.TextBottom,
+    builder.appendInlineContent(id = country)
+    addInlineContent(
+      id = country,
+      placeholderWidth = 18.sp,
+      placeholderHeight = 1.em,
+      placeholderVerticalAlign = PlaceholderVerticalAlign.TextBottom,
+    ) {
+      Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+          .fillMaxSize()
+          .padding(end = 2.dp),
       ) {
-         Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-               .fillMaxSize()
-               .padding(end = 2.dp),
-         ) {
-            ComCountryImageView(
-               country = country,
-               modifier = Modifier.fillMaxWidth(),
-            )
-         }
+        ComCountryImageView(
+          country = country,
+          modifier = Modifier.fillMaxWidth(),
+        )
       }
-   }
+    }
+  }
 }
 
 private class AppTag_iframe(
-   private val style: SpanStyle,
-   private val onClickUrl: (url: String) -> Unit,
+  private val style: SpanStyle,
+  private val onClickUrl: (url: String) -> Unit,
 ) : ComposeHtml.Tag() {
-   override fun elementEnd(builder: AnnotatedString.Builder, element: Element, start: Int, end: Int) {
-      val url = element.attr("src")
-      val linkAnnotation = LinkAnnotation.Url(
-         url = url,
-         styles = TextLinkStyles(style),
-         linkInteractionListener = {
-            onClickUrl(url)
-         },
-      )
-      builder.withLink(linkAnnotation) {
-         append(url)
-      }
-   }
+  override fun elementEnd(builder: AnnotatedString.Builder, element: Element, start: Int, end: Int) {
+    val url = element.attr("src")
+    val linkAnnotation = LinkAnnotation.Url(
+      url = url,
+      styles = TextLinkStyles(style),
+      linkInteractionListener = {
+        onClickUrl(url)
+      },
+    )
+    builder.withLink(linkAnnotation) {
+      append(url)
+    }
+  }
 }
 
 private class AppTag_url(
-   private val style: SpanStyle,
-   private val onClickUrl: (url: String) -> Unit,
+  private val style: SpanStyle,
+  private val onClickUrl: (url: String) -> Unit,
 ) : ComposeHtml.Tag() {
-   override fun elementStart(builder: AnnotatedString.Builder, element: Element): Boolean {
-      val url = element.attr("url")
-      val linkAnnotation = LinkAnnotation.Url(
-         url = url,
-         styles = TextLinkStyles(style),
-         linkInteractionListener = {
-            onClickUrl(url)
-         },
-      )
-      builder.withLink(linkAnnotation) {
-         append(url)
-      }
-      // Skip children
-      return true
-   }
+  override fun elementStart(builder: AnnotatedString.Builder, element: Element): Boolean {
+    val url = element.attr("url")
+    val linkAnnotation = LinkAnnotation.Url(
+      url = url,
+      styles = TextLinkStyles(style),
+      linkInteractionListener = {
+        onClickUrl(url)
+      },
+    )
+    builder.withLink(linkAnnotation) {
+      append(url)
+    }
+    // Skip children
+    return true
+  }
 }
 
 private class AppTag_img(
-   density: Density,
-   maxWidth: Dp,
-   lineHeight: TextUnit,
+  density: Density,
+  maxWidth: Dp,
+  lineHeight: TextUnit,
 ) : Tag_img(
-   density = density,
-   maxWidth = maxWidth,
-   lineHeight = lineHeight,
+  density = density,
+  maxWidth = maxWidth,
+  lineHeight = lineHeight,
 ) {
-   override fun addImgContent(src: String, alt: String, placeholder: Placeholder) {
-      addInlineContent(
-         id = src,
-         placeholder = placeholder
+  override fun addImgContent(src: String, alt: String, placeholder: Placeholder) {
+    addInlineContent(
+      id = src,
+      placeholder = placeholder
+    ) {
+      val painter = rememberAsyncImagePainter(src)
+      val loadState = painter.state
+
+      Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+          .fillMaxSize()
+          .fEnabled(loadState !is AsyncImagePainter.State.Success) {
+            background(MaterialTheme.colorScheme.surfaceContainer)
+          },
       ) {
-         val painter = rememberAsyncImagePainter(src)
-         val loadState = painter.state
+        Image(
+          painter = painter,
+          contentDescription = alt,
+          contentScale = ContentScale.FillWidth,
+          modifier = Modifier.fillMaxWidth(),
+        )
 
-         Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-               .fillMaxSize()
-               .fEnabled(loadState !is AsyncImagePainter.State.Success) {
-                  background(MaterialTheme.colorScheme.surfaceContainer)
-               },
-         ) {
-            Image(
-               painter = painter,
-               contentDescription = alt,
-               contentScale = ContentScale.FillWidth,
-               modifier = Modifier.fillMaxWidth(),
-            )
-
-            if (loadState is AsyncImagePainter.State.Error) {
-               LaunchedEffect(Unit) {
-                  fDebug { "html image $src error:${loadState.result.throwable.stackTraceToString()}" }
-               }
-            }
-         }
+        if (loadState is AsyncImagePainter.State.Error) {
+          LaunchedEffect(Unit) {
+            fDebug { "html image $src error:${loadState.result.throwable.stackTraceToString()}" }
+          }
+        }
       }
-   }
+    }
+  }
 }
 
 private fun hookHtml(html: String): String {
-   return html
-      .replace("""\r\n""", """<br/>""")
-      .replace(
-         regex = CustomDataRegex.toRegex(),
-         replacement = "<$1>$2</$1>",
-      )
-      .replace(
-         regex = CustomUrlRegex.toRegex(),
-         replacement = "<url url=$1>$2</url>",
-      )
+  return html
+    .replace("""\r\n""", """<br/>""")
+    .replace(
+      regex = CustomDataRegex.toRegex(),
+      replacement = "<$1>$2</$1>",
+    )
+    .replace(
+      regex = CustomUrlRegex.toRegex(),
+      replacement = "<url url=$1>$2</url>",
+    )
 }
 
 private const val CustomDataRegex = """\[(\w+)](.+?)\[/\1]"""

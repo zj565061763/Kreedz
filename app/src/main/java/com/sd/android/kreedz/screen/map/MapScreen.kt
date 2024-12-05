@@ -35,159 +35,159 @@ import com.sd.android.kreedz.feature.common.ui.ComErrorDialog
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapScreen(
-   modifier: Modifier = Modifier,
-   mapId: String,
-   onClickBack: () -> Unit,
+  modifier: Modifier = Modifier,
+  mapId: String,
+  onClickBack: () -> Unit,
 ) {
-   val vm = viewModel<MapVM>()
-   val state by vm.stateFlow.collectAsStateWithLifecycle()
-   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-   val context = LocalContext.current
+  val vm = viewModel<MapVM>()
+  val state by vm.stateFlow.collectAsStateWithLifecycle()
+  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+  val context = LocalContext.current
 
-   var showErrorDialog by remember { mutableStateOf(false) }
+  var showErrorDialog by remember { mutableStateOf(false) }
 
-   Scaffold(
-      modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-      topBar = {
-         MapTitleView(
-            scrollBehavior = scrollBehavior,
-            isLoading = state.isLoading,
-            hasError = state.result?.isFailure == true,
-            mapName = state.mapName,
-            favorite = state.favorite,
-            onClickBack = onClickBack,
-            onClickError = {
-               showErrorDialog = true
-            },
-            onClickFavorite = {
-               vm.clickFavorite()
-            },
-         )
-      },
-   ) { padding ->
-      BodyView(
-         modifier = Modifier.padding(padding),
-         mapId = state.mapId,
-         mapImage = state.mapImage,
-         mapDate = state.mapDate,
-         authors = state.authors,
-         currentRecord = state.currentRecord,
-         records = state.records,
-         onClickAuthor = {
-            AppRouter.user(context, it)
-         },
-         onClickPlayer = {
-            AppRouter.user(context, it)
-         },
+  Scaffold(
+    modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    topBar = {
+      MapTitleView(
+        scrollBehavior = scrollBehavior,
+        isLoading = state.isLoading,
+        hasError = state.result?.isFailure == true,
+        mapName = state.mapName,
+        favorite = state.favorite,
+        onClickBack = onClickBack,
+        onClickError = {
+          showErrorDialog = true
+        },
+        onClickFavorite = {
+          vm.clickFavorite()
+        },
       )
-   }
+    },
+  ) { padding ->
+    BodyView(
+      modifier = Modifier.padding(padding),
+      mapId = state.mapId,
+      mapImage = state.mapImage,
+      mapDate = state.mapDate,
+      authors = state.authors,
+      currentRecord = state.currentRecord,
+      records = state.records,
+      onClickAuthor = {
+        AppRouter.user(context, it)
+      },
+      onClickPlayer = {
+        AppRouter.user(context, it)
+      },
+    )
+  }
 
-   LaunchedEffect(vm, mapId) {
-      vm.load(mapId)
-   }
+  LaunchedEffect(vm, mapId) {
+    vm.load(mapId)
+  }
 
-   if (showErrorDialog) {
-      state.result?.onFailure { error ->
-         ComErrorDialog(
-            error = error.toString(),
-            onDismissRequest = {
-               showErrorDialog = false
-            },
-            onClickRetry = {
-               vm.retry()
-            },
-         )
-      }
-   }
+  if (showErrorDialog) {
+    state.result?.onFailure { error ->
+      ComErrorDialog(
+        error = error.toString(),
+        onDismissRequest = {
+          showErrorDialog = false
+        },
+        onClickRetry = {
+          vm.retry()
+        },
+      )
+    }
+  }
 }
 
 @Composable
 private fun BodyView(
-   modifier: Modifier = Modifier,
-   mapId: String,
-   mapImage: String?,
-   mapDate: String?,
-   authors: List<UserModel>,
-   currentRecord: RecordModel?,
-   records: List<RecordModel>,
-   onClickAuthor: (userId: String) -> Unit,
-   onClickPlayer: (userId: String) -> Unit,
+  modifier: Modifier = Modifier,
+  mapId: String,
+  mapImage: String?,
+  mapDate: String?,
+  authors: List<UserModel>,
+  currentRecord: RecordModel?,
+  records: List<RecordModel>,
+  onClickAuthor: (userId: String) -> Unit,
+  onClickPlayer: (userId: String) -> Unit,
 ) {
-   LazyColumn(
-      modifier = modifier.fillMaxSize(),
-      verticalArrangement = Arrangement.spacedBy(8.dp),
-      contentPadding = PaddingValues(bottom = 24.dp),
-   ) {
-      mapInfo(
-         mapId = mapId,
-         mapImage = mapImage,
-         mapDate = mapDate,
-         authors = authors,
-         onClickAuthor = onClickAuthor,
-      )
+  LazyColumn(
+    modifier = modifier.fillMaxSize(),
+    verticalArrangement = Arrangement.spacedBy(8.dp),
+    contentPadding = PaddingValues(bottom = 24.dp),
+  ) {
+    mapInfo(
+      mapId = mapId,
+      mapImage = mapImage,
+      mapDate = mapDate,
+      authors = authors,
+      onClickAuthor = onClickAuthor,
+    )
 
-      if (records.isEmpty()) {
-         listEmpty()
-      } else {
-         listRecords(
-            currentRecord = currentRecord,
-            records = records,
-            onClickPlayer = onClickPlayer,
-         )
-      }
-   }
+    if (records.isEmpty()) {
+      listEmpty()
+    } else {
+      listRecords(
+        currentRecord = currentRecord,
+        records = records,
+        onClickPlayer = onClickPlayer,
+      )
+    }
+  }
 }
 
 private fun LazyListScope.mapInfo(
-   mapId: String,
-   mapImage: String?,
-   mapDate: String?,
-   authors: List<UserModel>,
-   onClickAuthor: (userId: String) -> Unit,
+  mapId: String,
+  mapImage: String?,
+  mapDate: String?,
+  authors: List<UserModel>,
+  onClickAuthor: (userId: String) -> Unit,
 ) {
-   item(
-      key = "map info",
-      contentType = "map info",
-   ) {
-      MapInfoView(
-         mapId = mapId,
-         mapImage = mapImage,
-         mapDate = mapDate,
-         authors = authors,
-         onClickAuthor = onClickAuthor,
-      )
-   }
+  item(
+    key = "map info",
+    contentType = "map info",
+  ) {
+    MapInfoView(
+      mapId = mapId,
+      mapImage = mapImage,
+      mapDate = mapDate,
+      authors = authors,
+      onClickAuthor = onClickAuthor,
+    )
+  }
 }
 
 private fun LazyListScope.listRecords(
-   currentRecord: RecordModel?,
-   records: List<RecordModel>,
-   onClickPlayer: (userId: String) -> Unit,
+  currentRecord: RecordModel?,
+  records: List<RecordModel>,
+  onClickPlayer: (userId: String) -> Unit,
 ) {
-   items(records) { item ->
-      Card(
-         shape = MaterialTheme.shapes.extraSmall,
-         modifier = Modifier.padding(horizontal = 8.dp)
-      ) {
-         MapRecordItemView(
-            record = item,
-            currentRecord = currentRecord,
-            onClickPlayer = onClickPlayer,
-         )
-      }
-   }
+  items(records) { item ->
+    Card(
+      shape = MaterialTheme.shapes.extraSmall,
+      modifier = Modifier.padding(horizontal = 8.dp)
+    ) {
+      MapRecordItemView(
+        record = item,
+        currentRecord = currentRecord,
+        onClickPlayer = onClickPlayer,
+      )
+    }
+  }
 }
 
 private fun LazyListScope.listEmpty() {
-   item(
-      key = "empty records",
-      contentType = "empty records"
-   ) {
-      Box(
-         modifier = Modifier.fillParentMaxWidth(),
-         contentAlignment = Alignment.Center,
-      ) {
-         Text(text = "No records")
-      }
-   }
+  item(
+    key = "empty records",
+    contentType = "empty records"
+  ) {
+    Box(
+      modifier = Modifier.fillParentMaxWidth(),
+      contentAlignment = Alignment.Center,
+    ) {
+      Text(text = "No records")
+    }
+  }
 }

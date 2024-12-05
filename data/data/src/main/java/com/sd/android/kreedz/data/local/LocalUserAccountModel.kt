@@ -11,39 +11,39 @@ import kotlinx.coroutines.flow.map
 
 @DatastoreType("local_user_account")
 internal data class LocalUserAccountModel(
-   val id: String,
-   val nickname: String,
-   val country: String?,
-   val countryName: String?,
-   val icons: UserIconsModel,
-   val roles: List<String>,
+  val id: String,
+  val nickname: String,
+  val country: String?,
+  val countryName: String?,
+  val icons: UserIconsModel,
+  val roles: List<String>,
 ) {
-   companion object {
-      private val _store = FDatastore.get(LocalUserAccountModel::class.java)
+  companion object {
+    private val _store = FDatastore.get(LocalUserAccountModel::class.java)
 
-      val flow: Flow<LocalUserAccountModel?>
-         get() = _store.flow
+    val flow: Flow<LocalUserAccountModel?>
+      get() = _store.flow
 
-      val userIdFlow: Flow<String?>
-         get() = flow.map { it?.id }.distinctUntilChanged()
+    val userIdFlow: Flow<String?>
+      get() = flow.map { it?.id }.distinctUntilChanged()
 
-      suspend fun replace(model: LocalUserAccountModel?) {
-         if (model?.id?.isBlank() == true) return
-         _store.replace { model }
+    suspend fun replace(model: LocalUserAccountModel?) {
+      if (model?.id?.isBlank() == true) return
+      _store.replace { model }
+    }
+
+    suspend fun update(model: LocalUserAccountModel) {
+      _store.update { data ->
+        if (data.id == model.id) {
+          model
+        } else {
+          data
+        }
       }
+    }
 
-      suspend fun update(model: LocalUserAccountModel) {
-         _store.update { data ->
-            if (data.id == model.id) {
-               model
-            } else {
-               data
-            }
-         }
-      }
-
-      suspend fun get(): LocalUserAccountModel? {
-         return _store.get()
-      }
-   }
+    suspend fun get(): LocalUserAccountModel? {
+      return _store.get()
+    }
+  }
 }

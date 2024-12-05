@@ -19,135 +19,135 @@ import kotlinx.coroutines.flow.onEach
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MapVM : BaseViewModel<MapVM.State, Any>(State()) {
-   private val _repository = MapRepository()
-   private val _imageRepository = MapImageRepository()
-   private val _favoriteRepository = FavoriteMapRepository()
+  private val _repository = MapRepository()
+  private val _imageRepository = MapImageRepository()
+  private val _favoriteRepository = FavoriteMapRepository()
 
-   private val _loader = FLoader()
+  private val _loader = FLoader()
 
-   private val _mapIdFlow = stateFlow
-      .map { it.mapId }
-      .filter { it.isNotBlank() }
-      .distinctUntilChanged()
+  private val _mapIdFlow = stateFlow
+    .map { it.mapId }
+    .filter { it.isNotBlank() }
+    .distinctUntilChanged()
 
-   fun load(mapId: String) {
+  fun load(mapId: String) {
+    updateState {
+      it.copy(mapId = mapId)
+    }
+  }
+
+  fun retry() {
+    vmLaunch {
+      syncMap(state.mapId)
+    }
+  }
+
+  fun clickFavorite() {
+    vmLaunch {
+      _favoriteRepository.addOrRemove(state.mapId)
+    }
+  }
+
+  private suspend fun syncMap(mapId: String) {
+    _loader.load {
+      _repository.syncMap(mapId)
+    }.onSuccess { data ->
       updateState {
-         it.copy(mapId = mapId)
+        it.copy(
+          mapDate = data.mapDate,
+          authors = data.authors,
+        )
       }
-   }
+      _imageRepository.load(mapId, data.mapImage)
+    }
+  }
 
-   fun retry() {
-      vmLaunch {
-         syncMap(state.mapId)
+  init {
+    vmLaunch {
+      _loader.stateFlow.collect { data ->
+        updateState {
+          it.copy(
+            isLoading = data.isLoading,
+            result = data.result,
+          )
+        }
       }
-   }
+    }
 
-   fun clickFavorite() {
-      vmLaunch {
-         _favoriteRepository.addOrRemove(state.mapId)
+    // Sync map
+    vmLaunch {
+      _mapIdFlow.collectLatest { data ->
+        syncMap(data)
       }
-   }
+    }
 
-   private suspend fun syncMap(mapId: String) {
-      _loader.load {
-         _repository.syncMap(mapId)
-      }.onSuccess { data ->
-         updateState {
+    // Map info
+    vmLaunch {
+      _mapIdFlow
+        .onEach {
+          updateState {
             it.copy(
-               mapDate = data.mapDate,
-               authors = data.authors,
+              mapName = "",
+              mapImage = "",
+              mapDate = "",
+              authors = emptyList(),
             )
-         }
-         _imageRepository.load(mapId, data.mapImage)
-      }
-   }
+          }
+        }
+        .flatMapLatest { _repository.getMapFlow(it) }
+        .filterNotNull()
+        .collect { data ->
+          updateState {
+            it.copy(
+              mapName = data.name,
+              mapImage = data.image,
+            )
+          }
+        }
+    }
 
-   init {
-      vmLaunch {
-         _loader.stateFlow.collect { data ->
+    // Map records
+    vmLaunch {
+      _mapIdFlow
+        .onEach { updateState { it.copy(records = emptyList()) } }
+        .flatMapLatest { _repository.getMapRecordsFlow(it) }
+        .collect { data ->
+          updateState {
+            it.copy(
+              currentRecord = data.firstOrNull(),
+              records = data,
+            )
+          }
+        }
+    }
+
+    vmLaunch {
+      _mapIdFlow.collectLatest { mapId ->
+        _favoriteRepository.favoriteStateFlow(mapId)
+          .collect { data ->
             updateState {
-               it.copy(
-                  isLoading = data.isLoading,
-                  result = data.result,
-               )
+              it.copy(favorite = data)
             }
-         }
+          }
       }
+    }
+  }
 
-      // Sync map
-      vmLaunch {
-         _mapIdFlow.collectLatest { data ->
-            syncMap(data)
-         }
-      }
+  @Immutable
+  data class State(
+    val mapId: String = "",
 
-      // Map info
-      vmLaunch {
-         _mapIdFlow
-            .onEach {
-               updateState {
-                  it.copy(
-                     mapName = "",
-                     mapImage = "",
-                     mapDate = "",
-                     authors = emptyList(),
-                  )
-               }
-            }
-            .flatMapLatest { _repository.getMapFlow(it) }
-            .filterNotNull()
-            .collect { data ->
-               updateState {
-                  it.copy(
-                     mapName = data.name,
-                     mapImage = data.image,
-                  )
-               }
-            }
-      }
+    val isLoading: Boolean = false,
+    val result: Result<Unit>? = null,
 
-      // Map records
-      vmLaunch {
-         _mapIdFlow
-            .onEach { updateState { it.copy(records = emptyList()) } }
-            .flatMapLatest { _repository.getMapRecordsFlow(it) }
-            .collect { data ->
-               updateState {
-                  it.copy(
-                     currentRecord = data.firstOrNull(),
-                     records = data,
-                  )
-               }
-            }
-      }
+    val mapName: String = "",
+    val mapImage: String? = null,
+    val mapDate: String? = null,
+    val authors: List<UserModel> = emptyList(),
 
-      vmLaunch {
-         _mapIdFlow.collectLatest { mapId ->
-            _favoriteRepository.favoriteStateFlow(mapId)
-               .collect { data ->
-                  updateState {
-                     it.copy(favorite = data)
-                  }
-               }
-         }
-      }
-   }
+    val currentRecord: RecordModel? = null,
+    val records: List<RecordModel> = emptyList(),
 
-   @Immutable
-   data class State(
-      val mapId: String = "",
-
-      val isLoading: Boolean = false,
-      val result: Result<Unit>? = null,
-
-      val mapName: String = "",
-      val mapImage: String? = null,
-      val mapDate: String? = null,
-      val authors: List<UserModel> = emptyList(),
-
-      val currentRecord: RecordModel? = null,
-      val records: List<RecordModel> = emptyList(),
-
-      val favorite: Boolean = false,
-   )
+    val favorite: Boolean = false,
+  )
 }

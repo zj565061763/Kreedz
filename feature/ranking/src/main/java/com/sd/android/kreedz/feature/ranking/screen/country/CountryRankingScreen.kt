@@ -15,36 +15,36 @@ import com.sd.android.kreedz.feature.ranking.screen.ranking.RankingScreenView
 
 @Composable
 internal fun CountryRankingScreen(
-   modifier: Modifier = Modifier,
-   vm: CountryRankingVM = viewModel(),
-   onClickBack: () -> Unit,
+  modifier: Modifier = Modifier,
+  vm: CountryRankingVM = viewModel(),
+  onClickBack: () -> Unit,
 ) {
-   val state by vm.stateFlow.collectAsStateWithLifecycle()
+  val state by vm.stateFlow.collectAsStateWithLifecycle()
 
-   RankingScreenView(
-      modifier = modifier,
-      title = "Country",
-      isLoading = state.isLoading,
-      onSelectDate = { vm.refresh(it) },
-      onClickBack = onClickBack,
-      onRefresh = { vm.refresh(it) },
-   ) {
-      items(state.rankings) { item ->
-         Card(shape = MaterialTheme.shapes.extraSmall) {
-            RankingItemView(
-               rank = item.rank,
-               country = item.country,
-               countryText = item.countryName,
-               recordNumber = item.recordNumber,
-               percentNumber = item.percentNumber,
-            )
-         }
+  RankingScreenView(
+    modifier = modifier,
+    title = "Country",
+    isLoading = state.isLoading,
+    onSelectDate = { vm.refresh(it) },
+    onClickBack = onClickBack,
+    onRefresh = { vm.refresh(it) },
+  ) {
+    items(state.rankings) { item ->
+      Card(shape = MaterialTheme.shapes.extraSmall) {
+        RankingItemView(
+          rank = item.rank,
+          country = item.country,
+          countryText = item.countryName,
+          recordNumber = item.recordNumber,
+          percentNumber = item.percentNumber,
+        )
       }
-   }
+    }
+  }
 
-   LaunchedEffect(vm) {
-      vm.refresh(null)
-   }
+  LaunchedEffect(vm) {
+    vm.refresh(null)
+  }
 
-   vm.effectFlow.ComEffect()
+  vm.effectFlow.ComEffect()
 }

@@ -7,12 +7,12 @@ import com.sd.android.kreedz.core.router.AppRouter
 
 @Router(path = AppRouter.LOGIN)
 internal class LoginActivity : BaseActivity() {
-   @Composable
-   override fun ContentImpl() {
-      LoginScreen(
-         onClickBack = {
-            finish()
-         },
-      )
-   }
+  @Composable
+  override fun ContentImpl() {
+    LoginScreen(
+      onClickBack = {
+        finish()
+      },
+    )
+  }
 }

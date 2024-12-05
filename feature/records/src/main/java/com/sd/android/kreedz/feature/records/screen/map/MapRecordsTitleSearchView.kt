@@ -26,60 +26,60 @@ import com.sd.lib.compose.input.FTextFieldIndicatorOutline
 
 @Composable
 internal fun MapRecordsTitleSearchView(
-   modifier: Modifier = Modifier,
-   textFieldState: TextFieldState,
+  modifier: Modifier = Modifier,
+  textFieldState: TextFieldState,
 ) {
-   FTextField(
-      modifier = modifier.defaultMinSize(1.dp, 36.dp),
-      state = textFieldState,
-      contentPadding = PaddingValues(0.dp),
-      textStyle = TextStyle(
-         fontSize = 14.sp,
-         lineHeight = (1.2).em,
-      ),
-      placeholder = {
-         Text(text = "Search...")
-      },
-      leadingIcon = {
-         FTextFieldIconContainer(Modifier.padding(start = 8.dp)) {
-            Icon(
-               imageVector = Icons.Default.Search,
-               contentDescription = "Search",
-               modifier = Modifier.size(18.dp),
-            )
-         }
-      },
-      trailingIcon = {
-         FTextFieldIconClear(Modifier.padding(end = 8.dp))
-      },
-      indicator = {
-         FTextFieldIndicatorOutline(shape = CircleShape)
-      },
-   )
+  FTextField(
+    modifier = modifier.defaultMinSize(1.dp, 36.dp),
+    state = textFieldState,
+    contentPadding = PaddingValues(0.dp),
+    textStyle = TextStyle(
+      fontSize = 14.sp,
+      lineHeight = (1.2).em,
+    ),
+    placeholder = {
+      Text(text = "Search...")
+    },
+    leadingIcon = {
+      FTextFieldIconContainer(Modifier.padding(start = 8.dp)) {
+        Icon(
+          imageVector = Icons.Default.Search,
+          contentDescription = "Search",
+          modifier = Modifier.size(18.dp),
+        )
+      }
+    },
+    trailingIcon = {
+      FTextFieldIconClear(Modifier.padding(end = 8.dp))
+    },
+    indicator = {
+      FTextFieldIndicatorOutline(shape = CircleShape)
+    },
+  )
 }
 
 @Preview
 @Composable
 private fun Preview() {
-   AppTheme {
-      MapRecordsTitleSearchView(
-         modifier = Modifier
-            .width(200.dp)
-            .padding(16.dp),
-         textFieldState = TextFieldState("kz"),
-      )
-   }
+  AppTheme {
+    MapRecordsTitleSearchView(
+      modifier = Modifier
+        .width(200.dp)
+        .padding(16.dp),
+      textFieldState = TextFieldState("kz"),
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewEmpty() {
-   AppTheme {
-      MapRecordsTitleSearchView(
-         modifier = Modifier
-            .width(200.dp)
-            .padding(16.dp),
-         textFieldState = TextFieldState(""),
-      )
-   }
+  AppTheme {
+    MapRecordsTitleSearchView(
+      modifier = Modifier
+        .width(200.dp)
+        .padding(16.dp),
+      textFieldState = TextFieldState(""),
+    )
+  }
 }

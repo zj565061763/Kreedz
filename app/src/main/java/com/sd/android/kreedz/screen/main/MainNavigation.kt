@@ -33,102 +33,102 @@ import com.sd.android.kreedz.data.model.MainNavigation
 
 @Composable
 fun MainNavigationView(
-   modifier: Modifier = Modifier,
-   listNavigation: List<MainNavigation>,
-   selectedNavigationIndex: Int,
-   onClickNavigation: (Int) -> Unit,
+  modifier: Modifier = Modifier,
+  listNavigation: List<MainNavigation>,
+  selectedNavigationIndex: Int,
+  onClickNavigation: (Int) -> Unit,
 ) {
-   NavigationBar(modifier = modifier) {
-      listNavigation.forEachIndexed { index, item ->
-         val selected = index == selectedNavigationIndex
-         ItemView(
-            modifier = Modifier.weight(1f),
-            text = item.name,
-            selected = selected,
-            onClick = { onClickNavigation(index) },
-         )
-      }
-   }
+  NavigationBar(modifier = modifier) {
+    listNavigation.forEachIndexed { index, item ->
+      val selected = index == selectedNavigationIndex
+      ItemView(
+        modifier = Modifier.weight(1f),
+        text = item.name,
+        selected = selected,
+        onClick = { onClickNavigation(index) },
+      )
+    }
+  }
 }
 
 @Composable
 private fun NavigationBar(
-   modifier: Modifier = Modifier,
-   containerColor: Color = NavigationBarDefaults.containerColor,
-   contentColor: Color = MaterialTheme.colorScheme.contentColorFor(containerColor),
-   tonalElevation: Dp = NavigationBarDefaults.Elevation,
-   windowInsets: WindowInsets = NavigationBarDefaults.windowInsets,
-   content: @Composable RowScope.() -> Unit,
+  modifier: Modifier = Modifier,
+  containerColor: Color = NavigationBarDefaults.containerColor,
+  contentColor: Color = MaterialTheme.colorScheme.contentColorFor(containerColor),
+  tonalElevation: Dp = NavigationBarDefaults.Elevation,
+  windowInsets: WindowInsets = NavigationBarDefaults.windowInsets,
+  content: @Composable RowScope.() -> Unit,
 ) {
-   Surface(
-      color = containerColor,
-      contentColor = contentColor,
-      tonalElevation = tonalElevation,
-      modifier = modifier
-   ) {
-      Row(
-         modifier =
-         Modifier
-            .fillMaxWidth()
-            .windowInsetsPadding(windowInsets)
-            .defaultMinSize(minHeight = 64.dp)
-            .selectableGroup(),
-         horizontalArrangement = Arrangement.spacedBy(8.dp),
-         verticalAlignment = Alignment.CenterVertically,
-         content = content
-      )
-   }
+  Surface(
+    color = containerColor,
+    contentColor = contentColor,
+    tonalElevation = tonalElevation,
+    modifier = modifier
+  ) {
+    Row(
+      modifier =
+      Modifier
+        .fillMaxWidth()
+        .windowInsetsPadding(windowInsets)
+        .defaultMinSize(minHeight = 64.dp)
+        .selectableGroup(),
+      horizontalArrangement = Arrangement.spacedBy(8.dp),
+      verticalAlignment = Alignment.CenterVertically,
+      content = content
+    )
+  }
 }
 
 @Composable
 private fun ItemView(
-   modifier: Modifier = Modifier,
-   text: String,
-   selected: Boolean,
-   onClick: () -> Unit,
+  modifier: Modifier = Modifier,
+  text: String,
+  selected: Boolean,
+  onClick: () -> Unit,
 ) {
-   Box(
+  Box(
+    contentAlignment = Alignment.Center,
+    modifier = modifier
+      .selectable(
+        selected = selected,
+        onClick = onClick,
+        enabled = true,
+        role = Role.Tab,
+        interactionSource = null,
+        indication = null,
+      ),
+  ) {
+    Box(
       contentAlignment = Alignment.Center,
-      modifier = modifier
-         .selectable(
-            selected = selected,
-            onClick = onClick,
-            enabled = true,
-            role = Role.Tab,
-            interactionSource = null,
-            indication = null,
-         ),
-   ) {
-      Box(
-         contentAlignment = Alignment.Center,
-         modifier = Modifier
-            .defaultMinSize(minHeight = 24.dp)
-            .background(
-               color = if (selected) MaterialTheme.colorScheme.secondaryContainer
-               else Color.Transparent,
-               shape = CircleShape,
-            )
-            .padding(horizontal = 12.dp)
-      ) {
-         Text(
-            text = text,
-            fontSize = 14.sp,
-            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
-         )
-      }
-   }
+      modifier = Modifier
+        .defaultMinSize(minHeight = 24.dp)
+        .background(
+          color = if (selected) MaterialTheme.colorScheme.secondaryContainer
+          else Color.Transparent,
+          shape = CircleShape,
+        )
+        .padding(horizontal = 12.dp)
+    ) {
+      Text(
+        text = text,
+        fontSize = 14.sp,
+        fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+      )
+    }
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewView() {
-   AppTheme {
-      Box(contentAlignment = Alignment.BottomCenter) {
-         MainNavigationView(
-            listNavigation = MainNavigation.entries,
-            selectedNavigationIndex = 0,
-            onClickNavigation = { },
-         )
-      }
-   }
+  AppTheme {
+    Box(contentAlignment = Alignment.BottomCenter) {
+      MainNavigationView(
+        listNavigation = MainNavigation.entries,
+        selectedNavigationIndex = 0,
+        onClickNavigation = { },
+      )
+    }
+  }
 }

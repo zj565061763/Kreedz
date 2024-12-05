@@ -30,85 +30,85 @@ import com.sd.lib.compose.input.FTextFieldIconClear
 
 @Composable
 internal fun RecoverInputView(
-   modifier: Modifier = Modifier,
-   emailState: TextFieldState,
-   onClickRecover: () -> Unit,
+  modifier: Modifier = Modifier,
+  emailState: TextFieldState,
+  onClickRecover: () -> Unit,
 ) {
-   val emailFocus = remember { FocusRequester() }
-   LaunchedEffect(emailFocus) {
-      emailFocus.requestFocus()
-   }
+  val emailFocus = remember { FocusRequester() }
+  LaunchedEffect(emailFocus) {
+    emailFocus.requestFocus()
+  }
 
-   Column(
-      modifier = modifier.fillMaxWidth(),
-      horizontalAlignment = Alignment.CenterHorizontally,
-   ) {
-      InputEmailView(
-         emailState = emailState,
-         onKeyboardDone = onClickRecover,
-         modifier = Modifier.focusRequester(emailFocus),
-      )
+  Column(
+    modifier = modifier.fillMaxWidth(),
+    horizontalAlignment = Alignment.CenterHorizontally,
+  ) {
+    InputEmailView(
+      emailState = emailState,
+      onKeyboardDone = onClickRecover,
+      modifier = Modifier.focusRequester(emailFocus),
+    )
 
-      Spacer(Modifier.height(36.dp))
-      Button(
-         onClick = onClickRecover,
-         enabled = emailState.text.isNotBlank(),
-         modifier = Modifier.widthIn(150.dp),
-      ) {
-         Text(text = "Recover")
-      }
-   }
+    Spacer(Modifier.height(36.dp))
+    Button(
+      onClick = onClickRecover,
+      enabled = emailState.text.isNotBlank(),
+      modifier = Modifier.widthIn(150.dp),
+    ) {
+      Text(text = "Recover")
+    }
+  }
 }
 
 @Composable
 private fun InputEmailView(
-   modifier: Modifier = Modifier,
-   emailState: TextFieldState,
-   onKeyboardDone: () -> Unit,
+  modifier: Modifier = Modifier,
+  emailState: TextFieldState,
+  onKeyboardDone: () -> Unit,
 ) {
-   FTextField(
-      modifier = modifier.fillMaxWidth(),
-      state = emailState,
-      textStyle = TextStyle(
-         fontSize = 16.sp,
-         lineHeight = (1.5).em,
-      ),
-      keyboardOptions = KeyboardOptions.Default.copy(
-         keyboardType = KeyboardType.Email,
-         imeAction = ImeAction.Done,
-      ),
-      onKeyboardAction = {
-         onKeyboardDone()
-      },
-      label = {
-         Text(text = "Email")
-      },
-      trailingIcon = {
-         FTextFieldIconClear(modifier = Modifier.padding(end = 8.dp))
-      },
-   )
+  FTextField(
+    modifier = modifier.fillMaxWidth(),
+    state = emailState,
+    textStyle = TextStyle(
+      fontSize = 16.sp,
+      lineHeight = (1.5).em,
+    ),
+    keyboardOptions = KeyboardOptions.Default.copy(
+      keyboardType = KeyboardType.Email,
+      imeAction = ImeAction.Done,
+    ),
+    onKeyboardAction = {
+      onKeyboardDone()
+    },
+    label = {
+      Text(text = "Email")
+    },
+    trailingIcon = {
+      FTextFieldIconClear(modifier = Modifier.padding(end = 8.dp))
+    },
+  )
 }
 
 @Preview
 @Composable
 private fun Preview() {
-   AppTheme {
-      RecoverInputView(
-         modifier = Modifier.padding(16.dp),
-         emailState = TextFieldState("666666666@qq.com"),
-         onClickRecover = {},
-      )
-   }
+  AppTheme {
+    RecoverInputView(
+      modifier = Modifier.padding(16.dp),
+      emailState = TextFieldState("666666666@qq.com"),
+      onClickRecover = {},
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewEmpty() {
-   AppTheme {
-      RecoverInputView(
-         modifier = Modifier.padding(16.dp),
-         emailState = TextFieldState(""),
-         onClickRecover = {},
-      )
-   }
+  AppTheme {
+    RecoverInputView(
+      modifier = Modifier.padding(16.dp),
+      emailState = TextFieldState(""),
+      onClickRecover = {},
+    )
+  }
 }

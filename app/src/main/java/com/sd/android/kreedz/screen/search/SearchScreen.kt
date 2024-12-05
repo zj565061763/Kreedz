@@ -22,77 +22,77 @@ import com.sd.android.kreedz.feature.common.ui.ComEffect
 
 @Composable
 fun SearchScreen(
-   modifier: Modifier = Modifier,
-   vm: SearchVM = viewModel(),
-   onClickBack: () -> Unit,
+  modifier: Modifier = Modifier,
+  vm: SearchVM = viewModel(),
+  onClickBack: () -> Unit,
 ) {
-   val state by vm.stateFlow.collectAsStateWithLifecycle()
-   val context = LocalContext.current
+  val state by vm.stateFlow.collectAsStateWithLifecycle()
+  val context = LocalContext.current
 
-   val isReadyToSearch by remember { derivedStateOf { state.keyword.isNotEmpty() } }
+  val isReadyToSearch by remember { derivedStateOf { state.keyword.isNotEmpty() } }
 
-   Scaffold(
-      modifier = modifier,
-      topBar = {
-         SearchTitleView(
-            textFieldState = vm.inputState,
-            isReadyToSearch = isReadyToSearch,
-            isSearching = state.isSearching,
-            onClickBack = onClickBack,
-            onClickSearch = {
-               vm.clickSearch()
-            },
-         )
-      },
-   ) { padding ->
-      BodyView(
-         modifier = Modifier
-            .fillMaxSize()
-            .padding(padding),
-         keyword = state.keyword,
-         listNews = state.listNews,
-         listUser = state.listUser,
-         onClickUser = { user ->
-            user.id?.also {
-               AppRouter.user(context, it)
-            }
-         },
-         onClickNews = { news ->
-            AppRouter.news(context, news.id)
-         },
+  Scaffold(
+    modifier = modifier,
+    topBar = {
+      SearchTitleView(
+        textFieldState = vm.inputState,
+        isReadyToSearch = isReadyToSearch,
+        isSearching = state.isSearching,
+        onClickBack = onClickBack,
+        onClickSearch = {
+          vm.clickSearch()
+        },
       )
-   }
+    },
+  ) { padding ->
+    BodyView(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(padding),
+      keyword = state.keyword,
+      listNews = state.listNews,
+      listUser = state.listUser,
+      onClickUser = { user ->
+        user.id?.also {
+          AppRouter.user(context, it)
+        }
+      },
+      onClickNews = { news ->
+        AppRouter.news(context, news.id)
+      },
+    )
+  }
 
-   vm.effectFlow.ComEffect()
+  vm.effectFlow.ComEffect()
 }
 
 @Composable
 private fun BodyView(
-   modifier: Modifier = Modifier,
-   keyword: String,
-   listUser: List<SearchUserModel>?,
-   listNews: List<SearchNewsModel>?,
-   onClickUser: (SearchUserModel) -> Unit,
-   onClickNews: (SearchNewsModel) -> Unit,
+  modifier: Modifier = Modifier,
+  keyword: String,
+  listUser: List<SearchUserModel>?,
+  listNews: List<SearchNewsModel>?,
+  onClickUser: (SearchUserModel) -> Unit,
+  onClickNews: (SearchNewsModel) -> Unit,
 ) {
-   LazyColumn(
-      modifier = modifier.fillMaxSize(),
-      contentPadding = PaddingValues(
-         start = 8.dp, end = 8.dp,
-         top = 8.dp, bottom = 36.dp,
-      ),
-      verticalArrangement = Arrangement.spacedBy(8.dp),
-   ) {
-      searchResultUser(
-         keyword = keyword,
-         listUser = listUser,
-         onClickUser = onClickUser,
-      )
+  LazyColumn(
+    modifier = modifier.fillMaxSize(),
+    contentPadding = PaddingValues(
+      start = 8.dp, end = 8.dp,
+      top = 8.dp, bottom = 36.dp,
+    ),
+    verticalArrangement = Arrangement.spacedBy(8.dp),
+  ) {
+    searchResultUser(
+      keyword = keyword,
+      listUser = listUser,
+      onClickUser = onClickUser,
+    )
 
-      searchResultNews(
-         keyword = keyword,
-         listNews = listNews,
-         onClickNews = onClickNews,
-      )
-   }
+    searchResultNews(
+      keyword = keyword,
+      listNews = listNews,
+      onClickNews = onClickNews,
+    )
+  }
 }

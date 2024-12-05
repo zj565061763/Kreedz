@@ -7,56 +7,56 @@ import com.sd.lib.coroutines.FLoader
 import kotlinx.coroutines.delay
 
 internal class FavoriteMapsVM : BaseViewModel<FavoriteMapsVM.State, Unit>(State()) {
-   private val _repository = FavoriteMapRepository()
-   private val _loader = FLoader()
+  private val _repository = FavoriteMapRepository()
+  private val _loader = FLoader()
 
-   fun load() {
-      vmLaunch {
-         _loader.load {
-            loadData()
-         }
+  fun load() {
+    vmLaunch {
+      _loader.load {
+        loadData()
       }
-   }
+    }
+  }
 
-   fun retry() {
-      vmLaunch {
-         _loader.load {
-            delay(500)
-            loadData()
-         }
+  fun retry() {
+    vmLaunch {
+      _loader.load {
+        delay(500)
+        loadData()
       }
-   }
+    }
+  }
 
-   private suspend fun loadData() {
-      _repository.sync()
-   }
+  private suspend fun loadData() {
+    _repository.sync()
+  }
 
-   init {
-      vmLaunch {
-         _loader.stateFlow.collect { data ->
-            updateState {
-               it.copy(
-                  isLoading = data.isLoading,
-                  result = data.result,
-               )
-            }
-         }
+  init {
+    vmLaunch {
+      _loader.stateFlow.collect { data ->
+        updateState {
+          it.copy(
+            isLoading = data.isLoading,
+            result = data.result,
+          )
+        }
       }
+    }
 
-      vmLaunch {
-         _repository.getFavoriteMapsFlow()
-            .collect { data ->
-               updateState {
-                  it.copy(maps = data)
-               }
-            }
-      }
-   }
+    vmLaunch {
+      _repository.getFavoriteMapsFlow()
+        .collect { data ->
+          updateState {
+            it.copy(maps = data)
+          }
+        }
+    }
+  }
 
-   data class State(
-      val isLoading: Boolean = false,
-      val result: Result<Unit>? = null,
+  data class State(
+    val isLoading: Boolean = false,
+    val result: Result<Unit>? = null,
 
-      val maps: List<MapRecordModel> = emptyList(),
-   )
+    val maps: List<MapRecordModel> = emptyList(),
+  )
 }

@@ -42,131 +42,131 @@ import kotlinx.coroutines.flow.filter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapRecordsScreen(
-   modifier: Modifier = Modifier,
-   vm: MapRecordsVM = viewModel(),
+  modifier: Modifier = Modifier,
+  vm: MapRecordsVM = viewModel(),
 ) {
-   val state by vm.stateFlow.collectAsStateWithLifecycle()
-   val context = LocalContext.current
+  val state by vm.stateFlow.collectAsStateWithLifecycle()
+  val context = LocalContext.current
 
-   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-   val refreshState = rememberFRefreshStateTop { vm.refresh() }
-   refreshState.setRefreshing(state.isRefreshing)
+  val refreshState = rememberFRefreshStateTop { vm.refresh() }
+  refreshState.setRefreshing(state.isRefreshing)
 
-   Scaffold(
-      modifier = modifier
-         .nestedScroll(refreshState.nestedScrollConnection)
-         .nestedScroll(scrollBehavior.nestedScrollConnection),
-      topBar = {
-         Box {
-            MapRecordsTitleView(
-               scrollBehavior = scrollBehavior,
-               textFieldState = vm.textFieldState,
-               onClickIconSort = {
-                  vm.toggleSortsVisibility()
-               },
-               onClickLongjumps = {
-                  AppRouter.ljRecords(context)
-               },
-            )
-            if (state.isLoading) {
-               LinearProgressIndicator(
-                  modifier = Modifier
-                     .fillMaxWidth()
-                     .height(1.dp)
-                     .align(Alignment.BottomCenter),
-               )
-            }
-         }
-      },
-   ) { padding ->
-      Box(
-         modifier = Modifier
-            .fillMaxSize()
-            .padding(padding)
-      ) {
-         BodyView(
-            topAppBarState = scrollBehavior.state,
-            records = state.records,
-            showSorts = state.showSorts,
-            currentSort = state.currentSort,
-            keywords = state.keywords,
-            onClickSort = {
-               vm.clickSort(it)
-            },
-            onClickItem = {
-               AppRouter.map(context, it.map.id)
-            },
-            onClickPlayer = {
-               AppRouter.user(context, it.id)
-            }
-         )
-         FRefreshContainer(
-            state = refreshState,
-            modifier = Modifier.align(Alignment.TopCenter),
-         )
+  Scaffold(
+    modifier = modifier
+      .nestedScroll(refreshState.nestedScrollConnection)
+      .nestedScroll(scrollBehavior.nestedScrollConnection),
+    topBar = {
+      Box {
+        MapRecordsTitleView(
+          scrollBehavior = scrollBehavior,
+          textFieldState = vm.textFieldState,
+          onClickIconSort = {
+            vm.toggleSortsVisibility()
+          },
+          onClickLongjumps = {
+            AppRouter.ljRecords(context)
+          },
+        )
+        if (state.isLoading) {
+          LinearProgressIndicator(
+            modifier = Modifier
+              .fillMaxWidth()
+              .height(1.dp)
+              .align(Alignment.BottomCenter),
+          )
+        }
       }
-   }
+    },
+  ) { padding ->
+    Box(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(padding)
+    ) {
+      BodyView(
+        topAppBarState = scrollBehavior.state,
+        records = state.records,
+        showSorts = state.showSorts,
+        currentSort = state.currentSort,
+        keywords = state.keywords,
+        onClickSort = {
+          vm.clickSort(it)
+        },
+        onClickItem = {
+          AppRouter.map(context, it.map.id)
+        },
+        onClickPlayer = {
+          AppRouter.user(context, it.id)
+        }
+      )
+      FRefreshContainer(
+        state = refreshState,
+        modifier = Modifier.align(Alignment.TopCenter),
+      )
+    }
+  }
 
-   val hasKeyword by remember {
-      derivedStateOf {
-         vm.textFieldState.text.toString().isNotBlank()
-      }
-   }
+  val hasKeyword by remember {
+    derivedStateOf {
+      vm.textFieldState.text.toString().isNotBlank()
+    }
+  }
 
-   BackHandler(hasKeyword) {
-      vm.textFieldState.clearText()
-   }
+  BackHandler(hasKeyword) {
+    vm.textFieldState.clearText()
+  }
 
-   vm.effectFlow.ComEffect()
+  vm.effectFlow.ComEffect()
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun BodyView(
-   modifier: Modifier = Modifier,
-   topAppBarState: TopAppBarState,
-   records: List<MapRecordModel>,
-   showSorts: Boolean,
-   keywords: List<String>,
-   currentSort: MapRecordsSortModel,
-   onClickSort: (MapRecordsSortType) -> Unit,
-   onClickItem: (MapRecordModel) -> Unit,
-   onClickPlayer: (UserModel) -> Unit,
+  modifier: Modifier = Modifier,
+  topAppBarState: TopAppBarState,
+  records: List<MapRecordModel>,
+  showSorts: Boolean,
+  keywords: List<String>,
+  currentSort: MapRecordsSortModel,
+  onClickSort: (MapRecordsSortType) -> Unit,
+  onClickItem: (MapRecordModel) -> Unit,
+  onClickPlayer: (UserModel) -> Unit,
 ) {
-   val lazyListState = rememberLazyListState()
+  val lazyListState = rememberLazyListState()
 
-   Column(modifier = modifier.fillMaxSize()) {
-      AnimatedVisibility(showSorts) {
-         MapRecordsSortView(
-            currentSort = currentSort,
-            onClickSort = onClickSort,
-         )
-      }
-      MapRecordsListView(
-         modifier = Modifier.weight(1f),
-         records = records,
-         keywords = keywords,
-         lazyListState = lazyListState,
-         onClickItem = onClickItem,
-         onClickPlayer = onClickPlayer,
+  Column(modifier = modifier.fillMaxSize()) {
+    AnimatedVisibility(showSorts) {
+      MapRecordsSortView(
+        currentSort = currentSort,
+        onClickSort = onClickSort,
       )
-   }
+    }
+    MapRecordsListView(
+      modifier = Modifier.weight(1f),
+      records = records,
+      keywords = keywords,
+      lazyListState = lazyListState,
+      onClickItem = onClickItem,
+      onClickPlayer = onClickPlayer,
+    )
+  }
 
-   LaunchedEffect(lazyListState, topAppBarState) {
-      FEvent.flowOf<ReClickMainNavigation>()
-         .filter { it.navigation == MainNavigation.Records }
-         .collect {
-            lazyListState.scrollToItem(0)
-            topAppBarState.heightOffset = 0f
-         }
-   }
+  LaunchedEffect(lazyListState, topAppBarState) {
+    FEvent.flowOf<ReClickMainNavigation>()
+      .filter { it.navigation == MainNavigation.Records }
+      .collect {
+        lazyListState.scrollToItem(0)
+        topAppBarState.heightOffset = 0f
+      }
+  }
 
-   LaunchedEffect(lazyListState, keywords) {
-      lazyListState.scrollToItem(0)
-   }
+  LaunchedEffect(lazyListState, keywords) {
+    lazyListState.scrollToItem(0)
+  }
 
-   LaunchedEffect(lazyListState, currentSort) {
-      lazyListState.scrollToItem(0)
-   }
+  LaunchedEffect(lazyListState, currentSort) {
+    lazyListState.scrollToItem(0)
+  }
 }

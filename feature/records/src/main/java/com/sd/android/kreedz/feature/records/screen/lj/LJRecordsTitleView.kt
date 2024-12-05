@@ -40,103 +40,103 @@ import com.sd.lib.compose.layer.layerTag
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun LJRecordsTitleView(
-   modifier: Modifier = Modifier,
-   scrollBehavior: TopAppBarScrollBehavior?,
-   onClickBack: () -> Unit,
-   groups: List<String>,
-   onClickGroup: (String) -> Unit,
+  modifier: Modifier = Modifier,
+  scrollBehavior: TopAppBarScrollBehavior?,
+  onClickBack: () -> Unit,
+  groups: List<String>,
+  onClickGroup: (String) -> Unit,
 ) {
-   var showExpandedLayer by remember { mutableStateOf(false) }
+  var showExpandedLayer by remember { mutableStateOf(false) }
 
-   TopAppBar(
-      modifier = modifier.layerTag(EXPAND_TAB_TAG),
-      colors = TopAppBarDefaults.topAppBarColors().let {
-         it.copy(scrolledContainerColor = it.containerColor)
-      },
-      title = {
-         Text(text = "Longjumps")
-      },
-      navigationIcon = {
-         IconButton(onClick = onClickBack) {
-            Icon(
-               imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-               contentDescription = "Back",
-            )
-         }
-      },
-      actions = {
-         if (groups.isNotEmpty()) {
-            IconButton(onClick = {
-               showExpandedLayer = !showExpandedLayer
-            }) {
-               Icon(
-                  imageVector = Icons.Default.Menu,
-                  contentDescription = "Menu",
-               )
-            }
-         }
-      },
-      scrollBehavior = scrollBehavior,
-   )
+  TopAppBar(
+    modifier = modifier.layerTag(EXPAND_TAB_TAG),
+    colors = TopAppBarDefaults.topAppBarColors().let {
+      it.copy(scrolledContainerColor = it.containerColor)
+    },
+    title = {
+      Text(text = "Longjumps")
+    },
+    navigationIcon = {
+      IconButton(onClick = onClickBack) {
+        Icon(
+          imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+          contentDescription = "Back",
+        )
+      }
+    },
+    actions = {
+      if (groups.isNotEmpty()) {
+        IconButton(onClick = {
+          showExpandedLayer = !showExpandedLayer
+        }) {
+          Icon(
+            imageVector = Icons.Default.Menu,
+            contentDescription = "Menu",
+          )
+        }
+      }
+    },
+    scrollBehavior = scrollBehavior,
+  )
 
-   TargetLayer(
-      target = LayerTarget.Tag(EXPAND_TAB_TAG),
-      attach = showExpandedLayer,
-      onDetachRequest = { showExpandedLayer = false },
-      alignment = TargetAlignment.BottomCenter,
-      detachOnTouchBackground = true,
-      backgroundColor = Color.Black.copy(0.1f),
-      clipBackgroundDirection = Directions.Top,
-   ) {
-      ExpandedView(
-         groups = groups,
-         onClickGroup = {
-            showExpandedLayer = false
-            onClickGroup(it)
-         }
-      )
-   }
+  TargetLayer(
+    target = LayerTarget.Tag(EXPAND_TAB_TAG),
+    attach = showExpandedLayer,
+    onDetachRequest = { showExpandedLayer = false },
+    alignment = TargetAlignment.BottomCenter,
+    detachOnTouchBackground = true,
+    backgroundColor = Color.Black.copy(0.1f),
+    clipBackgroundDirection = Directions.Top,
+  ) {
+    ExpandedView(
+      groups = groups,
+      onClickGroup = {
+        showExpandedLayer = false
+        onClickGroup(it)
+      }
+    )
+  }
 }
 
 @Composable
 private fun ExpandedView(
-   modifier: Modifier = Modifier,
-   groups: List<String>,
-   onClickGroup: (String) -> Unit,
+  modifier: Modifier = Modifier,
+  groups: List<String>,
+  onClickGroup: (String) -> Unit,
 ) {
-   LazyColumn(
-      modifier = modifier
-         .fillMaxWidth()
-         .background(MaterialTheme.colorScheme.surface)
-   ) {
-      items(groups) { item ->
-         ExpandedItemView(
-            modifier = Modifier.fillMaxWidth(),
-            text = item,
-            onClick = { onClickGroup(item) }
-         )
-      }
-   }
+  LazyColumn(
+    modifier = modifier
+      .fillMaxWidth()
+      .background(MaterialTheme.colorScheme.surface)
+  ) {
+    items(groups) { item ->
+      ExpandedItemView(
+        modifier = Modifier.fillMaxWidth(),
+        text = item,
+        onClick = { onClickGroup(item) }
+      )
+    }
+  }
 }
 
 @Composable
 private fun ExpandedItemView(
-   modifier: Modifier = Modifier,
-   text: String,
-   onClick: () -> Unit,
+  modifier: Modifier = Modifier,
+  text: String,
+  onClick: () -> Unit,
 ) {
-   Box(
-      modifier = modifier
-         .height(48.dp)
-         .clickable { onClick() }
-         .padding(horizontal = 16.dp),
-      contentAlignment = Alignment.Center,
-   ) {
-      Text(
-         text = text,
-         fontSize = 14.sp,
-      )
-   }
+  Box(
+    modifier = modifier
+      .height(48.dp)
+      .clickable { onClick() }
+      .padding(horizontal = 16.dp),
+    contentAlignment = Alignment.Center,
+  ) {
+    Text(
+      text = text,
+      fontSize = 14.sp,
+    )
+  }
 }
 
 private const val EXPAND_TAB_TAG = "longjumps_expand_tab_tag"
@@ -145,23 +145,23 @@ private const val EXPAND_TAB_TAG = "longjumps_expand_tab_tag"
 @Preview
 @Composable
 private fun PreviewTitleView() {
-   AppTheme {
-      LJRecordsTitleView(
-         scrollBehavior = null,
-         onClickBack = {},
-         groups = listOf("LongJump", "CountJump", "StandUp CountJump"),
-         onClickGroup = {},
-      )
-   }
+  AppTheme {
+    LJRecordsTitleView(
+      scrollBehavior = null,
+      onClickBack = {},
+      groups = listOf("LongJump", "CountJump", "StandUp CountJump"),
+      onClickGroup = {},
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewExpandedView() {
-   AppTheme {
-      ExpandedView(
-         groups = listOf("LongJump", "CountJump", "StandUp CountJump"),
-         onClickGroup = { },
-      )
-   }
+  AppTheme {
+    ExpandedView(
+      groups = listOf("LongJump", "CountJump", "StandUp CountJump"),
+      onClickGroup = { },
+    )
+  }
 }

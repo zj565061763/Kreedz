@@ -16,36 +16,36 @@ import com.sd.android.kreedz.core.ui.AppTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserTitleView(
-   modifier: Modifier = Modifier,
-   nickname: String,
-   onClickBack: () -> Unit,
+  modifier: Modifier = Modifier,
+  nickname: String,
+  onClickBack: () -> Unit,
 ) {
-   TopAppBar(
-      modifier = modifier,
-      title = {
-         Text(text = nickname)
-      },
-      navigationIcon = {
-         IconButton(onClick = onClickBack) {
-            Icon(
-               imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-               contentDescription = "Back",
-            )
-         }
-      },
-      colors = TopAppBarDefaults.topAppBarColors().let {
-         it.copy(scrolledContainerColor = it.containerColor)
-      },
-   )
+  TopAppBar(
+    modifier = modifier,
+    title = {
+      Text(text = nickname)
+    },
+    navigationIcon = {
+      IconButton(onClick = onClickBack) {
+        Icon(
+          imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+          contentDescription = "Back",
+        )
+      }
+    },
+    colors = TopAppBarDefaults.topAppBarColors().let {
+      it.copy(scrolledContainerColor = it.containerColor)
+    },
+  )
 }
 
 @Preview
 @Composable
 private fun Preview() {
-   AppTheme {
-      UserTitleView(
-         nickname = "topoviygus",
-         onClickBack = {},
-      )
-   }
+  AppTheme {
+    UserTitleView(
+      nickname = "topoviygus",
+      onClickBack = {},
+    )
+  }
 }

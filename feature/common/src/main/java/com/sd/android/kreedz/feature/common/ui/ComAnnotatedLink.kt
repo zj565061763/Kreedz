@@ -21,40 +21,40 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun CharSequence.comAnnotatedLink(): AnnotatedString {
-   val content = this
+  val content = this
 
-   var links by remember { mutableStateOf(emptyList<String>()) }
+  var links by remember { mutableStateOf(emptyList<String>()) }
 
-   LaunchedEffect(content) {
-      withContext(Dispatchers.IO) {
-         links = URL_PATTERN.toRegex().findAll(content)
-            .map { it.value }
-            .toList()
+  LaunchedEffect(content) {
+    withContext(Dispatchers.IO) {
+      links = URL_PATTERN.toRegex().findAll(content)
+        .map { it.value }
+        .toList()
+    }
+  }
+
+  val linkStyle = SpanStyle(
+    color = MaterialTheme.colorScheme.primary,
+    textDecoration = TextDecoration.Underline,
+  )
+
+  val uriHandler = LocalUriHandler.current
+  return content.fAnnotatedTargets(
+    targets = links,
+    onTarget = { target ->
+      withLink(
+        LinkAnnotation.Url(
+          url = target,
+          styles = TextLinkStyles(linkStyle),
+          linkInteractionListener = {
+            fsUri.openUri(target, uriHandler)
+          },
+        )
+      ) {
+        append(target)
       }
-   }
-
-   val linkStyle = SpanStyle(
-      color = MaterialTheme.colorScheme.primary,
-      textDecoration = TextDecoration.Underline,
-   )
-
-   val uriHandler = LocalUriHandler.current
-   return content.fAnnotatedTargets(
-      targets = links,
-      onTarget = { target ->
-         withLink(
-            LinkAnnotation.Url(
-               url = target,
-               styles = TextLinkStyles(linkStyle),
-               linkInteractionListener = {
-                  fsUri.openUri(target, uriHandler)
-               },
-            )
-         ) {
-            append(target)
-         }
-      },
-   )
+    },
+  )
 }
 
 private const val URL_PATTERN = "(https?://[\\w-]+(\\.[\\w-]+)+(/\\S*)?)"

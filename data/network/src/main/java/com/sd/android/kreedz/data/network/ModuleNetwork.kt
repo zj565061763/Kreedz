@@ -19,50 +19,50 @@ import okhttp3.WebSocketListener
 import retrofit2.Retrofit
 
 object ModuleNetwork : FLogger {
-   private lateinit var _retrofit: Retrofit
-   private lateinit var _client: OkHttpClient
-   private lateinit var _cookieJar: AppCookieJar
+  private lateinit var _retrofit: Retrofit
+  private lateinit var _client: OkHttpClient
+  private lateinit var _cookieJar: AppCookieJar
 
-   fun init(
-      context: Context,
-      isRelease: Boolean,
-   ) {
-      if (ModuleNetwork::_retrofit.isInitialized) return
-      _cookieJar = AppCookieJar(context)
-      _client = newOkHttpClient(isRelease, _cookieJar)
-      _retrofit = newRetrofit(
-         baseUrl = fsHttpUrl.getApiUrl(),
-         client = _client,
-         moshi = fMoshi.newBuilder()
-            .add(RecordTimeAdapter())
-            .add(RecordDateAdapter())
-            .build(),
+  fun init(
+    context: Context,
+    isRelease: Boolean,
+  ) {
+    if (ModuleNetwork::_retrofit.isInitialized) return
+    _cookieJar = AppCookieJar(context)
+    _client = newOkHttpClient(isRelease, _cookieJar)
+    _retrofit = newRetrofit(
+      baseUrl = fsHttpUrl.getApiUrl(),
+      client = _client,
+      moshi = fMoshi.newBuilder()
+        .add(RecordTimeAdapter())
+        .add(RecordDateAdapter())
+        .build(),
+    )
+  }
+
+  suspend fun hasToken(): Boolean {
+    return withContext(Dispatchers.IO) {
+      _cookieJar.hasToken(
+        fsHttpUrl.getServerUrl().toHttpUrl()
       )
-   }
+    }
+  }
 
-   suspend fun hasToken(): Boolean {
-      return withContext(Dispatchers.IO) {
-         _cookieJar.hasToken(
-            fsHttpUrl.getServerUrl().toHttpUrl()
-         )
+  fun connectOnlineUsersWebSocket(userId: String, listener: WebSocketListener): WebSocket {
+    val url = fsHttpUrl.getOnlineUsersWSUrl().let {
+      if (userId.isBlank()) {
+        it
+      } else {
+        "${it}?id=$userId"
       }
-   }
+    }
+    val request = Request.Builder()
+      .url(url)
+      .build()
+    return _client.newWebSocket(request, listener)
+  }
 
-   fun connectOnlineUsersWebSocket(userId: String, listener: WebSocketListener): WebSocket {
-      val url = fsHttpUrl.getOnlineUsersWSUrl().let {
-         if (userId.isBlank()) {
-            it
-         } else {
-            "${it}?id=$userId"
-         }
-      }
-      val request = Request.Builder()
-         .url(url)
-         .build()
-      return _client.newWebSocket(request, listener)
-   }
-
-   internal fun <T> createApi(clazz: Class<T>): T {
-      return _retrofit.create(clazz)
-   }
+  internal fun <T> createApi(clazz: Class<T>): T {
+    return _retrofit.create(clazz)
+  }
 }

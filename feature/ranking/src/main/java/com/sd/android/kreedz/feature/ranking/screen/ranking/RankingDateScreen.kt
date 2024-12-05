@@ -7,12 +7,12 @@ import com.sd.android.kreedz.feature.common.ui.ComDatePickerLayer
 
 @Composable
 internal fun RankingDateScreen(
-   vm: RankingDateVM,
+  vm: RankingDateVM,
 ) {
-   val state by vm.stateFlow.collectAsStateWithLifecycle()
-   ComDatePickerLayer(
-      attach = state.showSelectDate,
-      date = state.selectedDate,
-      onDone = { vm.selectDate(it) },
-   )
+  val state by vm.stateFlow.collectAsStateWithLifecycle()
+  ComDatePickerLayer(
+    attach = state.showSelectDate,
+    date = state.selectedDate,
+    onDone = { vm.selectDate(it) },
+  )
 }

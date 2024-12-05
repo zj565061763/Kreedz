@@ -11,18 +11,18 @@ import java.util.Locale
 internal annotation class RecordDate
 
 internal class RecordDateAdapter {
-   @RecordDate
-   @FromJson
-   fun fromJson(value: String?): Long {
-      if (value.isNullOrBlank()) return 0
-      val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-      return runCatching {
-         format.parse(value)?.time ?: 0
-      }.getOrDefault(0)
-   }
+  @RecordDate
+  @FromJson
+  fun fromJson(value: String?): Long {
+    if (value.isNullOrBlank()) return 0
+    val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    return runCatching {
+      format.parse(value)?.time ?: 0
+    }.getOrDefault(0)
+  }
 
-   @ToJson
-   fun toJson(@RecordDate value: Long): String {
-      return value.toString()
-   }
+  @ToJson
+  fun toJson(@RecordDate value: Long): String {
+    return value.toString()
+  }
 }

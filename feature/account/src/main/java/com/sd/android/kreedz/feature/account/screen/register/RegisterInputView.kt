@@ -38,210 +38,210 @@ import com.sd.lib.compose.input.fSecure
 
 @Composable
 internal fun RegisterInputView(
-   modifier: Modifier = Modifier,
-   emailState: TextFieldState,
-   nicknameState: TextFieldState,
-   usernameState: TextFieldState,
-   passwordState: TextFieldState,
-   confirmPasswordState: TextFieldState,
-   onClickRegister: () -> Unit,
+  modifier: Modifier = Modifier,
+  emailState: TextFieldState,
+  nicknameState: TextFieldState,
+  usernameState: TextFieldState,
+  passwordState: TextFieldState,
+  confirmPasswordState: TextFieldState,
+  onClickRegister: () -> Unit,
 ) {
-   val emailFocus = remember { FocusRequester() }
-   LaunchedEffect(emailFocus) {
-      emailFocus.requestFocus()
-   }
+  val emailFocus = remember { FocusRequester() }
+  LaunchedEffect(emailFocus) {
+    emailFocus.requestFocus()
+  }
 
-   Column(
-      modifier = modifier,
-      horizontalAlignment = Alignment.CenterHorizontally,
-      verticalArrangement = Arrangement.spacedBy(24.dp),
-   ) {
-      InputEmailView(
-         state = emailState,
-         modifier = Modifier.focusRequester(emailFocus),
-      )
+  Column(
+    modifier = modifier,
+    horizontalAlignment = Alignment.CenterHorizontally,
+    verticalArrangement = Arrangement.spacedBy(24.dp),
+  ) {
+    InputEmailView(
+      state = emailState,
+      modifier = Modifier.focusRequester(emailFocus),
+    )
 
-      InputNicknameView(
-         state = nicknameState,
-      )
+    InputNicknameView(
+      state = nicknameState,
+    )
 
-      InputUsernameView(
-         state = usernameState,
-      )
+    InputUsernameView(
+      state = usernameState,
+    )
 
-      InputPasswordView(
-         state = passwordState,
-      )
+    InputPasswordView(
+      state = passwordState,
+    )
 
-      InputConfirmPasswordView(
-         state = confirmPasswordState,
-         onKeyboardDone = onClickRegister,
-      )
+    InputConfirmPasswordView(
+      state = confirmPasswordState,
+      onKeyboardDone = onClickRegister,
+    )
 
-      Button(
-         onClick = onClickRegister,
-         enabled = emailState.text.isNotBlank()
-            && nicknameState.text.isNotBlank()
-            && usernameState.text.isNotBlank()
-            && passwordState.text.isNotEmpty()
-            && confirmPasswordState.text.isNotEmpty(),
-         modifier = Modifier
-            .widthIn(160.dp)
-            .imePadding(),
-      ) {
-         Text(text = "Register")
-      }
-   }
+    Button(
+      onClick = onClickRegister,
+      enabled = emailState.text.isNotBlank()
+        && nicknameState.text.isNotBlank()
+        && usernameState.text.isNotBlank()
+        && passwordState.text.isNotEmpty()
+        && confirmPasswordState.text.isNotEmpty(),
+      modifier = Modifier
+        .widthIn(160.dp)
+        .imePadding(),
+    ) {
+      Text(text = "Register")
+    }
+  }
 }
 
 @Composable
 private fun InputEmailView(
-   modifier: Modifier = Modifier,
-   state: TextFieldState,
+  modifier: Modifier = Modifier,
+  state: TextFieldState,
 ) {
-   FTextField(
-      modifier = modifier.fillMaxWidth(),
-      state = state,
-      textStyle = TextStyle(
-         fontSize = 16.sp,
-         lineHeight = (1.5).em,
-      ),
-      label = {
-         Text(text = "Email")
-      },
-      keyboardOptions = KeyboardOptions.Default.copy(
-         imeAction = ImeAction.Next,
-      ),
-      trailingIcon = {
-         FTextFieldIconClear(modifier = Modifier.padding(end = 8.dp))
-      },
-   )
+  FTextField(
+    modifier = modifier.fillMaxWidth(),
+    state = state,
+    textStyle = TextStyle(
+      fontSize = 16.sp,
+      lineHeight = (1.5).em,
+    ),
+    label = {
+      Text(text = "Email")
+    },
+    keyboardOptions = KeyboardOptions.Default.copy(
+      imeAction = ImeAction.Next,
+    ),
+    trailingIcon = {
+      FTextFieldIconClear(modifier = Modifier.padding(end = 8.dp))
+    },
+  )
 }
 
 @Composable
 private fun InputNicknameView(
-   modifier: Modifier = Modifier,
-   state: TextFieldState,
+  modifier: Modifier = Modifier,
+  state: TextFieldState,
 ) {
-   FTextField(
-      modifier = modifier.fillMaxWidth(),
-      state = state,
-      textStyle = TextStyle(
-         fontSize = 16.sp,
-         lineHeight = (1.5).em,
-      ),
-      label = {
-         Text(text = "Nickname")
-      },
-      keyboardOptions = KeyboardOptions.Default.copy(
-         imeAction = ImeAction.Next,
-      ),
-      trailingIcon = {
-         FTextFieldIconClear(modifier = Modifier.padding(end = 8.dp))
-      },
-   )
+  FTextField(
+    modifier = modifier.fillMaxWidth(),
+    state = state,
+    textStyle = TextStyle(
+      fontSize = 16.sp,
+      lineHeight = (1.5).em,
+    ),
+    label = {
+      Text(text = "Nickname")
+    },
+    keyboardOptions = KeyboardOptions.Default.copy(
+      imeAction = ImeAction.Next,
+    ),
+    trailingIcon = {
+      FTextFieldIconClear(modifier = Modifier.padding(end = 8.dp))
+    },
+  )
 }
 
 @Composable
 private fun InputUsernameView(
-   modifier: Modifier = Modifier,
-   state: TextFieldState,
+  modifier: Modifier = Modifier,
+  state: TextFieldState,
 ) {
-   FTextField(
-      modifier = modifier.fillMaxWidth(),
-      state = state,
-      textStyle = TextStyle(
-         fontSize = 16.sp,
-         lineHeight = (1.5).em,
-      ),
-      label = {
-         Text(text = "Username")
-      },
-      keyboardOptions = KeyboardOptions.Default.copy(
-         imeAction = ImeAction.Next,
-      ),
-      trailingIcon = {
-         FTextFieldIconClear(modifier = Modifier.padding(end = 8.dp))
-      },
-   )
+  FTextField(
+    modifier = modifier.fillMaxWidth(),
+    state = state,
+    textStyle = TextStyle(
+      fontSize = 16.sp,
+      lineHeight = (1.5).em,
+    ),
+    label = {
+      Text(text = "Username")
+    },
+    keyboardOptions = KeyboardOptions.Default.copy(
+      imeAction = ImeAction.Next,
+    ),
+    trailingIcon = {
+      FTextFieldIconClear(modifier = Modifier.padding(end = 8.dp))
+    },
+  )
 }
 
 @Composable
 private fun InputPasswordView(
-   modifier: Modifier = Modifier,
-   state: TextFieldState,
+  modifier: Modifier = Modifier,
+  state: TextFieldState,
 ) {
-   var passwordVisible by remember { mutableStateOf(false) }
+  var passwordVisible by remember { mutableStateOf(false) }
 
-   FSecureTextField(
-      modifier = modifier.fillMaxWidth(),
-      state = state,
-      textObfuscationMode = if (passwordVisible) TextObfuscationMode.Visible else TextObfuscationMode.RevealLastTyped,
-      textStyle = TextStyle(
-         fontSize = 16.sp,
-         lineHeight = (1.5).em,
-      ),
-      keyboardOptions = KeyboardOptions.fSecure().copy(
-         imeAction = ImeAction.Next,
-      ),
-      label = {
-         Text(text = "Password")
-      },
-      trailingIcon = {
-         if (state.text.isNotEmpty()) {
-            TextButton(
-               onClick = { passwordVisible = !passwordVisible },
-            ) {
-               Text(
-                  text = if (passwordVisible) "hide" else "show",
-                  color = AppTextColor.small,
-               )
-            }
-         }
-      },
-   )
+  FSecureTextField(
+    modifier = modifier.fillMaxWidth(),
+    state = state,
+    textObfuscationMode = if (passwordVisible) TextObfuscationMode.Visible else TextObfuscationMode.RevealLastTyped,
+    textStyle = TextStyle(
+      fontSize = 16.sp,
+      lineHeight = (1.5).em,
+    ),
+    keyboardOptions = KeyboardOptions.fSecure().copy(
+      imeAction = ImeAction.Next,
+    ),
+    label = {
+      Text(text = "Password")
+    },
+    trailingIcon = {
+      if (state.text.isNotEmpty()) {
+        TextButton(
+          onClick = { passwordVisible = !passwordVisible },
+        ) {
+          Text(
+            text = if (passwordVisible) "hide" else "show",
+            color = AppTextColor.small,
+          )
+        }
+      }
+    },
+  )
 }
 
 @Composable
 private fun InputConfirmPasswordView(
-   modifier: Modifier = Modifier,
-   state: TextFieldState,
-   onKeyboardDone: () -> Unit,
+  modifier: Modifier = Modifier,
+  state: TextFieldState,
+  onKeyboardDone: () -> Unit,
 ) {
-   FSecureTextField(
-      modifier = modifier.fillMaxWidth(),
-      state = state,
-      textStyle = TextStyle(
-         fontSize = 16.sp,
-         lineHeight = (1.5).em,
-      ),
-      keyboardOptions = KeyboardOptions.fSecure().copy(
-         imeAction = ImeAction.Done,
-      ),
-      onKeyboardAction = {
-         onKeyboardDone()
-      },
-      label = {
-         Text(text = "Confirm password")
-      },
-      trailingIcon = {
-         FTextFieldIconClear(modifier = Modifier.padding(end = 8.dp))
-      },
-   )
+  FSecureTextField(
+    modifier = modifier.fillMaxWidth(),
+    state = state,
+    textStyle = TextStyle(
+      fontSize = 16.sp,
+      lineHeight = (1.5).em,
+    ),
+    keyboardOptions = KeyboardOptions.fSecure().copy(
+      imeAction = ImeAction.Done,
+    ),
+    onKeyboardAction = {
+      onKeyboardDone()
+    },
+    label = {
+      Text(text = "Confirm password")
+    },
+    trailingIcon = {
+      FTextFieldIconClear(modifier = Modifier.padding(end = 8.dp))
+    },
+  )
 }
 
 @Preview
 @Composable
 private fun Preview() {
-   AppTheme {
-      RegisterInputView(
-         modifier = Modifier.padding(16.dp),
-         emailState = rememberTextFieldState(),
-         nicknameState = rememberTextFieldState(),
-         usernameState = rememberTextFieldState(),
-         passwordState = rememberTextFieldState(),
-         confirmPasswordState = rememberTextFieldState(),
-         onClickRegister = {},
-      )
-   }
+  AppTheme {
+    RegisterInputView(
+      modifier = Modifier.padding(16.dp),
+      emailState = rememberTextFieldState(),
+      nicknameState = rememberTextFieldState(),
+      usernameState = rememberTextFieldState(),
+      passwordState = rememberTextFieldState(),
+      confirmPasswordState = rememberTextFieldState(),
+      onClickRegister = {},
+    )
+  }
 }

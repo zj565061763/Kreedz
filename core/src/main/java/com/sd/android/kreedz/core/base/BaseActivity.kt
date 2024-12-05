@@ -16,29 +16,29 @@ import com.sd.lib.compose.systemui.FStatusBarLight
 import com.sd.lib.compose.systemui.FSystemUI
 
 abstract class BaseActivity : ComponentActivity() {
-   private val _appRepository = AppRepository()
+  private val _appRepository = AppRepository()
 
-   override fun onCreate(savedInstanceState: Bundle?) {
-      super.onCreate(savedInstanceState)
-      enableEdgeToEdge()
-      setContent { Content() }
-   }
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    enableEdgeToEdge()
+    setContent { Content() }
+  }
 
-   @Composable
-   private fun Content() {
-      val isLight by _appRepository.isLightModeFlow().collectAsStateWithLifecycle()
-      AppTheme(isLight = isLight) {
-         FSystemUI {
-            if (isLight) FStatusBarLight() else FStatusBarDark()
-            FSetActive(true) {
-               LayerContainer {
-                  ContentImpl()
-               }
-            }
-         }
+  @Composable
+  private fun Content() {
+    val isLight by _appRepository.isLightModeFlow().collectAsStateWithLifecycle()
+    AppTheme(isLight = isLight) {
+      FSystemUI {
+        if (isLight) FStatusBarLight() else FStatusBarDark()
+        FSetActive(true) {
+          LayerContainer {
+            ContentImpl()
+          }
+        }
       }
-   }
+    }
+  }
 
-   @Composable
-   protected abstract fun ContentImpl()
+  @Composable
+  protected abstract fun ContentImpl()
 }

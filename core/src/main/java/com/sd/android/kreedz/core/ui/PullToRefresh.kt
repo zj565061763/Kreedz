@@ -15,36 +15,36 @@ import com.sd.lib.compose.refresh.setRefreshing
 
 @Composable
 fun AppPullToRefresh(
-   modifier: Modifier = Modifier,
-   isRefreshing: Boolean,
-   onRefresh: () -> Unit,
-   enabled: Boolean = true,
-   statusBarsPadding: Boolean = false,
-   content: @Composable BoxScope.() -> Unit,
+  modifier: Modifier = Modifier,
+  isRefreshing: Boolean,
+  onRefresh: () -> Unit,
+  enabled: Boolean = true,
+  statusBarsPadding: Boolean = false,
+  content: @Composable BoxScope.() -> Unit,
 ) {
-   val refreshState = rememberFRefreshStateTop(
-      enabled = enabled,
-      onRefresh = onRefresh
-   ).apply {
-      setRefreshing(isRefreshing)
-   }
+  val refreshState = rememberFRefreshStateTop(
+    enabled = enabled,
+    onRefresh = onRefresh
+  ).apply {
+    setRefreshing(isRefreshing)
+  }
 
-   Box(
-      modifier = modifier.nestedScroll(refreshState.nestedScrollConnection),
-      contentAlignment = Alignment.Center,
-   ) {
-      content()
-      FRefreshContainer(
-         state = refreshState,
-         getRefreshThreshold = {
-            if (statusBarsPadding) {
-               val density = LocalDensity.current
-               it.height + WindowInsets.statusBars.getTop(density)
-            } else {
-               it.height
-            }.toFloat()
-         },
-         modifier = Modifier.align(Alignment.TopCenter),
-      )
-   }
+  Box(
+    modifier = modifier.nestedScroll(refreshState.nestedScrollConnection),
+    contentAlignment = Alignment.Center,
+  ) {
+    content()
+    FRefreshContainer(
+      state = refreshState,
+      getRefreshThreshold = {
+        if (statusBarsPadding) {
+          val density = LocalDensity.current
+          it.height + WindowInsets.statusBars.getTop(density)
+        } else {
+          it.height
+        }.toFloat()
+      },
+      modifier = Modifier.align(Alignment.TopCenter),
+    )
+  }
 }

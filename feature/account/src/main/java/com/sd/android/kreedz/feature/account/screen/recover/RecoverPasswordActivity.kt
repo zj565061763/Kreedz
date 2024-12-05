@@ -14,43 +14,43 @@ import com.sd.android.kreedz.feature.common.ui.ComEffect
 
 @Router(path = AppRouter.RECOVER_PASSWORD)
 internal class RecoverPasswordActivity : BaseActivity() {
-   @Composable
-   override fun ContentImpl() {
-      val vm = viewModel<RecoverPasswordVM>()
-      val state by vm.stateFlow.collectAsStateWithLifecycle()
+  @Composable
+  override fun ContentImpl() {
+    val vm = viewModel<RecoverPasswordVM>()
+    val state by vm.stateFlow.collectAsStateWithLifecycle()
 
-      RecoverScreenView(
-         title = "Recover Password",
-         emailState = vm.emailState,
-         isLoading = state.isLoading,
-         onCancelLoading = { vm.cancelRecover() },
-         onClickBack = {
-            finish()
-         },
-         onClickRecover = {
-            vm.recover()
-         },
+    RecoverScreenView(
+      title = "Recover Password",
+      emailState = vm.emailState,
+      isLoading = state.isLoading,
+      onCancelLoading = { vm.cancelRecover() },
+      onClickBack = {
+        finish()
+      },
+      onClickRecover = {
+        vm.recover()
+      },
+    )
+
+    if (state.isLoadingSuccess) {
+      ComAlertDialog(
+        onDismissRequest = { finish() },
+        text = {
+          Text(
+            text = "Password recover asked - check your mail (and spams)"
+          )
+        },
       )
+    }
 
-      if (state.isLoadingSuccess) {
-         ComAlertDialog(
-            onDismissRequest = { finish() },
-            text = {
-               Text(
-                  text = "Password recover asked - check your mail (and spams)"
-               )
-            },
-         )
-      }
-
-      vm.effectFlow.ComEffect()
-   }
+    vm.effectFlow.ComEffect()
+  }
 }
 
 internal class RecoverPasswordVM : RecoverVM() {
-   private val _repository = AccountRepository()
+  private val _repository = AccountRepository()
 
-   override suspend fun recover(email: String) {
-      _repository.recoverPassword(email)
-   }
+  override suspend fun recover(email: String) {
+    _repository.recoverPassword(email)
+  }
 }

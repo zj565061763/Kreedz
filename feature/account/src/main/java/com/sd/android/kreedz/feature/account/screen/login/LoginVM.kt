@@ -7,64 +7,64 @@ import com.sd.lib.coroutines.FLoader
 import com.sd.lib.coroutines.tryLoad
 
 internal class LoginVM : BaseViewModel<LoginVM.State, Any>(State()) {
-   private val _repository = AccountRepository()
-   private val _loginLoader = FLoader()
+  private val _repository = AccountRepository()
+  private val _loginLoader = FLoader()
 
-   val usernameState = TextFieldState()
-   val passwordState = TextFieldState()
+  val usernameState = TextFieldState()
+  val passwordState = TextFieldState()
 
-   fun login() {
-      vmLaunch {
-         val username = usernameState.text.toString()
-         if (username.isBlank()) return@vmLaunch
+  fun login() {
+    vmLaunch {
+      val username = usernameState.text.toString()
+      if (username.isBlank()) return@vmLaunch
 
-         val password = passwordState.text.toString()
-         if (password.isBlank()) return@vmLaunch
+      val password = passwordState.text.toString()
+      if (password.isBlank()) return@vmLaunch
 
-         _loginLoader.tryLoad {
-            _repository.login(
-               username = username,
-               password = password,
-            )
-         }.onSuccess {
-            updateState {
-               it.copy(isLoginSuccess = true)
-            }
-         }.onFailure { error ->
-            sendEffect(error)
-         }
+      _loginLoader.tryLoad {
+        _repository.login(
+          username = username,
+          password = password,
+        )
+      }.onSuccess {
+        updateState {
+          it.copy(isLoginSuccess = true)
+        }
+      }.onFailure { error ->
+        sendEffect(error)
       }
-   }
+    }
+  }
 
-   fun cancelLogin() {
-      vmLaunch {
-         _loginLoader.cancel()
+  fun cancelLogin() {
+    vmLaunch {
+      _loginLoader.cancel()
+    }
+  }
+
+  init {
+    vmLaunch {
+      _loginLoader.loadingFlow.collect { data ->
+        updateState {
+          it.copy(isLoggingIn = data)
+        }
       }
-   }
+    }
 
-   init {
-      vmLaunch {
-         _loginLoader.loadingFlow.collect { data ->
-            updateState {
-               it.copy(isLoggingIn = data)
-            }
-         }
+    vmLaunch {
+      val lastLoginUsername = _repository.getLastLoginUsername()
+      if (lastLoginUsername.isNotBlank()) {
+        usernameState.edit {
+          if (length == 0) {
+            append(lastLoginUsername)
+          }
+        }
       }
+    }
+  }
 
-      vmLaunch {
-         val lastLoginUsername = _repository.getLastLoginUsername()
-         if (lastLoginUsername.isNotBlank()) {
-            usernameState.edit {
-               if (length == 0) {
-                  append(lastLoginUsername)
-               }
-            }
-         }
-      }
-   }
-
-   data class State(
-      val isLoggingIn: Boolean = false,
-      val isLoginSuccess: Boolean = false,
-   )
+  data class State(
+    val isLoggingIn: Boolean = false,
+    val isLoginSuccess: Boolean = false,
+  )
 }

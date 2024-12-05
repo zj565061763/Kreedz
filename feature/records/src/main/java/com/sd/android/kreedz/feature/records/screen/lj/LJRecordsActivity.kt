@@ -7,12 +7,12 @@ import com.sd.android.kreedz.core.router.AppRouter
 
 @Router(path = AppRouter.LJ_RECORDS)
 internal class LJRecordsActivity : BaseActivity() {
-   @Composable
-   override fun ContentImpl() {
-      LJRecordsScreen(
-         onClickBack = {
-            finish()
-         }
-      )
-   }
+  @Composable
+  override fun ContentImpl() {
+    LJRecordsScreen(
+      onClickBack = {
+        finish()
+      }
+    )
+  }
 }

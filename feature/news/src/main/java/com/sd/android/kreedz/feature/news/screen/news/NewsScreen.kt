@@ -43,170 +43,170 @@ import com.sd.android.kreedz.feature.news.screen.comments.newsCommentsView
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsScreen(
-   modifier: Modifier = Modifier,
-   id: String,
-   vm: NewsVM = viewModel(),
-   commentVM: NewsCommentVM = viewModel(),
-   onClickBack: () -> Unit,
-   onClickOpenUri: (newsId: String) -> Unit,
+  modifier: Modifier = Modifier,
+  id: String,
+  vm: NewsVM = viewModel(),
+  commentVM: NewsCommentVM = viewModel(),
+  onClickBack: () -> Unit,
+  onClickOpenUri: (newsId: String) -> Unit,
 ) {
-   val state by vm.stateFlow.collectAsStateWithLifecycle()
-   val commentState by commentVM.stateFlow.collectAsStateWithLifecycle()
-   var clickComment by remember { mutableStateOf<NewsCommentModel?>(null) }
+  val state by vm.stateFlow.collectAsStateWithLifecycle()
+  val commentState by commentVM.stateFlow.collectAsStateWithLifecycle()
+  var clickComment by remember { mutableStateOf<NewsCommentModel?>(null) }
 
-   val context = LocalContext.current
-   val lazyListState = rememberLazyListState()
-   val showTitle by remember { derivedStateOf { lazyListState.firstVisibleItemIndex > 0 } }
+  val context = LocalContext.current
+  val lazyListState = rememberLazyListState()
+  val showTitle by remember { derivedStateOf { lazyListState.firstVisibleItemIndex > 0 } }
 
-   Scaffold(
-      modifier = modifier,
-      topBar = {
-         TopAppBar(
-            title = {
-               if (showTitle) {
-                  Text(
-                     text = state.title,
-                     modifier = Modifier.basicMarquee(
-                        iterations = Int.MAX_VALUE,
-                        spacing = MarqueeSpacing(48.dp),
-                     ),
-                  )
-               }
-            },
-            navigationIcon = {
-               IconButton(onClick = onClickBack) {
-                  Icon(
-                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                     contentDescription = "Back",
-                  )
-               }
-            },
-            actions = {
-               if (state.id.isNotBlank()) {
-                  IconButton(onClick = {
-                     onClickOpenUri(state.id)
-                  }) {
-                     Icon(
-                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                        contentDescription = "Open uri",
-                     )
-                  }
-               }
-            },
-         )
-      },
-   ) { padding ->
-      AppPullToRefresh(
-         modifier = Modifier
-            .fillMaxSize()
-            .padding(padding),
-         isRefreshing = state.isLoading,
-         onRefresh = {
-            vm.refresh()
-            commentVM.refresh()
-         }
-      ) {
-         BodyView(
-            lazyListState = lazyListState,
-            title = state.title,
-            html = state.html,
-            author = state.author,
-            dateStr = state.dateStr,
-            isLoadingComments = commentState.isLoading,
-            commentCount = commentState.commentCount,
-            comments = commentState.comments,
-            onClickComment = {
-               clickComment = it
-            },
-            onClickAddComment = {
-               commentVM.clickAdd(context)
-            },
-            onClickUser = {
-               AppRouter.user(context, it)
-            },
-         )
-      }
-   }
-
-   LaunchedEffect(vm, id) {
-      vm.load(id)
-   }
-
-   if (state.title.isNotBlank()) {
-      LaunchedEffect(commentVM, id) {
-         commentVM.load(id)
-      }
-   }
-
-   vm.effectFlow.ComEffect()
-   commentVM.effectFlow.ComEffect()
-
-   LaunchedEffect(commentVM, lazyListState) {
-      commentVM.effectFlow.collect { effect ->
-         when (effect) {
-            NewsCommentVM.Effect.AddNewComment -> {
-               lazyListState.scrollToItem(lazyListState.layoutInfo.totalItemsCount)
+  Scaffold(
+    modifier = modifier,
+    topBar = {
+      TopAppBar(
+        title = {
+          if (showTitle) {
+            Text(
+              text = state.title,
+              modifier = Modifier.basicMarquee(
+                iterations = Int.MAX_VALUE,
+                spacing = MarqueeSpacing(48.dp),
+              ),
+            )
+          }
+        },
+        navigationIcon = {
+          IconButton(onClick = onClickBack) {
+            Icon(
+              imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+              contentDescription = "Back",
+            )
+          }
+        },
+        actions = {
+          if (state.id.isNotBlank()) {
+            IconButton(onClick = {
+              onClickOpenUri(state.id)
+            }) {
+              Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = "Open uri",
+              )
             }
-         }
+          }
+        },
+      )
+    },
+  ) { padding ->
+    AppPullToRefresh(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(padding),
+      isRefreshing = state.isLoading,
+      onRefresh = {
+        vm.refresh()
+        commentVM.refresh()
       }
-   }
+    ) {
+      BodyView(
+        lazyListState = lazyListState,
+        title = state.title,
+        html = state.html,
+        author = state.author,
+        dateStr = state.dateStr,
+        isLoadingComments = commentState.isLoading,
+        commentCount = commentState.commentCount,
+        comments = commentState.comments,
+        onClickComment = {
+          clickComment = it
+        },
+        onClickAddComment = {
+          commentVM.clickAdd(context)
+        },
+        onClickUser = {
+          AppRouter.user(context, it)
+        },
+      )
+    }
+  }
 
-   NewsCommentOperateScreen(
-      vm = commentVM,
-      clickedComment = clickComment,
-      onDetachRequestCommentMenuLayer = {
-         clickComment = null
-      },
-   )
+  LaunchedEffect(vm, id) {
+    vm.load(id)
+  }
+
+  if (state.title.isNotBlank()) {
+    LaunchedEffect(commentVM, id) {
+      commentVM.load(id)
+    }
+  }
+
+  vm.effectFlow.ComEffect()
+  commentVM.effectFlow.ComEffect()
+
+  LaunchedEffect(commentVM, lazyListState) {
+    commentVM.effectFlow.collect { effect ->
+      when (effect) {
+        NewsCommentVM.Effect.AddNewComment -> {
+          lazyListState.scrollToItem(lazyListState.layoutInfo.totalItemsCount)
+        }
+      }
+    }
+  }
+
+  NewsCommentOperateScreen(
+    vm = commentVM,
+    clickedComment = clickComment,
+    onDetachRequestCommentMenuLayer = {
+      clickComment = null
+    },
+  )
 }
 
 @Composable
 private fun BodyView(
-   modifier: Modifier = Modifier,
-   lazyListState: LazyListState,
-   title: String,
-   html: String,
-   author: UserWithIconsModel?,
-   dateStr: String,
-   isLoadingComments: Boolean,
-   commentCount: Int?,
-   comments: List<NewsCommentGroupModel>?,
-   onClickComment: (NewsCommentModel) -> Unit,
-   onClickAddComment: () -> Unit,
-   onClickUser: (userId: String) -> Unit,
+  modifier: Modifier = Modifier,
+  lazyListState: LazyListState,
+  title: String,
+  html: String,
+  author: UserWithIconsModel?,
+  dateStr: String,
+  isLoadingComments: Boolean,
+  commentCount: Int?,
+  comments: List<NewsCommentGroupModel>?,
+  onClickComment: (NewsCommentModel) -> Unit,
+  onClickAddComment: () -> Unit,
+  onClickUser: (userId: String) -> Unit,
 ) {
-   LazyColumn(
-      modifier = modifier.fillMaxSize(),
-      state = lazyListState,
-      verticalArrangement = Arrangement.spacedBy(8.dp),
-      contentPadding = PaddingValues(
-         start = 8.dp, end = 8.dp,
-         top = 8.dp, bottom = 128.dp,
-      ),
-   ) {
-      newsTitleView(title)
+  LazyColumn(
+    modifier = modifier.fillMaxSize(),
+    state = lazyListState,
+    verticalArrangement = Arrangement.spacedBy(8.dp),
+    contentPadding = PaddingValues(
+      start = 8.dp, end = 8.dp,
+      top = 8.dp, bottom = 128.dp,
+    ),
+  ) {
+    newsTitleView(title)
 
-      if (author != null) {
-         newsAuthorInfoView(
-            authorCountry = author.country,
-            authorNickname = author.nickname,
-            authorIcons = author.icons,
-            dateStr = dateStr,
-            onClickAuthor = { onClickUser(author.id) },
-         )
-      }
+    if (author != null) {
+      newsAuthorInfoView(
+        authorCountry = author.country,
+        authorNickname = author.nickname,
+        authorIcons = author.icons,
+        dateStr = dateStr,
+        onClickAuthor = { onClickUser(author.id) },
+      )
+    }
 
-      newsContentView(html = html)
+    newsContentView(html = html)
 
-      if (title.isNotBlank()) {
-         newsCommentsView(
-            isLoadingComments = isLoadingComments,
-            commentCount = commentCount,
-            comments = comments,
-            onClickAuthor = onClickUser,
-            onClickComment = onClickComment,
-            onClickAddComment = onClickAddComment,
-         )
-      }
-   }
+    if (title.isNotBlank()) {
+      newsCommentsView(
+        isLoadingComments = isLoadingComments,
+        commentCount = commentCount,
+        comments = comments,
+        onClickAuthor = onClickUser,
+        onClickComment = onClickComment,
+        onClickAddComment = onClickAddComment,
+      )
+    }
+  }
 }

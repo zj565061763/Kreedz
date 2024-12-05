@@ -18,180 +18,180 @@ import com.sd.android.kreedz.core.ui.AppTheme
 
 @Composable
 fun ComCountryTextViewExtraSmall(
-   modifier: Modifier = Modifier,
-   country: String?,
-   text: CharSequence?,
-   fontColor: Color = LocalContentColor.current,
+  modifier: Modifier = Modifier,
+  country: String?,
+  text: CharSequence?,
+  fontColor: Color = LocalContentColor.current,
 ) {
-   CountryTextView(
-      modifier = modifier,
-      country = country,
-      text = text,
-      imageWidth = 12.dp,
-      fontSize = 11.sp,
-      textColor = fontColor,
-      spacing = 2.dp,
-   )
+  CountryTextView(
+    modifier = modifier,
+    country = country,
+    text = text,
+    imageWidth = 12.dp,
+    fontSize = 11.sp,
+    textColor = fontColor,
+    spacing = 2.dp,
+  )
 }
 
 @Composable
 fun ComCountryTextViewSmall(
-   modifier: Modifier = Modifier,
-   country: String?,
-   text: CharSequence?,
-   textColor: Color = LocalContentColor.current,
+  modifier: Modifier = Modifier,
+  country: String?,
+  text: CharSequence?,
+  textColor: Color = LocalContentColor.current,
 ) {
-   CountryTextView(
-      modifier = modifier,
-      country = country,
-      text = text,
-      imageWidth = 14.dp,
-      fontSize = 12.sp,
-      textColor = textColor,
-      spacing = 2.dp,
-   )
+  CountryTextView(
+    modifier = modifier,
+    country = country,
+    text = text,
+    imageWidth = 14.dp,
+    fontSize = 12.sp,
+    textColor = textColor,
+    spacing = 2.dp,
+  )
 }
 
 @Composable
 fun ComCountryTextViewMedium(
-   modifier: Modifier = Modifier,
-   country: String?,
-   text: CharSequence?,
-   textColor: Color = LocalContentColor.current,
+  modifier: Modifier = Modifier,
+  country: String?,
+  text: CharSequence?,
+  textColor: Color = LocalContentColor.current,
 ) {
-   CountryTextView(
-      modifier = modifier,
-      country = country,
-      text = text,
-      imageWidth = 16.dp,
-      fontSize = 14.sp,
-      textColor = textColor,
-      spacing = 3.dp,
-   )
+  CountryTextView(
+    modifier = modifier,
+    country = country,
+    text = text,
+    imageWidth = 16.dp,
+    fontSize = 14.sp,
+    textColor = textColor,
+    spacing = 3.dp,
+  )
 }
 
 @Composable
 fun ComCountryTextViewLarge(
-   modifier: Modifier = Modifier,
-   country: String?,
-   text: CharSequence?,
-   textColor: Color = LocalContentColor.current,
+  modifier: Modifier = Modifier,
+  country: String?,
+  text: CharSequence?,
+  textColor: Color = LocalContentColor.current,
 ) {
-   CountryTextView(
-      modifier = modifier,
-      country = country,
-      text = text,
-      imageWidth = 20.dp,
-      fontSize = 16.sp,
-      textColor = textColor,
-      spacing = 3.dp,
-   )
+  CountryTextView(
+    modifier = modifier,
+    country = country,
+    text = text,
+    imageWidth = 20.dp,
+    fontSize = 16.sp,
+    textColor = textColor,
+    spacing = 3.dp,
+  )
 }
 
 @Composable
 private fun CountryTextView(
-   modifier: Modifier = Modifier,
-   country: String?,
-   text: CharSequence?,
-   imageWidth: Dp,
-   fontSize: TextUnit,
-   textColor: Color,
-   spacing: Dp,
+  modifier: Modifier = Modifier,
+  country: String?,
+  text: CharSequence?,
+  imageWidth: Dp,
+  fontSize: TextUnit,
+  textColor: Color,
+  spacing: Dp,
 ) {
-   ComCountryContentView(
-      modifier = modifier,
-      country = country,
-      imageWidth = imageWidth,
-   ) {
-      Spacer(modifier = Modifier.width(spacing))
-      CountryText(
-         text = text.takeUnless { it.isNullOrBlank() } ?: "N/A",
-         color = textColor,
-         fontSize = fontSize,
-         fontWeight = FontWeight.Medium,
-      )
-   }
+  ComCountryContentView(
+    modifier = modifier,
+    country = country,
+    imageWidth = imageWidth,
+  ) {
+    Spacer(modifier = Modifier.width(spacing))
+    CountryText(
+      text = text.takeUnless { it.isNullOrBlank() } ?: "N/A",
+      color = textColor,
+      fontSize = fontSize,
+      fontWeight = FontWeight.Medium,
+    )
+  }
 }
 
 @Composable
 private fun CountryText(
-   modifier: Modifier = Modifier,
-   text: CharSequence,
-   color: Color,
-   fontSize: TextUnit,
-   fontWeight: FontWeight?,
+  modifier: Modifier = Modifier,
+  text: CharSequence,
+  color: Color,
+  fontSize: TextUnit,
+  fontWeight: FontWeight?,
 ) {
-   if (text is AnnotatedString) {
-      Text(
-         modifier = modifier,
-         text = text,
-         color = color,
-         fontSize = fontSize,
-         fontWeight = fontWeight,
-      )
-   } else {
-      val string = text.toString().takeIf { it.isNotBlank() } ?: "N/A"
-      Text(
-         modifier = modifier,
-         text = string,
-         color = color,
-         fontSize = fontSize,
-         fontWeight = fontWeight,
-      )
-   }
+  if (text is AnnotatedString) {
+    Text(
+      modifier = modifier,
+      text = text,
+      color = color,
+      fontSize = fontSize,
+      fontWeight = fontWeight,
+    )
+  } else {
+    val string = text.toString().takeIf { it.isNotBlank() } ?: "N/A"
+    Text(
+      modifier = modifier,
+      text = string,
+      color = color,
+      fontSize = fontSize,
+      fontWeight = fontWeight,
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewEmpty() {
-   AppTheme {
-      ComCountryTextViewExtraSmall(
-         country = "",
-         text = "",
-      )
-   }
+  AppTheme {
+    ComCountryTextViewExtraSmall(
+      country = "",
+      text = "",
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewExtraSmall() {
-   AppTheme {
-      ComCountryTextViewExtraSmall(
-         country = "cn",
-         text = "zhengjun",
-      )
-   }
+  AppTheme {
+    ComCountryTextViewExtraSmall(
+      country = "cn",
+      text = "zhengjun",
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewSmall() {
-   AppTheme {
-      ComCountryTextViewSmall(
-         country = "cn",
-         text = "zhengjun",
-      )
-   }
+  AppTheme {
+    ComCountryTextViewSmall(
+      country = "cn",
+      text = "zhengjun",
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewMedium() {
-   AppTheme {
-      ComCountryTextViewMedium(
-         country = "cn",
-         text = "zhengjun",
-      )
-   }
+  AppTheme {
+    ComCountryTextViewMedium(
+      country = "cn",
+      text = "zhengjun",
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewLarge() {
-   AppTheme {
-      ComCountryTextViewLarge(
-         country = "cn",
-         text = "zhengjun",
-      )
-   }
+  AppTheme {
+    ComCountryTextViewLarge(
+      country = "cn",
+      text = "zhengjun",
+    )
+  }
 }

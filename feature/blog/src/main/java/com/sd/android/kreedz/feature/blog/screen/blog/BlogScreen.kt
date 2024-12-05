@@ -7,19 +7,19 @@ import com.sd.android.kreedz.feature.news.screen.news.NewsScreen
 
 @Composable
 internal fun BlogScreen(
-   modifier: Modifier = Modifier,
-   id: String,
-   vm: BlogVM = viewModel(),
-   commentVM: BlogCommentVM = viewModel(),
-   onClickBack: () -> Unit,
-   onClickOpenUri: (blogId: String) -> Unit,
+  modifier: Modifier = Modifier,
+  id: String,
+  vm: BlogVM = viewModel(),
+  commentVM: BlogCommentVM = viewModel(),
+  onClickBack: () -> Unit,
+  onClickOpenUri: (blogId: String) -> Unit,
 ) {
-   NewsScreen(
-      modifier = modifier,
-      id = id,
-      vm = vm,
-      commentVM = commentVM,
-      onClickBack = onClickBack,
-      onClickOpenUri = onClickOpenUri,
-   )
+  NewsScreen(
+    modifier = modifier,
+    id = id,
+    vm = vm,
+    commentVM = commentVM,
+    onClickBack = onClickBack,
+    onClickOpenUri = onClickOpenUri,
+  )
 }

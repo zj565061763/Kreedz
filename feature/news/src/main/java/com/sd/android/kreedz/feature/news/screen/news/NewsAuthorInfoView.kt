@@ -17,58 +17,58 @@ import com.sd.android.kreedz.feature.common.ui.ComUserIconsView
 
 @Composable
 internal fun NewsAuthorInfoView(
-   modifier: Modifier = Modifier,
-   authorCountry: String?,
-   authorNickname: String?,
-   authorIcons: UserIconsModel?,
-   dateStr: String,
-   onClickAuthor: () -> Unit,
+  modifier: Modifier = Modifier,
+  authorCountry: String?,
+  authorNickname: String?,
+  authorIcons: UserIconsModel?,
+  dateStr: String,
+  onClickAuthor: () -> Unit,
 ) {
-   Row(
-      modifier = modifier,
-      verticalAlignment = Alignment.CenterVertically,
-   ) {
-      Text(
-         text = "Written by",
-         fontSize = 12.sp,
-         modifier = Modifier.alignByBaseline(),
-      )
+  Row(
+    modifier = modifier,
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    Text(
+      text = "Written by",
+      fontSize = 12.sp,
+      modifier = Modifier.alignByBaseline(),
+    )
 
+    Spacer(Modifier.width(4.dp))
+    ComCountryTextViewSmall(
+      country = authorCountry,
+      text = authorNickname,
+      modifier = Modifier
+        .alignByBaseline()
+        .clickable { onClickAuthor() },
+    )
+
+    if (authorIcons != null) {
       Spacer(Modifier.width(4.dp))
-      ComCountryTextViewSmall(
-         country = authorCountry,
-         text = authorNickname,
-         modifier = Modifier
-            .alignByBaseline()
-            .clickable { onClickAuthor() },
+      ComUserIconsView(
+        icons = authorIcons,
       )
+    }
 
-      if (authorIcons != null) {
-         Spacer(Modifier.width(4.dp))
-         ComUserIconsView(
-            icons = authorIcons,
-         )
-      }
-
-      Spacer(Modifier.weight(1f))
-      Text(
-         text = dateStr,
-         fontSize = 12.sp,
-         modifier = Modifier.alignByBaseline(),
-      )
-   }
+    Spacer(Modifier.weight(1f))
+    Text(
+      text = dateStr,
+      fontSize = 12.sp,
+      modifier = Modifier.alignByBaseline(),
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun Preview() {
-   NewsAuthorInfoView(
-      authorCountry = "ro",
-      authorNickname = "phayzeeVW",
-      authorIcons = UserIconsModel.Default.copy(
-         isLJRecordHolder = true,
-      ),
-      dateStr = "28/10/2024 14:27",
-      onClickAuthor = {},
-   )
+  NewsAuthorInfoView(
+    authorCountry = "ro",
+    authorNickname = "phayzeeVW",
+    authorIcons = UserIconsModel.Default.copy(
+      isLJRecordHolder = true,
+    ),
+    dateStr = "28/10/2024 14:27",
+    onClickAuthor = {},
+  )
 }

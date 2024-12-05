@@ -8,49 +8,49 @@ import com.sd.android.kreedz.data.model.TopCountryRankingModel
 
 @Composable
 internal fun TopRankingCountryView(
-   modifier: Modifier = Modifier,
-   topCountry: List<TopCountryRankingModel>,
-   onClickMore: () -> Unit,
+  modifier: Modifier = Modifier,
+  topCountry: List<TopCountryRankingModel>,
+  onClickMore: () -> Unit,
 ) {
-   TopRankingCardView(
-      modifier = modifier,
-      title = "Country",
-      onClickMore = onClickMore,
-   ) {
-      topCountry.forEach { item ->
-         TopRankingCardItemView(
-            country = item.country,
-            text = item.countryName,
-            number = item.numberOfRecords,
-         )
-      }
-   }
+  TopRankingCardView(
+    modifier = modifier,
+    title = "Country",
+    onClickMore = onClickMore,
+  ) {
+    topCountry.forEach { item ->
+      TopRankingCardItemView(
+        country = item.country,
+        text = item.countryName,
+        number = item.numberOfRecords,
+      )
+    }
+  }
 }
 
 @Preview
 @Composable
 private fun Preview() {
-   val topCountry = listOf(
-      TopCountryRankingModel(
-         country = "ru",
-         countryName = "Russia",
-         numberOfRecords = "258",
-      ),
-      TopCountryRankingModel(
-         country = "cz",
-         countryName = "Czechia",
-         numberOfRecords = "227",
-      ),
-      TopCountryRankingModel(
-         country = "ar",
-         countryName = "Argentina",
-         numberOfRecords = "119",
-      ),
-   )
-   AppTheme {
-      TopRankingCountryView(
-         topCountry = topCountry,
-         onClickMore = {},
-      )
-   }
+  val topCountry = listOf(
+    TopCountryRankingModel(
+      country = "ru",
+      countryName = "Russia",
+      numberOfRecords = "258",
+    ),
+    TopCountryRankingModel(
+      country = "cz",
+      countryName = "Czechia",
+      numberOfRecords = "227",
+    ),
+    TopCountryRankingModel(
+      country = "ar",
+      countryName = "Argentina",
+      numberOfRecords = "119",
+    ),
+  )
+  AppTheme {
+    TopRankingCountryView(
+      topCountry = topCountry,
+      onClickMore = {},
+    )
+  }
 }

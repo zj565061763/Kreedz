@@ -20,90 +20,90 @@ import androidx.compose.ui.unit.sp
 import com.sd.android.kreedz.core.ui.AppTheme
 
 enum class MapRecordsSortType {
-   Map,
-   Jumper,
-   Time,
-   Date,
+  Map,
+  Jumper,
+  Time,
+  Date,
 }
 
 data class MapRecordsSortModel(
-   val type: MapRecordsSortType,
-   val asc: Boolean,
+  val type: MapRecordsSortType,
+  val asc: Boolean,
 )
 
 @Composable
 internal fun MapRecordsSortView(
-   modifier: Modifier = Modifier,
-   currentSort: MapRecordsSortModel,
-   onClickSort: (MapRecordsSortType) -> Unit,
+  modifier: Modifier = Modifier,
+  currentSort: MapRecordsSortModel,
+  onClickSort: (MapRecordsSortType) -> Unit,
 ) {
-   val sorts = remember { MapRecordsSortType.entries }
-   Row(modifier = modifier.fillMaxWidth()) {
-      sorts.forEach { item ->
-         ItemView(
-            modifier = Modifier.weight(1f),
-            name = item.displayName(),
-            asc = with(currentSort) { if (type == item) asc else null },
-            onClick = { onClickSort(item) },
-         )
-      }
-   }
+  val sorts = remember { MapRecordsSortType.entries }
+  Row(modifier = modifier.fillMaxWidth()) {
+    sorts.forEach { item ->
+      ItemView(
+        modifier = Modifier.weight(1f),
+        name = item.displayName(),
+        asc = with(currentSort) { if (type == item) asc else null },
+        onClick = { onClickSort(item) },
+      )
+    }
+  }
 }
 
 @Composable
 private fun ItemView(
-   modifier: Modifier = Modifier,
-   name: String,
-   asc: Boolean?,
-   onClick: () -> Unit,
+  modifier: Modifier = Modifier,
+  name: String,
+  asc: Boolean?,
+  onClick: () -> Unit,
 ) {
-   val enabledColor = MaterialTheme.colorScheme.primary
-   val disabledColor = MaterialTheme.colorScheme.onSurface.copy(0.3f)
+  val enabledColor = MaterialTheme.colorScheme.primary
+  val disabledColor = MaterialTheme.colorScheme.onSurface.copy(0.3f)
 
-   Column(
-      modifier = modifier
-         .fillMaxWidth()
-         .clickable { onClick() },
-      horizontalAlignment = Alignment.CenterHorizontally,
-   ) {
-      Icon(
-         imageVector = Icons.Default.KeyboardArrowUp,
-         contentDescription = "Ascending order",
-         tint = if (asc == true) enabledColor else disabledColor,
-      )
-      Text(
-         text = name,
-         fontSize = 11.sp,
-         fontWeight = FontWeight.SemiBold,
-         color = if (asc != null) enabledColor else disabledColor,
-      )
-      Icon(
-         imageVector = Icons.Default.KeyboardArrowDown,
-         contentDescription = "Descending order",
-         tint = if (asc == false) enabledColor else disabledColor,
-      )
-   }
+  Column(
+    modifier = modifier
+      .fillMaxWidth()
+      .clickable { onClick() },
+    horizontalAlignment = Alignment.CenterHorizontally,
+  ) {
+    Icon(
+      imageVector = Icons.Default.KeyboardArrowUp,
+      contentDescription = "Ascending order",
+      tint = if (asc == true) enabledColor else disabledColor,
+    )
+    Text(
+      text = name,
+      fontSize = 11.sp,
+      fontWeight = FontWeight.SemiBold,
+      color = if (asc != null) enabledColor else disabledColor,
+    )
+    Icon(
+      imageVector = Icons.Default.KeyboardArrowDown,
+      contentDescription = "Descending order",
+      tint = if (asc == false) enabledColor else disabledColor,
+    )
+  }
 }
 
 private fun MapRecordsSortType.displayName(): String {
-   return when (this) {
-      MapRecordsSortType.Map -> "Map"
-      MapRecordsSortType.Jumper -> "Jumper"
-      MapRecordsSortType.Time -> "Time"
-      MapRecordsSortType.Date -> "Date"
-   }
+  return when (this) {
+    MapRecordsSortType.Map -> "Map"
+    MapRecordsSortType.Jumper -> "Jumper"
+    MapRecordsSortType.Time -> "Time"
+    MapRecordsSortType.Date -> "Date"
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewView() {
-   AppTheme {
-      MapRecordsSortView(
-         currentSort = MapRecordsSortModel(
-            type = MapRecordsSortType.Map,
-            asc = true,
-         ),
-         onClickSort = {},
-      )
-   }
+  AppTheme {
+    MapRecordsSortView(
+      currentSort = MapRecordsSortModel(
+        type = MapRecordsSortType.Map,
+        asc = true,
+      ),
+      onClickSort = {},
+    )
+  }
 }

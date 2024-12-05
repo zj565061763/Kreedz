@@ -40,106 +40,106 @@ import com.sd.lib.compose.input.FTextFieldIndicatorOutline
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchTitleView(
-   modifier: Modifier = Modifier,
-   textFieldState: TextFieldState,
-   isReadyToSearch: Boolean,
-   isSearching: Boolean,
-   onClickBack: () -> Unit,
-   onClickSearch: () -> Unit,
+  modifier: Modifier = Modifier,
+  textFieldState: TextFieldState,
+  isReadyToSearch: Boolean,
+  isSearching: Boolean,
+  onClickBack: () -> Unit,
+  onClickSearch: () -> Unit,
 ) {
-   TopAppBar(
-      modifier = modifier.fillMaxWidth(),
-      title = {
-         SearchBar(
-            textFieldState = textFieldState,
-            isReadyToSearch = isReadyToSearch,
-            isSearching = isSearching,
-            onKeyboardAction = onClickSearch,
-            modifier = Modifier.fillMaxWidth(),
-         )
-      },
-      navigationIcon = {
-         IconButton(onClick = onClickBack) {
-            Icon(
-               imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-               contentDescription = "Back",
-            )
-         }
-      },
-   )
+  TopAppBar(
+    modifier = modifier.fillMaxWidth(),
+    title = {
+      SearchBar(
+        textFieldState = textFieldState,
+        isReadyToSearch = isReadyToSearch,
+        isSearching = isSearching,
+        onKeyboardAction = onClickSearch,
+        modifier = Modifier.fillMaxWidth(),
+      )
+    },
+    navigationIcon = {
+      IconButton(onClick = onClickBack) {
+        Icon(
+          imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+          contentDescription = "Back",
+        )
+      }
+    },
+  )
 }
 
 @Composable
 private fun SearchBar(
-   modifier: Modifier = Modifier,
-   textFieldState: TextFieldState,
-   isReadyToSearch: Boolean,
-   isSearching: Boolean,
-   onKeyboardAction: () -> Unit,
+  modifier: Modifier = Modifier,
+  textFieldState: TextFieldState,
+  isReadyToSearch: Boolean,
+  isSearching: Boolean,
+  onKeyboardAction: () -> Unit,
 ) {
-   val focusRequester = remember { FocusRequester() }
-   LaunchedEffect(focusRequester) {
-      focusRequester.requestFocus()
-   }
+  val focusRequester = remember { FocusRequester() }
+  LaunchedEffect(focusRequester) {
+    focusRequester.requestFocus()
+  }
 
-   FTextField(
-      modifier = modifier
-         .defaultMinSize(1.dp, 36.dp)
-         .focusRequester(focusRequester),
-      state = textFieldState,
-      contentPadding = PaddingValues(0.dp),
-      textStyle = TextStyle(
-         fontSize = 14.sp,
-         lineHeight = (1.2).em,
-      ),
-      keyboardOptions = KeyboardOptions.Default.copy(
-         imeAction = ImeAction.Search,
-      ),
-      onKeyboardAction = { onKeyboardAction() },
-      placeholder = {
-         Text(text = "Search...")
-      },
-      leadingIcon = {
-         FTextFieldIconContainer(Modifier.padding(start = 8.dp)) {
-            if (isSearching) {
-               CircularProgressIndicator(
-                  strokeWidth = 1.dp,
-                  modifier = Modifier.size(14.dp),
-               )
-            } else {
-               Icon(
-                  imageVector = Icons.Default.Search,
-                  contentDescription = "Search",
-                  modifier = Modifier.size(18.dp),
-               )
-            }
-         }
-      },
-      trailingIcon = {
-         FTextFieldIconClear(Modifier.padding(end = 8.dp))
-      },
-      indicator = {
-         FTextFieldIndicatorOutline(
-            shape = CircleShape,
-            color = with(MaterialTheme.colorScheme) {
-               if (isReadyToSearch) primary else onSurface.copy(0.4f)
-            }
-         )
-      },
-   )
+  FTextField(
+    modifier = modifier
+      .defaultMinSize(1.dp, 36.dp)
+      .focusRequester(focusRequester),
+    state = textFieldState,
+    contentPadding = PaddingValues(0.dp),
+    textStyle = TextStyle(
+      fontSize = 14.sp,
+      lineHeight = (1.2).em,
+    ),
+    keyboardOptions = KeyboardOptions.Default.copy(
+      imeAction = ImeAction.Search,
+    ),
+    onKeyboardAction = { onKeyboardAction() },
+    placeholder = {
+      Text(text = "Search...")
+    },
+    leadingIcon = {
+      FTextFieldIconContainer(Modifier.padding(start = 8.dp)) {
+        if (isSearching) {
+          CircularProgressIndicator(
+            strokeWidth = 1.dp,
+            modifier = Modifier.size(14.dp),
+          )
+        } else {
+          Icon(
+            imageVector = Icons.Default.Search,
+            contentDescription = "Search",
+            modifier = Modifier.size(18.dp),
+          )
+        }
+      }
+    },
+    trailingIcon = {
+      FTextFieldIconClear(Modifier.padding(end = 8.dp))
+    },
+    indicator = {
+      FTextFieldIndicatorOutline(
+        shape = CircleShape,
+        color = with(MaterialTheme.colorScheme) {
+          if (isReadyToSearch) primary else onSurface.copy(0.4f)
+        }
+      )
+    },
+  )
 }
 
 @Preview
 @Composable
 private fun Preview() {
-   AppTheme {
-      SearchTitleView(
-         modifier = Modifier.fillMaxWidth(),
-         textFieldState = rememberTextFieldState(),
-         isReadyToSearch = false,
-         isSearching = false,
-         onClickBack = {},
-         onClickSearch = {},
-      )
-   }
+  AppTheme {
+    SearchTitleView(
+      modifier = Modifier.fillMaxWidth(),
+      textFieldState = rememberTextFieldState(),
+      isReadyToSearch = false,
+      isSearching = false,
+      onClickBack = {},
+      onClickSearch = {},
+    )
+  }
 }

@@ -6,15 +6,15 @@ import kotlinx.coroutines.delay
 
 class InitVM : BaseViewModel<InitVM.State, Unit>(State()) {
 
-   init {
-      vmLaunch {
-         delay(5_00)
-         updateState { it.copy(finish = true) }
-      }
-   }
+  init {
+    vmLaunch {
+      delay(5_00)
+      updateState { it.copy(finish = true) }
+    }
+  }
 
-   @Immutable
-   data class State(
-      val finish: Boolean = false,
-   )
+  @Immutable
+  data class State(
+    val finish: Boolean = false,
+  )
 }

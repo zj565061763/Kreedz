@@ -32,122 +32,122 @@ import com.sd.lib.compose.paging.fPagingItems
 
 @Composable
 internal fun LatestNewsListView(
-   modifier: Modifier = Modifier,
-   lazyListState: LazyListState,
-   news: LazyPagingItems<NewsModel>,
-   onClickItem: (newsId: String) -> Unit,
+  modifier: Modifier = Modifier,
+  lazyListState: LazyListState,
+  news: LazyPagingItems<NewsModel>,
+  onClickItem: (newsId: String) -> Unit,
 ) {
-   LazyColumn(
-      modifier = modifier.fillMaxSize(),
-      state = lazyListState,
-      contentPadding = PaddingValues(8.dp),
-      verticalArrangement = Arrangement.spacedBy(8.dp),
-   ) {
-      fPagingItems(
-         items = news,
-         key = news.itemKey { it.id },
-      ) { _, item ->
-         Card(shape = MaterialTheme.shapes.extraSmall) {
-            ItemView(
-               title = item.title,
-               date = item.dateStr,
-               author = item.author,
-               modifier = Modifier.clickable {
-                  onClickItem(item.id)
-               },
-            )
-         }
+  LazyColumn(
+    modifier = modifier.fillMaxSize(),
+    state = lazyListState,
+    contentPadding = PaddingValues(8.dp),
+    verticalArrangement = Arrangement.spacedBy(8.dp),
+  ) {
+    fPagingItems(
+      items = news,
+      key = news.itemKey { it.id },
+    ) { _, item ->
+      Card(shape = MaterialTheme.shapes.extraSmall) {
+        ItemView(
+          title = item.title,
+          date = item.dateStr,
+          author = item.author,
+          modifier = Modifier.clickable {
+            onClickItem(item.id)
+          },
+        )
       }
+    }
 
-      fPagingAppend(
-         items = news,
-      )
-   }
+    fPagingAppend(
+      items = news,
+    )
+  }
 }
 
 @Composable
 private fun ItemView(
-   modifier: Modifier = Modifier,
-   title: String,
-   date: String,
-   author: UserWithIconsModel,
+  modifier: Modifier = Modifier,
+  title: String,
+  date: String,
+  author: UserWithIconsModel,
 ) {
-   ConstraintLayout(
-      modifier = modifier
-         .fillMaxWidth()
-         .padding(8.dp)
-   ) {
-      val (
-         refTitle,
-         refAuthor, refAuthorIcons, refDate,
-      ) = createRefs()
+  ConstraintLayout(
+    modifier = modifier
+      .fillMaxWidth()
+      .padding(8.dp)
+  ) {
+    val (
+      refTitle,
+      refAuthor, refAuthorIcons, refDate,
+    ) = createRefs()
 
-      // title
-      Text(
-         text = title,
-         fontSize = 14.sp,
-         fontWeight = FontWeight.Medium,
-         lineHeight = 18.sp,
-         modifier = Modifier.constrainAs(refTitle) {
-            top.linkTo(parent.top)
-            start.linkTo(parent.start)
-         }
-      )
+    // title
+    Text(
+      text = title,
+      fontSize = 14.sp,
+      fontWeight = FontWeight.Medium,
+      lineHeight = 18.sp,
+      modifier = Modifier.constrainAs(refTitle) {
+        top.linkTo(parent.top)
+        start.linkTo(parent.start)
+      }
+    )
 
-      ComCountryTextViewSmall(
-         country = author.country,
-         text = author.nickname,
-         modifier = Modifier.constrainAs(refAuthor) {
-            start.linkTo(parent.start)
-            top.linkTo(refTitle.bottom, 6.dp)
-         }
-      )
-      ComUserIconsView(
-         icons = author.icons,
-         enableClick = false,
-         modifier = Modifier.constrainAs(refAuthorIcons) {
-            centerVerticallyTo(refAuthor)
-            start.linkTo(refAuthor.end, 4.dp)
-         }
-      )
+    ComCountryTextViewSmall(
+      country = author.country,
+      text = author.nickname,
+      modifier = Modifier.constrainAs(refAuthor) {
+        start.linkTo(parent.start)
+        top.linkTo(refTitle.bottom, 6.dp)
+      }
+    )
+    ComUserIconsView(
+      icons = author.icons,
+      enableClick = false,
+      modifier = Modifier.constrainAs(refAuthorIcons) {
+        centerVerticallyTo(refAuthor)
+        start.linkTo(refAuthor.end, 4.dp)
+      }
+    )
 
-      // Date
-      Text(
-         text = date,
-         fontSize = 12.sp,
-         color = AppTextColor.medium,
-         modifier = Modifier.constrainAs(refDate) {
-            end.linkTo(parent.end)
-            top.linkTo(refTitle.bottom, 6.dp)
-         }
-      )
-   }
+    // Date
+    Text(
+      text = date,
+      fontSize = 12.sp,
+      color = AppTextColor.medium,
+      modifier = Modifier.constrainAs(refDate) {
+        end.linkTo(parent.end)
+        top.linkTo(refTitle.bottom, 6.dp)
+      }
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewView() {
-   AppTheme {
-      Card(shape = MaterialTheme.shapes.extraSmall) {
-         ItemView(
-            title = "WR Release #819 - 22 new world records + News",
-            date = "30/09/2024 18:20",
-            author = UserWithIconsModel(
-               id = "1",
-               nickname = "phayzeeVW",
-               country = "ro",
-               icons = UserIconsModel(
-                  isVip = true,
-                  isRecordHolder = true,
-                  isLJRecordHolder = true,
-                  isTournamentRank1 = true,
-                  isTournamentRank2 = true,
-                  isTournamentRank3 = true,
-                  isMapper = true,
-                  isMovieEditor = true,
-               )
-            ),
-         )
-      }
-   }
+  AppTheme {
+    Card(shape = MaterialTheme.shapes.extraSmall) {
+      ItemView(
+        title = "WR Release #819 - 22 new world records + News",
+        date = "30/09/2024 18:20",
+        author = UserWithIconsModel(
+          id = "1",
+          nickname = "phayzeeVW",
+          country = "ro",
+          icons = UserIconsModel(
+            isVip = true,
+            isRecordHolder = true,
+            isLJRecordHolder = true,
+            isTournamentRank1 = true,
+            isTournamentRank2 = true,
+            isTournamentRank3 = true,
+            isMapper = true,
+            isMovieEditor = true,
+          )
+        ),
+      )
+    }
+  }
 }

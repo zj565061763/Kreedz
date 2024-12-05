@@ -22,109 +22,109 @@ import com.sd.android.kreedz.feature.common.ui.ComCountryTextViewSmall
 
 @Composable
 fun MapInfoView(
-   modifier: Modifier = Modifier,
-   mapId: String,
-   mapImage: String?,
-   mapDate: String?,
-   authors: List<UserModel>,
-   onClickAuthor: (userId: String) -> Unit,
+  modifier: Modifier = Modifier,
+  mapId: String,
+  mapImage: String?,
+  mapDate: String?,
+  authors: List<UserModel>,
+  onClickAuthor: (userId: String) -> Unit,
 ) {
-   Box(
-      contentAlignment = Alignment.Center,
-      modifier = modifier
-         .background(MaterialTheme.colorScheme.surfaceContainer)
-         .aspectRatio(1366 / 768f),
-   ) {
-      MapImageView(
-         mapImage = mapImage,
-         mapId = mapId,
-      )
-      MapInfoColumnView(
-         mapDate = mapDate,
-         authors = authors,
-         onClickAuthor = onClickAuthor,
-         modifier = Modifier.align(Alignment.TopEnd),
-      )
-   }
+  Box(
+    contentAlignment = Alignment.Center,
+    modifier = modifier
+      .background(MaterialTheme.colorScheme.surfaceContainer)
+      .aspectRatio(1366 / 768f),
+  ) {
+    MapImageView(
+      mapImage = mapImage,
+      mapId = mapId,
+    )
+    MapInfoColumnView(
+      mapDate = mapDate,
+      authors = authors,
+      onClickAuthor = onClickAuthor,
+      modifier = Modifier.align(Alignment.TopEnd),
+    )
+  }
 }
 
 @Composable
 private fun MapInfoColumnView(
-   modifier: Modifier = Modifier,
-   mapDate: String?,
-   authors: List<UserModel>,
-   onClickAuthor: (userId: String) -> Unit,
+  modifier: Modifier = Modifier,
+  mapDate: String?,
+  authors: List<UserModel>,
+  onClickAuthor: (userId: String) -> Unit,
 ) {
-   Column(
-      modifier = modifier.padding(6.dp),
-      horizontalAlignment = Alignment.End,
-      verticalArrangement = Arrangement.spacedBy(6.dp),
-   ) {
-      DateView(mapDate = mapDate)
-      authors.forEach { item ->
-         MapAuthorView(
-            author = item,
-            onClick = {
-               onClickAuthor(item.id)
-            }
-         )
-      }
-   }
+  Column(
+    modifier = modifier.padding(6.dp),
+    horizontalAlignment = Alignment.End,
+    verticalArrangement = Arrangement.spacedBy(6.dp),
+  ) {
+    DateView(mapDate = mapDate)
+    authors.forEach { item ->
+      MapAuthorView(
+        author = item,
+        onClick = {
+          onClickAuthor(item.id)
+        }
+      )
+    }
+  }
 }
 
 @Composable
 private fun MapAuthorView(
-   modifier: Modifier = Modifier,
-   author: UserModel,
-   onClick: () -> Unit,
+  modifier: Modifier = Modifier,
+  author: UserModel,
+  onClick: () -> Unit,
 ) {
-   ComBlurCard(
-      modifier = modifier,
-      onClick = onClick,
-   ) {
-      ComCountryTextViewSmall(
-         country = author.country,
-         text = author.nickname,
-      )
-   }
+  ComBlurCard(
+    modifier = modifier,
+    onClick = onClick,
+  ) {
+    ComCountryTextViewSmall(
+      country = author.country,
+      text = author.nickname,
+    )
+  }
 }
 
 @Composable
 private fun DateView(
-   modifier: Modifier = Modifier,
-   mapDate: String?,
+  modifier: Modifier = Modifier,
+  mapDate: String?,
 ) {
-   if (mapDate.isNullOrBlank()) return
-   ComBlurCard(modifier = modifier) {
-      Text(
-         text = mapDate,
-         fontSize = 12.sp,
-         fontWeight = FontWeight.Medium,
-      )
-   }
+  if (mapDate.isNullOrBlank()) return
+  ComBlurCard(modifier = modifier) {
+    Text(
+      text = mapDate,
+      fontSize = 12.sp,
+      fontWeight = FontWeight.Medium,
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewView() {
-   AppTheme {
-      MapInfoView(
-         mapId = "",
-         mapImage = "",
-         mapDate = "2024-10-10",
-         authors = listOf(
-            UserModel(
-               id = "1",
-               nickname = "Chrizzy",
-               country = "no",
-            ),
-            UserModel(
-               id = "1",
-               nickname = "Chrizzy",
-               country = "no",
-            ),
-         ),
-         onClickAuthor = {},
-      )
-   }
+  AppTheme {
+    MapInfoView(
+      mapId = "",
+      mapImage = "",
+      mapDate = "2024-10-10",
+      authors = listOf(
+        UserModel(
+          id = "1",
+          nickname = "Chrizzy",
+          country = "no",
+        ),
+        UserModel(
+          id = "1",
+          nickname = "Chrizzy",
+          country = "no",
+        ),
+      ),
+      onClickAuthor = {},
+    )
+  }
 }

@@ -9,17 +9,17 @@ import com.sd.android.kreedz.core.router.AppRouter
 
 @Composable
 fun LatestNewsScreen(
-   modifier: Modifier = Modifier,
-   vm: LatestNewsVM = viewModel(),
+  modifier: Modifier = Modifier,
+  vm: LatestNewsVM = viewModel(),
 ) {
-   val items = vm.itemsFlow.collectAsLazyPagingItems()
-   val context = LocalContext.current
+  val items = vm.itemsFlow.collectAsLazyPagingItems()
+  val context = LocalContext.current
 
-   LatestNewsScreenView(
-      modifier = modifier,
-      items = items,
-      onClickItem = {
-         AppRouter.news(context, it)
-      },
-   )
+  LatestNewsScreenView(
+    modifier = modifier,
+    items = items,
+    onClickItem = {
+      AppRouter.news(context, it)
+    },
+  )
 }

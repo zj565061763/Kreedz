@@ -18,41 +18,41 @@ import com.sd.android.kreedz.core.ui.AppTheme
 
 @Composable
 fun ComTextLabelView(
-   modifier: Modifier = Modifier,
-   text: String,
-   label: String,
-   textFontSize: TextUnit = 14.sp,
-   textColor: Color = AppTextColor.primary,
+  modifier: Modifier = Modifier,
+  text: String,
+  label: String,
+  textFontSize: TextUnit = 14.sp,
+  textColor: Color = AppTextColor.primary,
 ) {
-   Row(
-      modifier = modifier,
-      verticalAlignment = Alignment.CenterVertically,
-   ) {
-      Text(
-         text = text,
-         color = textColor,
-         fontSize = textFontSize,
-         fontWeight = FontWeight.Medium,
-         modifier = Modifier.alignByBaseline(),
-      )
-      Spacer(modifier = Modifier.width(1.dp))
-      Text(
-         text = label,
-         color = AppTextColor.small,
-         fontSize = 12.sp,
-         fontWeight = FontWeight.Medium,
-         modifier = Modifier.alignByBaseline()
-      )
-   }
+  Row(
+    modifier = modifier,
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    Text(
+      text = text,
+      color = textColor,
+      fontSize = textFontSize,
+      fontWeight = FontWeight.Medium,
+      modifier = Modifier.alignByBaseline(),
+    )
+    Spacer(modifier = Modifier.width(1.dp))
+    Text(
+      text = label,
+      color = AppTextColor.small,
+      fontSize = 12.sp,
+      fontWeight = FontWeight.Medium,
+      modifier = Modifier.alignByBaseline()
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewView() {
-   AppTheme {
-      ComTextLabelView(
-         text = "258",
-         label = "block"
-      )
-   }
+  AppTheme {
+    ComTextLabelView(
+      text = "258",
+      label = "block"
+    )
+  }
 }

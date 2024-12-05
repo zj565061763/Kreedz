@@ -15,54 +15,54 @@ import com.sd.android.kreedz.feature.common.ui.ComCountryTextViewSmall
 import com.sd.lib.compose.annotated.fAnnotatedTargets
 
 fun LazyListScope.searchResultUser(
-   keyword: String,
-   listUser: List<SearchUserModel>?,
-   onClickUser: (SearchUserModel) -> Unit,
+  keyword: String,
+  listUser: List<SearchUserModel>?,
+  onClickUser: (SearchUserModel) -> Unit,
 ) {
-   if (listUser == null) return
+  if (listUser == null) return
 
-   searchResultTitle(
-      title = "User",
-      count = listUser.size,
-   )
+  searchResultTitle(
+    title = "User",
+    count = listUser.size,
+  )
 
-   items(listUser) { item ->
-      Card(shape = MaterialTheme.shapes.extraSmall) {
-         ItemView(
-            keyword = keyword,
-            nickname = item.nickname ?: "",
-            country = item.country,
-            modifier = Modifier
-               .clickable { onClickUser(item) }
-               .padding(8.dp),
-         )
-      }
-   }
+  items(listUser) { item ->
+    Card(shape = MaterialTheme.shapes.extraSmall) {
+      ItemView(
+        keyword = keyword,
+        nickname = item.nickname ?: "",
+        country = item.country,
+        modifier = Modifier
+          .clickable { onClickUser(item) }
+          .padding(8.dp),
+      )
+    }
+  }
 }
 
 @Composable
 private fun ItemView(
-   modifier: Modifier = Modifier,
-   keyword: String,
-   nickname: String,
-   country: String?,
+  modifier: Modifier = Modifier,
+  keyword: String,
+  nickname: String,
+  country: String?,
 ) {
-   ComCountryTextViewSmall(
-      modifier = modifier,
-      country = country,
-      text = nickname.fAnnotatedTargets(
-         targets = listOf(keyword),
-         ignoreCase = true,
-      )
-   )
+  ComCountryTextViewSmall(
+    modifier = modifier,
+    country = country,
+    text = nickname.fAnnotatedTargets(
+      targets = listOf(keyword),
+      ignoreCase = true,
+    )
+  )
 }
 
 @Preview
 @Composable
 private fun PreviewItemView() {
-   ItemView(
-      keyword = "topo",
-      nickname = "topoviygus",
-      country = "ru",
-   )
+  ItemView(
+    keyword = "topo",
+    nickname = "topoviygus",
+    country = "ru",
+  )
 }

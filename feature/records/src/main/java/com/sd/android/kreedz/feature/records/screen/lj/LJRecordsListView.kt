@@ -34,112 +34,112 @@ import kotlinx.coroutines.withContext
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun LJRecordsListView(
-   modifier: Modifier = Modifier,
-   records: List<GroupedLJRecordsModel>,
-   lazyListState: LazyListState,
-   onGroupIndexes: (Map<String, Int>) -> Unit,
+  modifier: Modifier = Modifier,
+  records: List<GroupedLJRecordsModel>,
+  lazyListState: LazyListState,
+  onGroupIndexes: (Map<String, Int>) -> Unit,
 ) {
-   LazyColumn(
-      modifier = modifier.fillMaxSize(),
-      state = lazyListState,
-      contentPadding = PaddingValues(8.dp),
-      verticalArrangement = Arrangement.spacedBy(8.dp),
-   ) {
-      records.forEach { group ->
-         stickyHeader(
-            key = group.type,
-            contentType = "header",
-         ) {
-            HeaderView(text = group.type)
-         }
-         itemsIndexed(
-            items = group.records,
-            contentType = { _, _ -> "item" }
-         ) { index, item ->
-            Card(shape = MaterialTheme.shapes.extraSmall) {
-               LJRecordsItemView(
-                  rank = index + 1,
-                  country = item.playerCountry,
-                  countryText = item.playerName,
-                  block = item.block,
-                  distance = item.distance,
-                  prestrafe = item.prestrafe,
-                  topspeed = item.topspeed,
-                  youtubeLink = item.youtubeLink,
-               )
-            }
-         }
+  LazyColumn(
+    modifier = modifier.fillMaxSize(),
+    state = lazyListState,
+    contentPadding = PaddingValues(8.dp),
+    verticalArrangement = Arrangement.spacedBy(8.dp),
+  ) {
+    records.forEach { group ->
+      stickyHeader(
+        key = group.type,
+        contentType = "header",
+      ) {
+        HeaderView(text = group.type)
       }
-   }
+      itemsIndexed(
+        items = group.records,
+        contentType = { _, _ -> "item" }
+      ) { index, item ->
+        Card(shape = MaterialTheme.shapes.extraSmall) {
+          LJRecordsItemView(
+            rank = index + 1,
+            country = item.playerCountry,
+            countryText = item.playerName,
+            block = item.block,
+            distance = item.distance,
+            prestrafe = item.prestrafe,
+            topspeed = item.topspeed,
+            youtubeLink = item.youtubeLink,
+          )
+        }
+      }
+    }
+  }
 
-   val onGroupIndexesUpdated by rememberUpdatedState(onGroupIndexes)
-   LaunchedEffect(records) {
-      withContext(Dispatchers.IO) {
-         val map = mutableMapOf<String, Int>()
-         var index = 0
-         for (item in records) {
-            map[item.type] = index
-            index += (item.records.size + 1)
-         }
-         onGroupIndexesUpdated(map.toMap())
+  val onGroupIndexesUpdated by rememberUpdatedState(onGroupIndexes)
+  LaunchedEffect(records) {
+    withContext(Dispatchers.IO) {
+      val map = mutableMapOf<String, Int>()
+      var index = 0
+      for (item in records) {
+        map[item.type] = index
+        index += (item.records.size + 1)
       }
-   }
+      onGroupIndexesUpdated(map.toMap())
+    }
+  }
 }
 
 @Composable
 private fun HeaderView(
-   modifier: Modifier = Modifier,
-   text: String,
+  modifier: Modifier = Modifier,
+  text: String,
 ) {
-   Row(
-      modifier = modifier
-         .fillMaxWidth()
-         .background(MaterialTheme.colorScheme.surface)
-         .padding(8.dp),
-      verticalAlignment = Alignment.CenterVertically,
-   ) {
-      Text(
-         text = text,
-         fontSize = 18.sp,
-         fontWeight = FontWeight.Medium,
-      )
-   }
+  Row(
+    modifier = modifier
+      .fillMaxWidth()
+      .background(MaterialTheme.colorScheme.surface)
+      .padding(8.dp),
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    Text(
+      text = text,
+      fontSize = 18.sp,
+      fontWeight = FontWeight.Medium,
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun Preview() {
-   val list = listOf(
-      GroupedLJRecordsModel(
-         type = "LongJump",
-         records = listOf(
-            LJRecordModel(
-               playerCountry = "cn",
-               playerName = "Lobelia",
-               block = "258",
-               distance = "259.09",
-               prestrafe = "273.125",
-               topspeed = "344.771",
-               youtubeLink = "https://www.youtube.com/watch?v=UyaebwzVJxY",
-            ),
-            LJRecordModel(
-               playerCountry = "se",
-               playerName = "propane",
-               block = "258",
-               distance = "258.558",
-               prestrafe = "273.8",
-               topspeed = "346.8",
-               youtubeLink = "https://www.youtube.com/watch?v=YQ82R7vU_xM",
-            ),
-         )
+  val list = listOf(
+    GroupedLJRecordsModel(
+      type = "LongJump",
+      records = listOf(
+        LJRecordModel(
+          playerCountry = "cn",
+          playerName = "Lobelia",
+          block = "258",
+          distance = "259.09",
+          prestrafe = "273.125",
+          topspeed = "344.771",
+          youtubeLink = "https://www.youtube.com/watch?v=UyaebwzVJxY",
+        ),
+        LJRecordModel(
+          playerCountry = "se",
+          playerName = "propane",
+          block = "258",
+          distance = "258.558",
+          prestrafe = "273.8",
+          topspeed = "346.8",
+          youtubeLink = "https://www.youtube.com/watch?v=YQ82R7vU_xM",
+        ),
       )
-   )
+    )
+  )
 
-   AppTheme {
-      LJRecordsListView(
-         records = list,
-         lazyListState = rememberLazyListState(),
-         onGroupIndexes = {},
-      )
-   }
+  AppTheme {
+    LJRecordsListView(
+      records = list,
+      lazyListState = rememberLazyListState(),
+      onGroupIndexes = {},
+    )
+  }
 }

@@ -11,28 +11,28 @@ import okhttp3.CookieJar
 import okhttp3.HttpUrl
 
 internal class AppCookieJar(
-   context: Context,
+  context: Context,
 ) : CookieJar, FLogger {
 
-   private val _cookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(context))
+  private val _cookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(context))
 
-   fun hasToken(url: HttpUrl): Boolean {
-      return _cookieJar.loadForRequest(url).hasToken().second
-   }
+  fun hasToken(url: HttpUrl): Boolean {
+    return _cookieJar.loadForRequest(url).hasToken().second
+  }
 
-   override fun loadForRequest(url: HttpUrl): List<Cookie> {
-      return _cookieJar.loadForRequest(url)
-   }
+  override fun loadForRequest(url: HttpUrl): List<Cookie> {
+    return _cookieJar.loadForRequest(url)
+  }
 
-   override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
-      _cookieJar.saveFromResponse(url, cookies).also {
-         li { "saveFromResponse $url hasToken:${cookies.hasToken()}" }
-      }
-   }
+  override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
+    _cookieJar.saveFromResponse(url, cookies).also {
+      li { "saveFromResponse $url hasToken:${cookies.hasToken()}" }
+    }
+  }
 }
 
 private fun List<Cookie>.hasToken(): Pair<Boolean, Boolean> {
-   val cookie = find { it.name == "refreshToken" }
-   if (cookie == null) return (false to false)
-   return true to cookie.value.isNotBlank()
+  val cookie = find { it.name == "refreshToken" }
+  if (cookie == null) return (false to false)
+  return true to cookie.value.isNotBlank()
 }

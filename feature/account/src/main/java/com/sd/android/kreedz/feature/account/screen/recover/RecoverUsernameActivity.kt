@@ -14,43 +14,43 @@ import com.sd.android.kreedz.feature.common.ui.ComEffect
 
 @Router(path = AppRouter.RECOVER_USERNAME)
 internal class RecoverUsernameActivity : BaseActivity() {
-   @Composable
-   override fun ContentImpl() {
-      val vm = viewModel<RecoverUsernameVM>()
-      val state by vm.stateFlow.collectAsStateWithLifecycle()
+  @Composable
+  override fun ContentImpl() {
+    val vm = viewModel<RecoverUsernameVM>()
+    val state by vm.stateFlow.collectAsStateWithLifecycle()
 
-      RecoverScreenView(
-         title = "Recover Username",
-         emailState = vm.emailState,
-         isLoading = state.isLoading,
-         onCancelLoading = { vm.cancelRecover() },
-         onClickBack = {
-            finish()
-         },
-         onClickRecover = {
-            vm.recover()
-         },
+    RecoverScreenView(
+      title = "Recover Username",
+      emailState = vm.emailState,
+      isLoading = state.isLoading,
+      onCancelLoading = { vm.cancelRecover() },
+      onClickBack = {
+        finish()
+      },
+      onClickRecover = {
+        vm.recover()
+      },
+    )
+
+    if (state.isLoadingSuccess) {
+      ComAlertDialog(
+        onDismissRequest = { finish() },
+        text = {
+          Text(
+            text = "Username recovery asked - check your mail (and spams)"
+          )
+        },
       )
+    }
 
-      if (state.isLoadingSuccess) {
-         ComAlertDialog(
-            onDismissRequest = { finish() },
-            text = {
-               Text(
-                  text = "Username recovery asked - check your mail (and spams)"
-               )
-            },
-         )
-      }
-
-      vm.effectFlow.ComEffect()
-   }
+    vm.effectFlow.ComEffect()
+  }
 }
 
 internal class RecoverUsernameVM : RecoverVM() {
-   private val _repository = AccountRepository()
+  private val _repository = AccountRepository()
 
-   override suspend fun recover(email: String) {
-      _repository.recoverUsername(email)
-   }
+  override suspend fun recover(email: String) {
+    _repository.recoverUsername(email)
+  }
 }

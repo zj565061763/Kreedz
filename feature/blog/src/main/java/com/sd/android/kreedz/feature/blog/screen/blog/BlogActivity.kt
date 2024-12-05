@@ -11,24 +11,24 @@ import com.sd.lib.compose.utils.fIntentExtra
 
 @Router(path = AppRouter.BLOG)
 internal class BlogActivity : BaseActivity() {
-   @Composable
-   override fun ContentImpl() {
-      val id = fIntentExtra { it.getStringExtra("id") }
-      if (id.isNullOrBlank()) {
-         FFinish()
-         return
+  @Composable
+  override fun ContentImpl() {
+    val id = fIntentExtra { it.getStringExtra("id") }
+    if (id.isNullOrBlank()) {
+      FFinish()
+      return
+    }
+
+    val uriHandler = LocalUriHandler.current
+
+    BlogScreen(
+      id = id,
+      onClickBack = {
+        finish()
+      },
+      onClickOpenUri = {
+        fsUri.openBlogUri(it, uriHandler)
       }
-
-      val uriHandler = LocalUriHandler.current
-
-      BlogScreen(
-         id = id,
-         onClickBack = {
-            finish()
-         },
-         onClickOpenUri = {
-            fsUri.openBlogUri(it, uriHandler)
-         }
-      )
-   }
+    )
+  }
 }

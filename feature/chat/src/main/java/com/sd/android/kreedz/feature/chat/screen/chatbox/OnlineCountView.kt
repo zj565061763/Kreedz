@@ -11,33 +11,33 @@ import com.sd.android.kreedz.feature.common.ui.ComTextLabelView
 
 @Composable
 internal fun OnlineCountView(
-   modifier: Modifier = Modifier,
-   guestsCount: Int,
-   usersCount: Int,
+  modifier: Modifier = Modifier,
+  guestsCount: Int,
+  usersCount: Int,
 ) {
-   Row(
-      modifier = modifier,
-      horizontalArrangement = Arrangement.spacedBy(8.dp),
-   ) {
-      ComTextLabelView(
-         text = guestsCount.toString(),
-         label = "guests",
-      )
+  Row(
+    modifier = modifier,
+    horizontalArrangement = Arrangement.spacedBy(8.dp),
+  ) {
+    ComTextLabelView(
+      text = guestsCount.toString(),
+      label = "guests",
+    )
 
-      ComTextLabelView(
-         text = usersCount.toString(),
-         label = "members",
-      )
-   }
+    ComTextLabelView(
+      text = usersCount.toString(),
+      label = "members",
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun Preview() {
-   AppTheme {
-      OnlineCountView(
-         guestsCount = 4,
-         usersCount = 2,
-      )
-   }
+  AppTheme {
+    OnlineCountView(
+      guestsCount = 4,
+      usersCount = 2,
+    )
+  }
 }

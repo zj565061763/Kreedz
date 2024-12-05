@@ -9,21 +9,21 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 internal fun NewsTitleView(
-   modifier: Modifier = Modifier,
-   title: String,
+  modifier: Modifier = Modifier,
+  title: String,
 ) {
-   Text(
-      modifier = modifier,
-      text = title,
-      fontSize = 24.sp,
-      fontWeight = FontWeight.Medium,
-   )
+  Text(
+    modifier = modifier,
+    text = title,
+    fontSize = 24.sp,
+    fontWeight = FontWeight.Medium,
+  )
 }
 
 @Preview
 @Composable
 private fun Preview() {
-   NewsTitleView(
-      title = "WR Release #820 - 23 NEW WORLD RECORDS",
-   )
+  NewsTitleView(
+    title = "WR Release #820 - 23 NEW WORLD RECORDS",
+  )
 }

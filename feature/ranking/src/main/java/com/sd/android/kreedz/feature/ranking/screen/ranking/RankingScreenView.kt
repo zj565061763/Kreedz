@@ -25,51 +25,51 @@ import com.sd.lib.date.FDate
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun RankingScreenView(
-   modifier: Modifier = Modifier,
-   title: String,
-   isLoading: Boolean,
-   onClickBack: () -> Unit,
-   onRefresh: (FDate?) -> Unit,
-   onSelectDate: (FDate?) -> Unit,
-   content: LazyListScope.() -> Unit,
+  modifier: Modifier = Modifier,
+  title: String,
+  isLoading: Boolean,
+  onClickBack: () -> Unit,
+  onRefresh: (FDate?) -> Unit,
+  onSelectDate: (FDate?) -> Unit,
+  content: LazyListScope.() -> Unit,
 ) {
-   val dateVM = viewModel<RankingDateVM>()
-   val dateState by dateVM.stateFlow.collectAsStateWithLifecycle()
-   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-   val lazyListState = rememberLazyListState()
+  val dateVM = viewModel<RankingDateVM>()
+  val dateState by dateVM.stateFlow.collectAsStateWithLifecycle()
+  val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+  val lazyListState = rememberLazyListState()
 
-   Scaffold(
-      modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-      topBar = {
-         RankingTitleView(
-            title = title,
-            selectedDateStr = dateState.selectedDateStr,
-            scrollBehavior = scrollBehavior,
-            onClickBack = onClickBack,
-            onClickDate = { dateVM.showSelectDate() },
-         )
-      },
-   ) { padding ->
-      AppPullToRefresh(
-         modifier = Modifier.padding(padding),
-         isRefreshing = isLoading,
-         onRefresh = { onRefresh(dateState.selectedDate) },
-      ) {
-         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            state = lazyListState,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(8.dp),
-            content = content,
-         )
-      }
-   }
+  Scaffold(
+    modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    topBar = {
+      RankingTitleView(
+        title = title,
+        selectedDateStr = dateState.selectedDateStr,
+        scrollBehavior = scrollBehavior,
+        onClickBack = onClickBack,
+        onClickDate = { dateVM.showSelectDate() },
+      )
+    },
+  ) { padding ->
+    AppPullToRefresh(
+      modifier = Modifier.padding(padding),
+      isRefreshing = isLoading,
+      onRefresh = { onRefresh(dateState.selectedDate) },
+    ) {
+      LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        state = lazyListState,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(8.dp),
+        content = content,
+      )
+    }
+  }
 
-   RankingDateScreen(vm = dateVM)
+  RankingDateScreen(vm = dateVM)
 
-   val onSelectDateUpdated by rememberUpdatedState(onSelectDate)
-   LaunchedEffect(dateState.selectedDate) {
-      lazyListState.scrollToItem(0)
-      onSelectDateUpdated(dateState.selectedDate)
-   }
+  val onSelectDateUpdated by rememberUpdatedState(onSelectDate)
+  LaunchedEffect(dateState.selectedDate) {
+    lazyListState.scrollToItem(0)
+    onSelectDateUpdated(dateState.selectedDate)
+  }
 }

@@ -7,12 +7,12 @@ import com.sd.android.kreedz.core.router.AppRouter
 
 @Router(path = AppRouter.PLAYER_RANKING)
 internal class PlayerRankingActivity : BaseActivity() {
-   @Composable
-   override fun ContentImpl() {
-      PlayerRankingScreen(
-         onClickBack = {
-            finish()
-         }
-      )
-   }
+  @Composable
+  override fun ContentImpl() {
+    PlayerRankingScreen(
+      onClickBack = {
+        finish()
+      }
+    )
+  }
 }

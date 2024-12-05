@@ -23,53 +23,53 @@ import com.sd.android.kreedz.core.ui.AppTheme
 
 @Composable
 fun MainMoreItemsView(
-   modifier: Modifier = Modifier,
-   onClickFavoriteMaps: () -> Unit,
+  modifier: Modifier = Modifier,
+  onClickFavoriteMaps: () -> Unit,
 ) {
-   Card(
-      shape = MaterialTheme.shapes.extraSmall,
-      modifier = modifier.fillMaxWidth(),
-   ) {
-      ItemView(
-         title = "Favorite Maps",
-         onClick = onClickFavoriteMaps,
-      )
-   }
+  Card(
+    shape = MaterialTheme.shapes.extraSmall,
+    modifier = modifier.fillMaxWidth(),
+  ) {
+    ItemView(
+      title = "Favorite Maps",
+      onClick = onClickFavoriteMaps,
+    )
+  }
 }
 
 @Composable
 private fun ItemView(
-   modifier: Modifier = Modifier,
-   title: String,
-   onClick: () -> Unit,
+  modifier: Modifier = Modifier,
+  title: String,
+  onClick: () -> Unit,
 ) {
-   Row(
-      modifier = modifier
-         .fillMaxWidth()
-         .heightIn(56.dp)
-         .clickable { onClick() }
-         .padding(start = 12.dp, end = 4.dp),
-      verticalAlignment = Alignment.CenterVertically,
-   ) {
-      Text(
-         text = title,
-         fontSize = 16.sp,
-         fontWeight = FontWeight.Medium,
-      )
-      Spacer(Modifier.weight(1f))
-      Icon(
-         imageVector = Icons.AutoMirrored.Default.KeyboardArrowRight,
-         contentDescription = title,
-      )
-   }
+  Row(
+    modifier = modifier
+      .fillMaxWidth()
+      .heightIn(56.dp)
+      .clickable { onClick() }
+      .padding(start = 12.dp, end = 4.dp),
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    Text(
+      text = title,
+      fontSize = 16.sp,
+      fontWeight = FontWeight.Medium,
+    )
+    Spacer(Modifier.weight(1f))
+    Icon(
+      imageVector = Icons.AutoMirrored.Default.KeyboardArrowRight,
+      contentDescription = title,
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun Preview() {
-   AppTheme {
-      MainMoreItemsView(
-         onClickFavoriteMaps = {},
-      )
-   }
+  AppTheme {
+    MainMoreItemsView(
+      onClickFavoriteMaps = {},
+    )
+  }
 }

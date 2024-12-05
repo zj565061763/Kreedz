@@ -18,39 +18,39 @@ import com.sd.android.kreedz.data.repository.MapImageRepository
 
 @Composable
 fun MapImageView(
-   modifier: Modifier = Modifier,
-   mapImage: String?,
-   mapId: String,
+  modifier: Modifier = Modifier,
+  mapImage: String?,
+  mapId: String,
 ) {
-   val context = LocalContext.current
-   val imageRequest = remember(context, mapImage) {
-      ImageRequest.Builder(context)
-         .data(mapImage)
-         .networkCachePolicy(CachePolicy.DISABLED)
-         .build()
-   }
+  val context = LocalContext.current
+  val imageRequest = remember(context, mapImage) {
+    ImageRequest.Builder(context)
+      .data(mapImage)
+      .networkCachePolicy(CachePolicy.DISABLED)
+      .build()
+  }
 
-   Box(
-      modifier = modifier,
-      contentAlignment = Alignment.Center,
-   ) {
-      AppImage(
-         modifier = Modifier.fillMaxWidth(),
-         model = imageRequest,
-         contentScale = ContentScale.FillWidth,
-         contentDescription = "Map image",
-      )
+  Box(
+    modifier = modifier,
+    contentAlignment = Alignment.Center,
+  ) {
+    AppImage(
+      modifier = Modifier.fillMaxWidth(),
+      model = imageRequest,
+      contentScale = ContentScale.FillWidth,
+      contentDescription = "Map image",
+    )
 
-      if (isLoadingMapImage(mapId)) {
-         CircularProgressIndicator()
-      }
-   }
+    if (isLoadingMapImage(mapId)) {
+      CircularProgressIndicator()
+    }
+  }
 }
 
 @Composable
 private fun isLoadingMapImage(mapId: String): Boolean {
-   if (LocalInspectionMode.current) return false
-   return remember(mapId) {
-      MapImageRepository().getLoadingFlow(mapId)
-   }.collectAsStateWithLifecycle(initialValue = false).value
+  if (LocalInspectionMode.current) return false
+  return remember(mapId) {
+    MapImageRepository().getLoadingFlow(mapId)
+  }.collectAsStateWithLifecycle(initialValue = false).value
 }

@@ -9,17 +9,17 @@ import com.sd.lib.compose.utils.fIntentExtra
 
 @Router(path = AppRouter.USER)
 class UserActivity : BaseActivity() {
-   @Composable
-   override fun ContentImpl() {
-      val id = fIntentExtra { it.getStringExtra("id") }
-      if (id.isNullOrBlank()) {
-         FFinish()
-         return
-      }
+  @Composable
+  override fun ContentImpl() {
+    val id = fIntentExtra { it.getStringExtra("id") }
+    if (id.isNullOrBlank()) {
+      FFinish()
+      return
+    }
 
-      UserScreen(
-         userId = id,
-         onClickBack = { finish() },
-      )
-   }
+    UserScreen(
+      userId = id,
+      onClickBack = { finish() },
+    )
+  }
 }

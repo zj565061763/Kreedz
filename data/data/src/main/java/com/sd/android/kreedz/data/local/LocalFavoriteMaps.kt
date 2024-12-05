@@ -7,29 +7,29 @@ import kotlinx.coroutines.flow.Flow
 
 @DatastoreType("local_favorite_maps")
 internal data class LocalFavoriteMaps(
-   val mapIds: List<String> = emptyList(),
+  val mapIds: List<String> = emptyList(),
 ) {
-   companion object {
-      private val _store = FDatastore.get(LocalFavoriteMaps::class.java).withDefault { LocalFavoriteMaps() }
+  companion object {
+    private val _store = FDatastore.get(LocalFavoriteMaps::class.java).withDefault { LocalFavoriteMaps() }
 
-      val flow: Flow<LocalFavoriteMaps>
-         get() = _store.flow
+    val flow: Flow<LocalFavoriteMaps>
+      get() = _store.flow
 
-      suspend fun addOrRemove(mapId: String) {
-         if (mapId.isBlank()) return
-         _store.update { data ->
-            val mapIds = data.mapIds.let { mapIds ->
-               if (mapIds.contains(mapId)) {
-                  mapIds - mapId
-               } else {
-                  mapIds.toMutableList().let {
-                     it.add(0, mapId)
-                     it.toList()
-                  }
-               }
+    suspend fun addOrRemove(mapId: String) {
+      if (mapId.isBlank()) return
+      _store.update { data ->
+        val mapIds = data.mapIds.let { mapIds ->
+          if (mapIds.contains(mapId)) {
+            mapIds - mapId
+          } else {
+            mapIds.toMutableList().let {
+              it.add(0, mapId)
+              it.toList()
             }
-            data.copy(mapIds = mapIds)
-         }
+          }
+        }
+        data.copy(mapIds = mapIds)
       }
-   }
+    }
+  }
 }

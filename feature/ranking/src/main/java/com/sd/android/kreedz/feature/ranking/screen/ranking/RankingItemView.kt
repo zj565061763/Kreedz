@@ -16,76 +16,76 @@ import com.sd.android.kreedz.feature.common.ui.ComTextLabelView
 
 @Composable
 internal fun RankingItemView(
-   modifier: Modifier = Modifier,
-   rank: Int,
-   country: String?,
-   countryText: String?,
-   recordNumber: String,
-   percentNumber: String,
+  modifier: Modifier = Modifier,
+  rank: Int,
+  country: String?,
+  countryText: String?,
+  recordNumber: String,
+  percentNumber: String,
 ) {
-   ConstraintLayout(
-      modifier = modifier
-         .fillMaxWidth()
-         .padding(vertical = 8.dp, horizontal = 16.dp),
-   ) {
-      val (
-         refRank, refCountry,
-         refNumber, refPercent,
-      ) = createRefs()
+  ConstraintLayout(
+    modifier = modifier
+      .fillMaxWidth()
+      .padding(vertical = 8.dp, horizontal = 16.dp),
+  ) {
+    val (
+      refRank, refCountry,
+      refNumber, refPercent,
+    ) = createRefs()
 
-      // rank
-      Text(
-         text = rank.toString(),
-         fontSize = 16.sp,
-         fontWeight = FontWeight.Bold,
-         modifier = Modifier.constrainAs(refRank) {
-            start.linkTo(parent.start)
-            top.linkTo(parent.top)
-         }
-      )
+    // rank
+    Text(
+      text = rank.toString(),
+      fontSize = 16.sp,
+      fontWeight = FontWeight.Bold,
+      modifier = Modifier.constrainAs(refRank) {
+        start.linkTo(parent.start)
+        top.linkTo(parent.top)
+      }
+    )
 
-      // country
-      ComCountryTextViewMedium(
-         country = country,
-         text = countryText,
-         modifier = Modifier.constrainAs(refCountry) {
-            start.linkTo(refRank.end, 12.dp)
-            centerVerticallyTo(refRank)
-         }
-      )
+    // country
+    ComCountryTextViewMedium(
+      country = country,
+      text = countryText,
+      modifier = Modifier.constrainAs(refCountry) {
+        start.linkTo(refRank.end, 12.dp)
+        centerVerticallyTo(refRank)
+      }
+    )
 
-      // records
-      ComTextLabelView(
-         text = recordNumber,
-         label = "records",
-         modifier = Modifier.constrainAs(refNumber) {
-            start.linkTo(refCountry.start)
-            top.linkTo(refCountry.bottom, 8.dp)
-         }
-      )
+    // records
+    ComTextLabelView(
+      text = recordNumber,
+      label = "records",
+      modifier = Modifier.constrainAs(refNumber) {
+        start.linkTo(refCountry.start)
+        top.linkTo(refCountry.bottom, 8.dp)
+      }
+    )
 
-      // percent
-      Text(
-         text = "${percentNumber}%",
-         fontSize = 12.sp,
-         modifier = Modifier.constrainAs(refPercent) {
-            end.linkTo(parent.end)
-            centerVerticallyTo(parent)
-         }
-      )
-   }
+    // percent
+    Text(
+      text = "${percentNumber}%",
+      fontSize = 12.sp,
+      modifier = Modifier.constrainAs(refPercent) {
+        end.linkTo(parent.end)
+        centerVerticallyTo(parent)
+      }
+    )
+  }
 }
 
 @Preview
 @Composable
 private fun PreviewItemView() {
-   AppTheme {
-      RankingItemView(
-         rank = 1,
-         country = "cn",
-         countryText = "zhengjun",
-         recordNumber = "100",
-         percentNumber = "12.37",
-      )
-   }
+  AppTheme {
+    RankingItemView(
+      rank = 1,
+      country = "cn",
+      countryText = "zhengjun",
+      recordNumber = "100",
+      percentNumber = "12.37",
+    )
+  }
 }

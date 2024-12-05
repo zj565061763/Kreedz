@@ -7,12 +7,12 @@ import com.sd.android.kreedz.core.router.AppRouter
 
 @Router(path = AppRouter.FAVORITE_MAPS)
 internal class FavoriteMapsActivity : BaseActivity() {
-   @Composable
-   override fun ContentImpl() {
-      FavoriteMapsScreen(
-         onClickBack = {
-            finish()
-         }
-      )
-   }
+  @Composable
+  override fun ContentImpl() {
+    FavoriteMapsScreen(
+      onClickBack = {
+        finish()
+      }
+    )
+  }
 }

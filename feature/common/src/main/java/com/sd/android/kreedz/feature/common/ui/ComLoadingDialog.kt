@@ -15,30 +15,30 @@ import com.sd.android.kreedz.core.ui.AppTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ComLoadingDialog(
-   onDismissRequest: () -> Unit,
+  onDismissRequest: () -> Unit,
 ) {
-   BasicAlertDialog(
-      onDismissRequest = onDismissRequest,
-      properties = DialogProperties(
-         dismissOnClickOutside = false,
-         usePlatformDefaultWidth = false,
-      ),
-   ) {
-      Box(
-         modifier = Modifier.fillMaxSize(),
-         contentAlignment = Alignment.Center,
-      ) {
-         CircularProgressIndicator()
-      }
-   }
+  BasicAlertDialog(
+    onDismissRequest = onDismissRequest,
+    properties = DialogProperties(
+      dismissOnClickOutside = false,
+      usePlatformDefaultWidth = false,
+    ),
+  ) {
+    Box(
+      modifier = Modifier.fillMaxSize(),
+      contentAlignment = Alignment.Center,
+    ) {
+      CircularProgressIndicator()
+    }
+  }
 }
 
 @Preview
 @Composable
 private fun Preview() {
-   AppTheme {
-      ComLoadingDialog(
-         onDismissRequest = {},
-      )
-   }
+  AppTheme {
+    ComLoadingDialog(
+      onDismissRequest = {},
+    )
+  }
 }

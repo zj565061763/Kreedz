@@ -7,68 +7,68 @@ import com.sd.android.kreedz.data.repository.NewsRepository
 import com.sd.lib.coroutines.FLoader
 
 open class NewsVM : BaseViewModel<NewsVM.State, Any>(State()) {
-   private val _repository by lazy { newsRepository() }
-   private val _loader = FLoader()
+  private val _repository by lazy { newsRepository() }
+  private val _loader = FLoader()
 
-   protected open fun newsRepository(): NewsRepository = NewsRepository()
+  protected open fun newsRepository(): NewsRepository = NewsRepository()
 
-   fun load(id: String) {
-      vmLaunch {
-         if (id.isBlank()) return@vmLaunch
-         if (state.id == id) return@vmLaunch
+  fun load(id: String) {
+    vmLaunch {
+      if (id.isBlank()) return@vmLaunch
+      if (state.id == id) return@vmLaunch
 
-         _loader.cancel()
-         updateState { State(id = id) }
-         loadData(id)
+      _loader.cancel()
+      updateState { State(id = id) }
+      loadData(id)
+    }
+  }
+
+  fun refresh() {
+    vmLaunch {
+      val id = state.id
+      if (id.isBlank()) return@vmLaunch
+      loadData(id)
+    }
+  }
+
+  private suspend fun loadData(id: String) {
+    _loader.load {
+      _repository.getNews(id)
+    }.onSuccess { data ->
+      with(data) {
+        updateState {
+          it.copy(
+            id = id,
+            title = title,
+            author = author,
+            dateStr = dateStr,
+            html = htmlContent,
+          )
+        }
       }
-   }
+    }.onFailure { error ->
+      sendEffect(error)
+    }
+  }
 
-   fun refresh() {
-      vmLaunch {
-         val id = state.id
-         if (id.isBlank()) return@vmLaunch
-         loadData(id)
+  init {
+    vmLaunch {
+      _loader.loadingFlow.collect { data ->
+        updateState {
+          it.copy(isLoading = data)
+        }
       }
-   }
+    }
+  }
 
-   private suspend fun loadData(id: String) {
-      _loader.load {
-         _repository.getNews(id)
-      }.onSuccess { data ->
-         with(data) {
-            updateState {
-               it.copy(
-                  id = id,
-                  title = title,
-                  author = author,
-                  dateStr = dateStr,
-                  html = htmlContent,
-               )
-            }
-         }
-      }.onFailure { error ->
-         sendEffect(error)
-      }
-   }
+  @Immutable
+  data class State(
+    val isLoading: Boolean = false,
 
-   init {
-      vmLaunch {
-         _loader.loadingFlow.collect { data ->
-            updateState {
-               it.copy(isLoading = data)
-            }
-         }
-      }
-   }
-
-   @Immutable
-   data class State(
-      val isLoading: Boolean = false,
-
-      val id: String = "",
-      val title: String = "",
-      val author: UserWithIconsModel? = null,
-      val dateStr: String = "",
-      val html: String = "",
-   )
+    val id: String = "",
+    val title: String = "",
+    val author: UserWithIconsModel? = null,
+    val dateStr: String = "",
+    val html: String = "",
+  )
 }

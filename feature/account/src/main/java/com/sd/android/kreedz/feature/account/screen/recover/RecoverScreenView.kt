@@ -22,49 +22,49 @@ import com.sd.android.kreedz.feature.common.ui.ComLoadingDialog
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun RecoverScreenView(
-   modifier: Modifier = Modifier,
-   title: String,
-   emailState: TextFieldState,
-   isLoading: Boolean,
-   onCancelLoading: () -> Unit,
-   onClickBack: () -> Unit,
-   onClickRecover: () -> Unit,
+  modifier: Modifier = Modifier,
+  title: String,
+  emailState: TextFieldState,
+  isLoading: Boolean,
+  onCancelLoading: () -> Unit,
+  onClickBack: () -> Unit,
+  onClickRecover: () -> Unit,
 ) {
-   Scaffold(
-      modifier = modifier,
-      topBar = {
-         TopAppBar(
-            title = {
-               Text(text = title)
-            },
-            navigationIcon = {
-               IconButton(onClick = onClickBack) {
-                  Icon(
-                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                     contentDescription = "Back",
-                  )
-               }
-            },
-         )
-      }
-   ) { padding ->
-      Column(
-         modifier = modifier
-            .fillMaxSize()
-            .padding(padding)
-            .verticalScroll(rememberScrollState())
-      ) {
-         RecoverInputView(
-            emailState = emailState,
-            onClickRecover = onClickRecover,
-            modifier = Modifier.padding(16.dp),
-         )
-      }
-   }
-
-   if (isLoading) {
-      ComLoadingDialog(
-         onDismissRequest = onCancelLoading,
+  Scaffold(
+    modifier = modifier,
+    topBar = {
+      TopAppBar(
+        title = {
+          Text(text = title)
+        },
+        navigationIcon = {
+          IconButton(onClick = onClickBack) {
+            Icon(
+              imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+              contentDescription = "Back",
+            )
+          }
+        },
       )
-   }
+    }
+  ) { padding ->
+    Column(
+      modifier = modifier
+        .fillMaxSize()
+        .padding(padding)
+        .verticalScroll(rememberScrollState())
+    ) {
+      RecoverInputView(
+        emailState = emailState,
+        onClickRecover = onClickRecover,
+        modifier = Modifier.padding(16.dp),
+      )
+    }
+  }
+
+  if (isLoading) {
+    ComLoadingDialog(
+      onDismissRequest = onCancelLoading,
+    )
+  }
 }

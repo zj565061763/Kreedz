@@ -25,79 +25,79 @@ import com.sd.android.kreedz.feature.common.ui.ComEffect
 
 @Composable
 fun GameServerScreen(
-   modifier: Modifier = Modifier,
-   vm: GameServerVM = viewModel(),
+  modifier: Modifier = Modifier,
+  vm: GameServerVM = viewModel(),
 ) {
-   val state by vm.stateFlow.collectAsStateWithLifecycle()
-   val context = LocalContext.current
+  val state by vm.stateFlow.collectAsStateWithLifecycle()
+  val context = LocalContext.current
 
-   AppPullToRefresh(
-      modifier = modifier.fillMaxSize(),
-      isRefreshing = state.isLoading,
-      onRefresh = { vm.refresh() },
-   ) {
-      BodyView(
-         servers = state.servers,
-         onClickMap = { id ->
-            AppRouter.map(context, id)
-         },
-         onClickAddress = { address ->
-            if (AppUtils.copyText(address)) {
-               Toast.makeText(context, "Server address copied", Toast.LENGTH_SHORT).show()
-            }
-         },
-      )
-   }
+  AppPullToRefresh(
+    modifier = modifier.fillMaxSize(),
+    isRefreshing = state.isLoading,
+    onRefresh = { vm.refresh() },
+  ) {
+    BodyView(
+      servers = state.servers,
+      onClickMap = { id ->
+        AppRouter.map(context, id)
+      },
+      onClickAddress = { address ->
+        if (AppUtils.copyText(address)) {
+          Toast.makeText(context, "Server address copied", Toast.LENGTH_SHORT).show()
+        }
+      },
+    )
+  }
 
-   LaunchedEffect(vm) {
-      vm.init()
-   }
+  LaunchedEffect(vm) {
+    vm.init()
+  }
 
-   vm.effectFlow.ComEffect()
+  vm.effectFlow.ComEffect()
 }
 
 @Composable
 private fun BodyView(
-   modifier: Modifier = Modifier,
-   servers: List<GameServerModel>,
-   onClickMap: (String) -> Unit,
-   onClickAddress: (String) -> Unit,
+  modifier: Modifier = Modifier,
+  servers: List<GameServerModel>,
+  onClickMap: (String) -> Unit,
+  onClickAddress: (String) -> Unit,
 ) {
-   LazyVerticalStaggeredGrid(
-      modifier = modifier.fillMaxSize(),
-      columns = StaggeredGridCells.Fixed(2),
-      horizontalArrangement = Arrangement.spacedBy(4.dp),
-      verticalItemSpacing = 4.dp,
-      contentPadding = PaddingValues(
-         horizontal = 4.dp,
-         vertical = 16.dp,
-      ),
-   ) {
-      items(
-         items = servers,
-         key = { it.address },
-      ) { item ->
-         Card(shape = MaterialTheme.shapes.extraSmall) {
-            GameServerItemView(
-               title = item.name,
-               map = item.map,
-               mapImage = item.mapImage,
-               address = item.address,
-               players = item.players,
-               maxPlayers = item.maxPlayers,
-               playerName = item.record?.playerName,
-               playerCountry = item.record?.playerCountry,
-               time = item.record?.timeStr,
-               onClickMap = {
-                  item.mapId?.also { mapId ->
-                     onClickMap(mapId)
-                  }
-               },
-               onClickAddress = {
-                  onClickAddress(item.address)
-               },
-            )
-         }
+  LazyVerticalStaggeredGrid(
+    modifier = modifier.fillMaxSize(),
+    columns = StaggeredGridCells.Fixed(2),
+    horizontalArrangement = Arrangement.spacedBy(4.dp),
+    verticalItemSpacing = 4.dp,
+    contentPadding = PaddingValues(
+      horizontal = 4.dp,
+      vertical = 16.dp,
+    ),
+  ) {
+    items(
+      items = servers,
+      key = { it.address },
+    ) { item ->
+      Card(shape = MaterialTheme.shapes.extraSmall) {
+        GameServerItemView(
+          title = item.name,
+          map = item.map,
+          mapImage = item.mapImage,
+          address = item.address,
+          players = item.players,
+          maxPlayers = item.maxPlayers,
+          playerName = item.record?.playerName,
+          playerCountry = item.record?.playerCountry,
+          time = item.record?.timeStr,
+          onClickMap = {
+            item.mapId?.also { mapId ->
+              onClickMap(mapId)
+            }
+          },
+          onClickAddress = {
+            onClickAddress(item.address)
+          },
+        )
       }
-   }
+    }
+  }
 }
