@@ -69,7 +69,7 @@ android {
       applicationId = "com.sd.android.kreedz"
       versionCode = 1
       versionName = "1.0.0-beta03"
-      base.archivesName = "${versionName}-(${versionCode})"
+      base.archivesName = "${versionName}-${versionCode}"
     }
   }
 }
