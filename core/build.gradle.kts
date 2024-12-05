@@ -44,7 +44,6 @@ dependencies {
    api(libs.sd.compose.refresh)
    api(libs.sd.compose.input)
    api(libs.sd.compose.layer)
-   api(libs.sd.compose.webview)
    api(libs.sd.compose.constraintlayout)
    api(libs.sd.compose.wheelPicker)
    api(libs.sd.compose.paging)

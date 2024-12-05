@@ -19,7 +19,6 @@ object AppRouter {
    const val BLOG = "/blog"
 
    const val SEARCH = "/search"
-   const val WEB = "/web"
 
    const val LOGIN = "/login"
    const val REGISTER = "/register"
@@ -113,15 +112,6 @@ object AppRouter {
    fun favoriteMaps(context: Context) {
       context.fFindActivity { activity ->
          DRouter.build(FAVORITE_MAPS).start(activity)
-      }
-   }
-
-   fun web(context: Context, url: String) {
-      if (url.isBlank()) return
-      context.fFindActivity { activity ->
-         DRouter.build(WEB)
-            .putExtra("url", url)
-            .start(activity)
       }
    }
 
