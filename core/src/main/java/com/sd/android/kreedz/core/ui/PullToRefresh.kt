@@ -11,7 +11,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import com.sd.lib.compose.refresh.FRefreshContainer
 import com.sd.lib.compose.refresh.rememberFRefreshStateTop
-import com.sd.lib.compose.refresh.setRefreshing
 
 @Composable
 fun AppPullToRefresh(
@@ -23,11 +22,10 @@ fun AppPullToRefresh(
   content: @Composable BoxScope.() -> Unit,
 ) {
   val refreshState = rememberFRefreshStateTop(
+    isRefreshing = isRefreshing,
     enabled = enabled,
     onRefresh = onRefresh
-  ).apply {
-    setRefreshing(isRefreshing)
-  }
+  )
 
   Box(
     modifier = modifier.nestedScroll(refreshState.nestedScrollConnection),
