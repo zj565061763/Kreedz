@@ -43,7 +43,7 @@ squareup-retrofit = "com.squareup.retrofit2:retrofit:2.11.0"
 squareup-retrofit-converter-moshi = "com.squareup.retrofit2:converter-moshi:2.11.0"
 squareup-leakcanary-android = "com.squareup.leakcanary:leakcanary-android:2.12"
 
-firebase-bom = "com.google.firebase:firebase-bom:33.6.0"
+firebase-bom = "com.google.firebase:firebase-bom:33.7.0"
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 
