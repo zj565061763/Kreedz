@@ -20,6 +20,8 @@ android {
     vectorDrawables {
       useSupportLibrary = true
     }
+
+    buildConfigField("String", "HOST", """"xtreme-jumps.eu"""")
   }
 
   //签名
