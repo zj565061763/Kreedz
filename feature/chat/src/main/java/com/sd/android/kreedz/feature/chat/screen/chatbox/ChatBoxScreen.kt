@@ -40,7 +40,7 @@ import com.sd.android.kreedz.data.model.MainNavigation
 import com.sd.android.kreedz.feature.common.ui.ComEffect
 import com.sd.android.kreedz.feature.common.ui.ComErrorView
 import com.sd.android.kreedz.feature.common.ui.ComInputLayer
-import com.sd.android.kreedz.feature.common.ui.ComLoadingDialog
+import com.sd.android.kreedz.feature.common.ui.ComLoadingLayer
 import com.sd.lib.compose.paging.FUIStateRefresh
 import com.sd.lib.compose.paging.fIsRefreshing
 import com.sd.lib.event.FEvent
@@ -167,17 +167,15 @@ fun ChatBoxScreen(
     } else null,
   )
 
-  if (state.isSending) {
-    ComLoadingDialog {
-      vm.cancelSend()
-    }
-  }
+  ComLoadingLayer(
+    attach = state.isSending,
+    onDetachRequest = { vm.cancelSend() },
+  )
 
-  if (state.isDeleting) {
-    ComLoadingDialog {
-      vm.cancelDelete()
-    }
-  }
+  ComLoadingLayer(
+    attach = state.isDeleting,
+    onDetachRequest = { vm.cancelDelete() },
+  )
 }
 
 @Composable

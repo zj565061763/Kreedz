@@ -17,7 +17,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.sd.android.kreedz.feature.common.ui.ComLoadingDialog
+import com.sd.android.kreedz.feature.common.ui.ComLoadingLayer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,9 +62,8 @@ internal fun RecoverScreenView(
     }
   }
 
-  if (isLoading) {
-    ComLoadingDialog(
-      onDismissRequest = onCancelLoading,
-    )
-  }
+  ComLoadingLayer(
+    attach = isLoading,
+    onDetachRequest = onCancelLoading,
+  )
 }
