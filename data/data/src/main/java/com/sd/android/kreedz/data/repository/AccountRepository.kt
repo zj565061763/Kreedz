@@ -132,7 +132,7 @@ private object AccountRepositoryImpl : AccountRepository, FLogger {
     }
 
     fGlobalLaunch {
-      FEvent.flowOf<EHttpUnauthorized>().collect {
+      FEvent.collect<EHttpUnauthorized> {
         li { "receive ${EHttpUnauthorized::class.simpleName}" }
         logout()
       }

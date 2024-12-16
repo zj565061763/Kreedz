@@ -73,7 +73,7 @@ sd-retryKtx = "com.github.zj565061763:retry-ktx:1.2.6"
 sd-datastore = "com.github.zj565061763:datastore:1.2.4"
 sd-xlog = "com.github.zj565061763:xlog:1.1.0"
 sd-moshi = "com.github.zj565061763:moshi:1.0.0"
-sd-event = "com.github.zj565061763:event:1.8.5"
+sd-event = "com.github.zj565061763:event:1.9.2"
 sd-date = "com.github.zj565061763:date:1.0.1"
 
 [plugins]
