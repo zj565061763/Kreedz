@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sd.android.kreedz.feature.common.ui.ComEffect
-import com.sd.android.kreedz.feature.common.ui.ComLoadingDialog
+import com.sd.android.kreedz.feature.common.ui.ComLoadingLayer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,11 +67,10 @@ internal fun RegisterScreen(
     )
   }
 
-  if (state.isRegistering) {
-    ComLoadingDialog {
-      vm.cancelRegister()
-    }
-  }
+  ComLoadingLayer(
+    attach = state.isRegistering,
+    onDetachRequest = { vm.cancelRegister() },
+  )
 
   val onClickBackUpdated by rememberUpdatedState(onClickBack)
   if (state.isRegisterSuccess) {

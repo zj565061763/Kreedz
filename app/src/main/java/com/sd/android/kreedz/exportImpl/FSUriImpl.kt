@@ -2,6 +2,7 @@ package com.sd.android.kreedz.exportImpl
 
 import androidx.compose.ui.platform.UriHandler
 import com.didi.drouter.annotation.Service
+import com.sd.android.kreedz.BuildConfig
 import com.sd.android.kreedz.core.export.FSUri
 
 @Service(function = [FSUri::class])
@@ -17,13 +18,13 @@ class FSUriImpl : FSUri {
 
   override fun openNewsUri(id: String, uriHandler: UriHandler) {
     if (id.isBlank()) return
-    val uri = "https://xtreme-jumps.eu/news/$id"
+    val uri = "https://${BuildConfig.HOST}/news/$id"
     openUri(uri, uriHandler)
   }
 
   override fun openBlogUri(id: String, uriHandler: UriHandler) {
     if (id.isBlank()) return
-    val uri = "https://xtreme-jumps.eu/blog/$id"
+    val uri = "https://${BuildConfig.HOST}/blog/$id"
     openUri(uri, uriHandler)
   }
 }

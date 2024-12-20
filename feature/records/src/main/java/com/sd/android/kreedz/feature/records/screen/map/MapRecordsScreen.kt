@@ -37,6 +37,7 @@ import com.sd.lib.compose.refresh.FRefreshContainer
 import com.sd.lib.compose.refresh.rememberFRefreshStateTop
 import com.sd.lib.compose.refresh.setRefreshing
 import com.sd.lib.event.FEvent
+import com.sd.lib.event.flowOf
 import kotlinx.coroutines.flow.filter
 
 @OptIn(ExperimentalMaterial3Api::class)

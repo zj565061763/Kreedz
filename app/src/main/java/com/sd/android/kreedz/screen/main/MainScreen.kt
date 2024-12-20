@@ -23,6 +23,7 @@ import com.sd.android.kreedz.screen.more.MainMoreScreen
 import com.sd.lib.compose.active.FSetActive
 import com.sd.lib.compose.tab.container.TabContainer
 import com.sd.lib.event.FEvent
+import com.sd.lib.event.post
 
 @Composable
 fun MainScreen(

@@ -7,7 +7,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sd.android.kreedz.core.utils.AppUtils
 import com.sd.android.kreedz.data.model.NewsCommentModel
 import com.sd.android.kreedz.feature.common.ui.ComInputLayer
-import com.sd.android.kreedz.feature.common.ui.ComLoadingDialog
+import com.sd.android.kreedz.feature.common.ui.ComLoadingLayer
 
 @Composable
 internal fun NewsCommentOperateScreen(
@@ -61,15 +61,13 @@ internal fun NewsCommentOperateScreen(
     } else null,
   )
 
-  if (state.isSending) {
-    ComLoadingDialog {
-      vm.cancelSend()
-    }
-  }
+  ComLoadingLayer(
+    attach = state.isSending,
+    onDetachRequest = { vm.cancelSend() },
+  )
 
-  if (state.isDeleting) {
-    ComLoadingDialog {
-      vm.cancelDelete()
-    }
-  }
+  ComLoadingLayer(
+    attach = state.isDeleting,
+    onDetachRequest = { vm.cancelDelete() },
+  )
 }
