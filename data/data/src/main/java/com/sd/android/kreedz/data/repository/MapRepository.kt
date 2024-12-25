@@ -14,6 +14,7 @@ import com.sd.android.kreedz.data.repository.dao.DaoMapRepository
 import com.sd.android.kreedz.data.repository.dao.DaoRecordRepository
 import com.sd.android.kreedz.data.repository.dao.DaoUserRepository
 import com.sd.lib.coroutines.FKeyedSyncable
+import com.sd.lib.coroutines.syncOrThrow
 import com.sd.lib.xlog.FLogger
 import com.sd.lib.xlog.li
 import com.sd.lib.xlog.lw
