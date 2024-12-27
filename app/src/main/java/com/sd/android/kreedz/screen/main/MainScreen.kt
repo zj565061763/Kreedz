@@ -20,7 +20,6 @@ import com.sd.android.kreedz.feature.chat.screen.chatbox.ChatBoxScreen
 import com.sd.android.kreedz.feature.records.screen.map.MapRecordsScreen
 import com.sd.android.kreedz.screen.home.MainHomeScreen
 import com.sd.android.kreedz.screen.more.MainMoreScreen
-import com.sd.lib.compose.active.FSetActive
 import com.sd.lib.compose.tab.container.TabContainer
 import com.sd.lib.event.FEvent
 import com.sd.lib.event.post
@@ -78,17 +77,22 @@ private fun ContentView(
     modifier = modifier.fillMaxSize(),
     selectedKey = listNavigation[selectedNavigationIndex],
   ) {
-    listNavigation.forEachIndexed { index, item ->
+    for (item in listNavigation) {
       tab(item) {
-        FSetActive(index == selectedNavigationIndex) {
-          when (item) {
-            MainNavigation.Home -> MainHomeScreen()
-            MainNavigation.Records -> MapRecordsScreen()
-            MainNavigation.ChatBox -> ChatBoxScreen()
-            MainNavigation.More -> MainMoreScreen()
-          }
-        }
+        TabContent(item)
       }
     }
+  }
+}
+
+@Composable
+private fun TabContent(
+  tab: MainNavigation,
+) {
+  when (tab) {
+    MainNavigation.Home -> MainHomeScreen()
+    MainNavigation.Records -> MapRecordsScreen()
+    MainNavigation.ChatBox -> ChatBoxScreen()
+    MainNavigation.More -> MainMoreScreen()
   }
 }
