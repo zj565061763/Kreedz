@@ -75,10 +75,10 @@ private fun ContentView(
 ) {
   TabContainer(
     modifier = modifier.fillMaxSize(),
-    selectedKey = listNavigation[selectedNavigationIndex],
+    selectedTab = listNavigation[selectedNavigationIndex],
   ) {
     for (item in listNavigation) {
-      tab(item) {
+      Tab(item) {
         TabContent(item)
       }
     }
