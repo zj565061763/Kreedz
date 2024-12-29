@@ -22,8 +22,8 @@ import com.sd.android.kreedz.feature.news.screen.release.LatestReleaseScreen
 import com.sd.android.kreedz.feature.ranking.screen.top.TopRankingScreen
 import com.sd.android.kreedz.screen.servers.GameServerScreen
 import com.sd.android.kreedz.screen.team.TeamScreen
-import com.sd.lib.compose.active.FActiveAtLeastOnce
-import com.sd.lib.compose.active.FSetActivePage
+import com.sd.lib.compose.active.FActiveOnceContent
+import com.sd.lib.compose.active.FSetActivePager
 import com.sd.lib.compose.utils.FCurrentPage
 import kotlinx.coroutines.launch
 
@@ -69,40 +69,27 @@ fun MainHomeScreen(
         .fillMaxSize()
         .padding(padding),
     ) { index ->
-      pagerState.FSetActivePage(index) {
+      FSetActivePager(pagerState, index) {
         state.tabs.getOrNull(index)?.also { tab ->
-          when (tab) {
-            MainHomeTab.News -> {
-              LatestNewsScreen()
-            }
-            MainHomeTab.Release -> {
-              FActiveAtLeastOnce {
-                LatestReleaseScreen()
-              }
-            }
-            MainHomeTab.Ranking -> {
-              FActiveAtLeastOnce {
-                TopRankingScreen()
-              }
-            }
-            MainHomeTab.Servers -> {
-              FActiveAtLeastOnce {
-                GameServerScreen()
-              }
-            }
-            MainHomeTab.Blog -> {
-              FActiveAtLeastOnce {
-                LatestBlogScreen()
-              }
-            }
-            MainHomeTab.Team -> {
-              FActiveAtLeastOnce {
-                TeamScreen()
-              }
-            }
-          }
+          TabContent(tab)
         }
       }
+    }
+  }
+}
+
+@Composable
+private fun TabContent(
+  tab: MainHomeTab,
+) {
+  FActiveOnceContent {
+    when (tab) {
+      MainHomeTab.News -> LatestNewsScreen()
+      MainHomeTab.Release -> LatestReleaseScreen()
+      MainHomeTab.Ranking -> TopRankingScreen()
+      MainHomeTab.Servers -> GameServerScreen()
+      MainHomeTab.Blog -> LatestBlogScreen()
+      MainHomeTab.Team -> TeamScreen()
     }
   }
 }

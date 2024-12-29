@@ -5,10 +5,12 @@ androidTargetSdk = "34"
 androidMinSdk = "24"
 
 androidGradlePlugin = "8.7.3"
-kotlin = "2.0.21"
-ksp = "2.0.21-1.0.28"
 
-composeBom = "2024.11.00"
+kotlin = "1.9.25"
+ksp = "1.9.25-1.0.20"
+
+composeBom = "2024.12.01"
+composeCompiler = "1.5.15"
 
 lifecycle = "2.8.7"
 room = "2.6.1"
@@ -53,11 +55,11 @@ ext-coil = "io.coil-kt:coil-compose:2.7.0"
 ext-persistentCookieJar = "com.github.franmontiel:PersistentCookieJar:v1.0.1"
 
 
-sd-compose-active = "com.github.zj565061763:compose-active:1.2.5"
-sd-compose-systemui = "com.github.zj565061763:compose-systemui:1.1.2"
-sd-compose-tabContainer = "com.github.zj565061763:compose-tab-container:1.1.0"
+sd-compose-active = "com.github.zj565061763:compose-active:1.3.0"
+sd-compose-systemui = "com.github.zj565061763:compose-systemui:1.2.0"
+sd-compose-tabContainer = "com.github.zj565061763:compose-tab-container:1.5.0"
 sd-compose-input = "com.github.zj565061763:compose-input:1.3.0-beta02"
-sd-compose-refresh = "com.github.zj565061763:compose-refresh:1.1.0-beta02"
+sd-compose-refresh = "com.github.zj565061763:compose-refresh:1.1.0"
 sd-compose-layer = "com.github.zj565061763:compose-layer:1.5.0-beta03"
 sd-compose-constraintlayout = "com.github.zj565061763:compose-constraintlayout:1.1.0"
 sd-compose-wheelPicker = "com.github.zj565061763:compose-wheel-picker:1.0.0-rc02"
@@ -67,10 +69,10 @@ sd-compose-paging = "com.github.zj565061763:compose-paging:1.0.0-alpha07"
 sd-compose-utils = "com.github.zj565061763:compose-utils:4f34c08dc2"
 
 sd-ctx = "com.github.zj565061763:ctx:1.3.5"
-sd-lifecycle = "com.github.zj565061763:lifecycle:1.0.0"
-sd-coroutines = "com.github.zj565061763:coroutines:1.2.11"
-sd-retryKtx = "com.github.zj565061763:retry-ktx:1.2.6"
-sd-datastore = "com.github.zj565061763:datastore:1.2.4"
+sd-lifecycle = "com.github.zj565061763:lifecycle:1.1.0"
+sd-coroutines = "com.github.zj565061763:coroutines:1.3.0"
+sd-retryKtx = "com.github.zj565061763:retry-ktx:1.3.1"
+sd-datastore = "com.github.zj565061763:datastore:1.2.5"
 sd-xlog = "com.github.zj565061763:xlog:1.1.0"
 sd-moshi = "com.github.zj565061763:moshi:1.0.0"
 sd-event = "com.github.zj565061763:event:1.9.2"
@@ -81,7 +83,6 @@ sd-date = "com.github.zj565061763:date:1.0.1"
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 googleServices = { id = "com.google.gms.google-services", version.ref = "googleService" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }

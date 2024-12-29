@@ -34,8 +34,7 @@ import com.sd.android.kreedz.data.model.MapRecordModel
 import com.sd.android.kreedz.data.model.UserModel
 import com.sd.android.kreedz.feature.common.ui.ComEffect
 import com.sd.lib.compose.refresh.FRefreshContainer
-import com.sd.lib.compose.refresh.rememberFRefreshStateTop
-import com.sd.lib.compose.refresh.setRefreshing
+import com.sd.lib.compose.refresh.rememberRefreshStateTop
 import com.sd.lib.event.FEvent
 import com.sd.lib.event.flowOf
 import kotlinx.coroutines.flow.filter
@@ -50,9 +49,7 @@ fun MapRecordsScreen(
   val context = LocalContext.current
 
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-
-  val refreshState = rememberFRefreshStateTop { vm.refresh() }
-  refreshState.setRefreshing(state.isRefreshing)
+  val refreshState = rememberRefreshStateTop(state.isRefreshing) { vm.refresh() }
 
   Scaffold(
     modifier = modifier

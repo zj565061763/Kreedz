@@ -1,7 +1,6 @@
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
-  alias(libs.plugins.compose.compiler)
   alias(libs.plugins.googleServices)
   alias(libs.plugins.firebase.crashlytics)
   id("com.didi.drouter")
@@ -57,6 +56,11 @@ android {
 
   buildFeatures {
     buildConfig = true
+    compose = true
+  }
+
+  composeOptions {
+    kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
   }
 
   packaging {
