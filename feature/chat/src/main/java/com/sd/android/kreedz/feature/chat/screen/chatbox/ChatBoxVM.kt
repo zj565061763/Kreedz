@@ -19,7 +19,7 @@ import com.sd.android.kreedz.data.model.UserWithIconsModel
 import com.sd.android.kreedz.data.repository.AccountRepository
 import com.sd.android.kreedz.data.repository.ChatBoxRepository
 import com.sd.android.kreedz.data.repository.OnlineRepository
-import com.sd.lib.compose.input.fMaxLength
+import com.sd.lib.compose.input.fSetMaxLength
 import com.sd.lib.compose.paging.fPagerFlow
 import com.sd.lib.compose.paging.modifier
 import com.sd.lib.coroutines.FLoader
@@ -186,7 +186,7 @@ class ChatBoxVM : BaseViewModel<ChatBoxVM.State, Any>(State()) {
       stateFlow.map { it.maxInput }
         .distinctUntilChanged()
         .collectLatest {
-          inputState.fMaxLength(it)
+          inputState.fSetMaxLength(it)
         }
     }
   }

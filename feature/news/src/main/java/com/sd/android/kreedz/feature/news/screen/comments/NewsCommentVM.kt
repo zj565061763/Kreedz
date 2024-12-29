@@ -9,7 +9,7 @@ import com.sd.android.kreedz.data.model.NewsCommentGroupModel
 import com.sd.android.kreedz.data.model.NewsCommentModel
 import com.sd.android.kreedz.data.repository.AccountRepository
 import com.sd.android.kreedz.data.repository.NewsRepository
-import com.sd.lib.compose.input.fMaxLength
+import com.sd.lib.compose.input.fSetMaxLength
 import com.sd.lib.coroutines.FLoader
 import com.sd.lib.coroutines.tryLoad
 import com.sd.lib.retry.ktx.fNetRetry
@@ -220,7 +220,7 @@ open class NewsCommentVM : BaseViewModel<NewsCommentVM.State, Any>(State()) {
       stateFlow.map { it.maxInput }
         .distinctUntilChanged()
         .collectLatest {
-          inputState.fMaxLength(it)
+          inputState.fSetMaxLength(it)
         }
     }
   }
