@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import com.sd.lib.compose.refresh.FRefreshContainer
-import com.sd.lib.compose.refresh.rememberFRefreshStateTop
+import com.sd.lib.compose.refresh.rememberRefreshStateTop
 
 @Composable
 fun AppPullToRefresh(
@@ -21,7 +21,7 @@ fun AppPullToRefresh(
   statusBarsPadding: Boolean = false,
   content: @Composable BoxScope.() -> Unit,
 ) {
-  val refreshState = rememberFRefreshStateTop(
+  val refreshState = rememberRefreshStateTop(
     isRefreshing = isRefreshing,
     enabled = enabled,
     onRefresh = onRefresh
