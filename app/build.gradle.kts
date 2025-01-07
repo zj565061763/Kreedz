@@ -74,7 +74,7 @@ android {
     create("kreedz") {
       applicationId = "com.sd.android.kreedz"
       versionCode = 1
-      versionName = "1.0.0-beta03"
+      versionName = "1.0.0-beta04"
       base.archivesName = "${versionName}-${versionCode}"
     }
   }
