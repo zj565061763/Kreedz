@@ -22,7 +22,7 @@ private class ChatBoxRepositoryImpl : ChatBoxRepository {
   override suspend fun messages(page: Int): List<ChatBoxMessageModel> {
     val data = _netDataSource.chatBoxMessages(page)
     return withContext(Dispatchers.IO) {
-      data.map { it.asMessageModel() }
+      data.mapNotNull { it.asMessageModel() }
     }
   }
 
@@ -35,7 +35,8 @@ private class ChatBoxRepositoryImpl : ChatBoxRepository {
   }
 }
 
-private fun NetChatBoxMessage.asMessageModel(): ChatBoxMessageModel {
+private fun NetChatBoxMessage.asMessageModel(): ChatBoxMessageModel? {
+  if (id.isBlank()) return null
   return ChatBoxMessageModel(
     id = id,
     message = message,

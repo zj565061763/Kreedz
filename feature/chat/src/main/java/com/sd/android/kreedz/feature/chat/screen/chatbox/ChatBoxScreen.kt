@@ -29,7 +29,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.paging.compose.LazyPagingItems
 import com.sd.android.kreedz.core.router.AppRouter
 import com.sd.android.kreedz.core.ui.AppPullToRefresh
 import com.sd.android.kreedz.core.utils.AppUtils
@@ -41,10 +40,11 @@ import com.sd.android.kreedz.feature.common.ui.ComEffect
 import com.sd.android.kreedz.feature.common.ui.ComErrorView
 import com.sd.android.kreedz.feature.common.ui.ComInputLayer
 import com.sd.android.kreedz.feature.common.ui.ComLoadingLayer
-import com.sd.lib.compose.paging.FUIStateRefresh
-import com.sd.lib.compose.paging.fIsRefreshing
 import com.sd.lib.event.FEvent
 import com.sd.lib.event.flowOf
+import com.sd.lib.paging.compose.PagingPresenter
+import com.sd.lib.paging.compose.UiRefreshSlot
+import com.sd.lib.paging.compose.presenter
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter
 
@@ -55,7 +55,7 @@ fun ChatBoxScreen(
   vm: ChatBoxVM = viewModel(),
 ) {
   val state by vm.stateFlow.collectAsStateWithLifecycle()
-  val messages = vm.messages()
+  val messagePaging = vm.messagePaging.presenter()
 
   val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
   val lazyListState = rememberLazyListState()
@@ -97,14 +97,14 @@ fun ChatBoxScreen(
       modifier = Modifier
         .fillMaxSize()
         .padding(padding),
-      isRefreshing = messages.fIsRefreshing(),
+      isRefreshing = messagePaging.isRefreshing,
       onRefresh = {
-        messages.refresh()
+        messagePaging.refresh()
       }
     ) {
       BodyView(
         lazyListState = lazyListState,
-        messages = messages,
+        paging = messagePaging,
         onClickAuthor = {
           AppRouter.user(context, it)
         },
@@ -113,6 +113,10 @@ fun ChatBoxScreen(
         },
       )
     }
+  }
+
+  LaunchedEffect(messagePaging) {
+    messagePaging.refresh()
   }
 
   vm.effectFlow.ComEffect()
@@ -183,7 +187,7 @@ fun ChatBoxScreen(
 private fun BodyView(
   modifier: Modifier = Modifier,
   lazyListState: LazyListState,
-  messages: LazyPagingItems<ChatBoxItemModel>,
+  paging: PagingPresenter<ChatBoxItemModel>,
   onClickAuthor: (userId: String) -> Unit,
   onClickMessage: (ChatBoxMessageModel) -> Unit,
 ) {
@@ -193,11 +197,11 @@ private fun BodyView(
   ) {
     ChatBoxMessageListView(
       lazyListState = lazyListState,
-      messages = messages,
+      paging = paging,
       onClickAuthor = onClickAuthor,
       onClickMessage = onClickMessage,
     )
-    messages.FUIStateRefresh(
+    paging.UiRefreshSlot(
       stateError = {
         ComErrorView(error = it)
       }

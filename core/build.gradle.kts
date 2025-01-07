@@ -53,7 +53,6 @@ dependencies {
   api(libs.sd.compose.layer)
   api(libs.sd.compose.constraintlayout)
   api(libs.sd.compose.wheelPicker)
-  api(libs.sd.compose.paging)
   api(libs.sd.compose.annotated)
   api(libs.sd.compose.html)
   api(libs.sd.compose.utils)
@@ -65,5 +64,6 @@ dependencies {
   api(libs.sd.xlog)
   api(libs.sd.moshi)
   api(libs.sd.event)
+  api(libs.sd.paging)
   api(libs.sd.date)
 }
