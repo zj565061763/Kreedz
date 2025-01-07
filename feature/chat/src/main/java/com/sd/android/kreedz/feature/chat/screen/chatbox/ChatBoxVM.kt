@@ -3,13 +3,6 @@ package com.sd.android.kreedz.feature.chat.screen.chatbox
 import android.content.Context
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
-import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.insertSeparators
 import com.sd.android.kreedz.core.base.BaseViewModel
 import com.sd.android.kreedz.core.router.AppRouter
 import com.sd.android.kreedz.data.model.ChatBoxDateModel
@@ -20,14 +13,19 @@ import com.sd.android.kreedz.data.repository.AccountRepository
 import com.sd.android.kreedz.data.repository.ChatBoxRepository
 import com.sd.android.kreedz.data.repository.OnlineRepository
 import com.sd.lib.compose.input.fSetMaxLength
-import com.sd.lib.compose.paging.fPagerFlow
-import com.sd.lib.compose.paging.modifier
 import com.sd.lib.coroutines.FLoader
 import com.sd.lib.coroutines.tryLoad
-import kotlinx.coroutines.flow.Flow
+import com.sd.lib.paging.DefaultPagingDataHandler
+import com.sd.lib.paging.FPaging
+import com.sd.lib.paging.LoadParams
+import com.sd.lib.paging.Paging
+import com.sd.lib.paging.modifier
+import com.sd.lib.paging.replaceFirst
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 class ChatBoxVM : BaseViewModel<ChatBoxVM.State, Any>(State()) {
   private val _chatBoxRepository = ChatBoxRepository()
@@ -37,29 +35,14 @@ class ChatBoxVM : BaseViewModel<ChatBoxVM.State, Any>(State()) {
   private val _sendLoader = FLoader()
   private val _deleteLoader = FLoader()
 
-  private var _messageItems: LazyPagingItems<ChatBoxItemModel>? = null
-
-  private val _messageModifier = fPagerFlow(prefetchDistance = 5) { ChatBoxMessagePagingSource() }
-    .cachedIn(viewModelScope)
-    .modifier { it.id }
-
-  private val _messageFlow: Flow<PagingData<ChatBoxItemModel>> = _messageModifier.flow
-    .map { data ->
-      data.insertSeparators { before: ChatBoxMessageModel?, after: ChatBoxMessageModel? ->
-        if (after != null && after.dateStr != before?.dateStr && after.dateStr.isNotBlank()) {
-          ChatBoxDateModel(dateStr = after.dateStr)
-        } else null
-      }
-    }
+  private val _messagePaging: FPaging<ChatBoxItemModel> = FPaging(
+    refreshKey = 0,
+    pagingSource = ChatBoxMessagePagingSource(),
+    pagingDataHandler = ChatBoxMessagePagingDataHandler(),
+  )
+  val messagePaging: Paging<ChatBoxItemModel> = _messagePaging
 
   val inputState = TextFieldState()
-
-  @Composable
-  fun messages(): LazyPagingItems<ChatBoxItemModel> {
-    return _messageFlow.collectAsLazyPagingItems().also {
-      _messageItems = it
-    }
-  }
 
   fun clickAdd(context: Context) {
     vmLaunch {
@@ -110,7 +93,7 @@ class ChatBoxVM : BaseViewModel<ChatBoxVM.State, Any>(State()) {
         _deleteLoader.tryLoad {
           _chatBoxRepository.deleteMessage(model.id)
         }.onSuccess {
-          _messageModifier.update(model.copy(message = "<deleted>"))
+          _messagePaging.modifier().replaceFirst(model, model.copy(message = "<deleted>"))
         }.onFailure { error ->
           sendEffect(error)
         }
@@ -135,7 +118,7 @@ class ChatBoxVM : BaseViewModel<ChatBoxVM.State, Any>(State()) {
     _chatBoxRepository.sendMessage(content)
 
     inputState.clearText()
-    _messageItems?.refresh()
+    _messagePaging.refresh()
   }
 
   private suspend fun checkLogin(context: Context): Boolean {
@@ -202,4 +185,71 @@ class ChatBoxVM : BaseViewModel<ChatBoxVM.State, Any>(State()) {
     val showInput: Boolean = false,
     val maxInput: Int = 250,
   )
+}
+
+private class ChatBoxMessagePagingDataHandler : DefaultPagingDataHandler<Int, ChatBoxItemModel>() {
+
+  override suspend fun handleRefreshData(
+    totalData: List<ChatBoxItemModel>,
+    params: LoadParams.Refresh<Int>,
+    pageData: List<ChatBoxItemModel>,
+  ): List<ChatBoxItemModel> {
+    if (pageData.isEmpty()) return pageData
+    return withContext(Dispatchers.IO) {
+      mutableListOf<ChatBoxItemModel>()
+        .apply { insertDateModel(pageData = pageData, previous = null) }
+        .toList()
+    }
+  }
+
+  override suspend fun handleAppendData(
+    totalData: List<ChatBoxItemModel>,
+    params: LoadParams.Append<Int>,
+    pageData: List<ChatBoxItemModel>,
+  ): List<ChatBoxItemModel> {
+    if (pageData.isEmpty()) return totalData
+    return withContext(Dispatchers.IO) {
+      mutableListOf<ChatBoxItemModel>().apply {
+        addAll(totalData)
+        insertDateModel(pageData = pageData, previous = totalData.lastOrNull())
+      }.toList()
+    }
+  }
+
+  private fun MutableList<ChatBoxItemModel>.insertDateModel(
+    pageData: List<ChatBoxItemModel>,
+    previous: ChatBoxItemModel?,
+  ) {
+    require(pageData.isNotEmpty())
+    if (previous != null) check(previous is ChatBoxMessageModel)
+
+    val first = pageData.first().also { check(it is ChatBoxMessageModel) }
+    if (previous == null || previous.dateStr != first.dateStr) {
+      if (first.dateStr.isNotEmpty()) {
+        add(ChatBoxDateModel(first.dateStr))
+      }
+    }
+
+    if (pageData.size == 1) {
+      add(first)
+      return
+    }
+
+    pageData.zipWithNext { item, next ->
+      check(item is ChatBoxMessageModel)
+      check(next is ChatBoxMessageModel)
+
+      add(item)
+
+      if (item.dateStr != next.dateStr) {
+        if (next.dateStr.isNotEmpty()) {
+          add(ChatBoxDateModel(next.dateStr))
+        }
+      }
+
+      if (next === pageData.lastOrNull()) {
+        add(next)
+      }
+    }
+  }
 }

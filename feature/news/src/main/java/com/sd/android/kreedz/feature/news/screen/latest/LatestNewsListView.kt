@@ -18,8 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.itemKey
 import com.sd.android.kreedz.core.ui.AppTextColor
 import com.sd.android.kreedz.core.ui.AppTheme
 import com.sd.android.kreedz.data.model.NewsModel
@@ -27,14 +25,15 @@ import com.sd.android.kreedz.data.model.UserIconsModel
 import com.sd.android.kreedz.data.model.UserWithIconsModel
 import com.sd.android.kreedz.feature.common.ui.ComCountryTextViewSmall
 import com.sd.android.kreedz.feature.common.ui.ComUserIconsView
-import com.sd.lib.compose.paging.fPagingAppend
-import com.sd.lib.compose.paging.fPagingItems
+import com.sd.lib.paging.compose.PagingPresenter
+import com.sd.lib.paging.compose.pagingItemAppend
+import com.sd.lib.paging.compose.pagingItems
 
 @Composable
 internal fun LatestNewsListView(
   modifier: Modifier = Modifier,
   lazyListState: LazyListState,
-  news: LazyPagingItems<NewsModel>,
+  paging: PagingPresenter<NewsModel>,
   onClickItem: (newsId: String) -> Unit,
 ) {
   LazyColumn(
@@ -43,10 +42,7 @@ internal fun LatestNewsListView(
     contentPadding = PaddingValues(8.dp),
     verticalArrangement = Arrangement.spacedBy(8.dp),
   ) {
-    fPagingItems(
-      items = news,
-      key = news.itemKey { it.id },
-    ) { _, item ->
+    pagingItems(paging) { item ->
       Card(shape = MaterialTheme.shapes.extraSmall) {
         ItemView(
           title = item.title,
@@ -58,10 +54,7 @@ internal fun LatestNewsListView(
         )
       }
     }
-
-    fPagingAppend(
-      items = news,
-    )
+    pagingItemAppend(paging)
   }
 }
 

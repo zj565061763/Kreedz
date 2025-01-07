@@ -1,23 +1,28 @@
 package com.sd.android.kreedz.feature.news.screen.latest
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.paging.compose.collectAsLazyPagingItems
 import com.sd.android.kreedz.core.router.AppRouter
+import com.sd.lib.paging.compose.presenter
 
 @Composable
 fun LatestNewsScreen(
   modifier: Modifier = Modifier,
   vm: LatestNewsVM = viewModel(),
 ) {
-  val items = vm.itemsFlow.collectAsLazyPagingItems()
+  val paging = vm.paging.presenter()
   val context = LocalContext.current
+
+  LaunchedEffect(paging) {
+    paging.refresh()
+  }
 
   LatestNewsScreenView(
     modifier = modifier,
-    items = items,
+    paging = paging,
     onClickItem = {
       AppRouter.news(context, it)
     },

@@ -20,8 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.itemContentType
 import com.sd.android.kreedz.core.ui.AppTextColor
 import com.sd.android.kreedz.data.model.ChatBoxDateModel
 import com.sd.android.kreedz.data.model.ChatBoxItemModel
@@ -30,15 +28,16 @@ import com.sd.android.kreedz.data.model.UserIconsModel
 import com.sd.android.kreedz.feature.common.ui.ComCountryTextViewLarge
 import com.sd.android.kreedz.feature.common.ui.ComUserIconsView
 import com.sd.android.kreedz.feature.common.ui.comAnnotatedLink
-import com.sd.lib.compose.paging.fPagingAppend
-import com.sd.lib.compose.paging.fPagingItems
 import com.sd.lib.compose.utils.fClick
+import com.sd.lib.paging.compose.PagingPresenter
+import com.sd.lib.paging.compose.pagingItemAppend
+import com.sd.lib.paging.compose.pagingItems
 
 @Composable
 internal fun ChatBoxMessageListView(
   modifier: Modifier = Modifier,
   lazyListState: LazyListState,
-  messages: LazyPagingItems<ChatBoxItemModel>,
+  paging: PagingPresenter<ChatBoxItemModel>,
   onClickAuthor: (userId: String) -> Unit,
   onClickMessage: (ChatBoxMessageModel) -> Unit,
 ) {
@@ -48,22 +47,22 @@ internal fun ChatBoxMessageListView(
     contentPadding = PaddingValues(8.dp),
     verticalArrangement = Arrangement.spacedBy(8.dp),
   ) {
-    fPagingItems(
-      items = messages,
-      contentType = messages.itemContentType {
+    pagingItems(
+      paging = paging,
+      contentType = {
         when (it) {
           is ChatBoxMessageModel -> "message"
           is ChatBoxDateModel -> "date"
         }
       }
-    ) { _, item ->
+    ) { item ->
       when (item) {
         is ChatBoxMessageModel -> {
           Card(shape = MaterialTheme.shapes.extraSmall) {
             ItemView(
               country = item.author.country,
               countryText = item.author.nickname,
-              dateTime = item.timeStr,
+              dateTime = item.dateTimeStr,
               message = item.message,
               icons = item.author.icons,
               onClickAuthor = {
@@ -90,9 +89,7 @@ internal fun ChatBoxMessageListView(
       }
     }
 
-    fPagingAppend(
-      items = messages,
-    )
+    pagingItemAppend(paging)
   }
 }
 

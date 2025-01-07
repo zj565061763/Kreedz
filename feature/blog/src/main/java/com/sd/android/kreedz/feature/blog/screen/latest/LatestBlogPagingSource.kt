@@ -2,14 +2,16 @@ package com.sd.android.kreedz.feature.blog.screen.latest
 
 import com.sd.android.kreedz.data.model.NewsModel
 import com.sd.android.kreedz.data.repository.BlogRepository
-import com.sd.lib.compose.paging.FIntPagingSource
+import com.sd.lib.paging.KeyIntPagingSource
+import com.sd.lib.paging.LoadParams
+import com.sd.lib.xlog.FLogger
+import com.sd.lib.xlog.ld
 
-internal class LatestBlogPagingSource : FIntPagingSource<NewsModel>(
-  initialKey = 0,
-) {
+internal class LatestBlogPagingSource : KeyIntPagingSource<NewsModel>(), FLogger {
   private val _repository = BlogRepository()
 
-  override suspend fun loadImpl(params: LoadParams<Int>, key: Int): List<NewsModel> {
-    return _repository.getLatest(key)
+  override suspend fun loadImpl(params: LoadParams<Int>): List<NewsModel> {
+    ld { "load $params" }
+    return _repository.getLatest(params.key)
   }
 }
