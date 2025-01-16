@@ -9,8 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
-import com.sd.lib.compose.refresh.FRefreshContainer
-import com.sd.lib.compose.refresh.rememberRefreshStateTop
+import com.sd.lib.kmp.compose_refresh.FRefreshContainer
+import com.sd.lib.kmp.compose_refresh.rememberRefreshStateTop
 
 @Composable
 fun AppPullToRefresh(
