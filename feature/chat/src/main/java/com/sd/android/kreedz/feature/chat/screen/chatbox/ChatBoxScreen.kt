@@ -42,9 +42,9 @@ import com.sd.android.kreedz.feature.common.ui.ComInputLayer
 import com.sd.android.kreedz.feature.common.ui.ComLoadingLayer
 import com.sd.lib.event.FEvent
 import com.sd.lib.event.flowOf
-import com.sd.lib.paging.compose.PagingPresenter
-import com.sd.lib.paging.compose.UiRefreshSlot
-import com.sd.lib.paging.compose.presenter
+import com.sd.lib.kmp.paging.compose.PagingPresenter
+import com.sd.lib.kmp.paging.compose.UiRefreshSlot
+import com.sd.lib.kmp.paging.compose.presenter
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter
 

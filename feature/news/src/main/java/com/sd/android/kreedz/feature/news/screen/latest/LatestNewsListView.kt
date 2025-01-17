@@ -25,9 +25,9 @@ import com.sd.android.kreedz.data.model.UserIconsModel
 import com.sd.android.kreedz.data.model.UserWithIconsModel
 import com.sd.android.kreedz.feature.common.ui.ComCountryTextViewSmall
 import com.sd.android.kreedz.feature.common.ui.ComUserIconsView
-import com.sd.lib.paging.compose.PagingPresenter
-import com.sd.lib.paging.compose.pagingItemAppend
-import com.sd.lib.paging.compose.pagingItems
+import com.sd.lib.kmp.paging.compose.PagingPresenter
+import com.sd.lib.kmp.paging.compose.pagingItemAppend
+import com.sd.lib.kmp.paging.compose.pagingItems
 
 @Composable
 internal fun LatestNewsListView(

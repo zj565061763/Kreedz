@@ -29,9 +29,9 @@ import com.sd.android.kreedz.feature.common.ui.ComCountryTextViewLarge
 import com.sd.android.kreedz.feature.common.ui.ComUserIconsView
 import com.sd.android.kreedz.feature.common.ui.comAnnotatedLink
 import com.sd.lib.compose.utils.fClick
-import com.sd.lib.paging.compose.PagingPresenter
-import com.sd.lib.paging.compose.pagingItemAppend
-import com.sd.lib.paging.compose.pagingItems
+import com.sd.lib.kmp.paging.compose.PagingPresenter
+import com.sd.lib.kmp.paging.compose.pagingItemAppend
+import com.sd.lib.kmp.paging.compose.pagingItems
 
 @Composable
 internal fun ChatBoxMessageListView(

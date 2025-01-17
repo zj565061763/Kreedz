@@ -7,7 +7,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sd.android.kreedz.core.router.AppRouter
 import com.sd.android.kreedz.feature.news.screen.latest.LatestNewsScreenView
-import com.sd.lib.paging.compose.presenter
+import com.sd.lib.kmp.paging.compose.presenter
 
 @Composable
 fun LatestBlogScreen(

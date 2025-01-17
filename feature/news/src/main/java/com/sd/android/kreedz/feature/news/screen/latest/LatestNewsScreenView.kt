@@ -13,8 +13,8 @@ import com.sd.android.kreedz.feature.common.ui.ComErrorView
 import com.sd.lib.compose.active.fIsActive
 import com.sd.lib.event.FEvent
 import com.sd.lib.event.flowOf
-import com.sd.lib.paging.compose.PagingPresenter
-import com.sd.lib.paging.compose.UiRefreshSlot
+import com.sd.lib.kmp.paging.compose.PagingPresenter
+import com.sd.lib.kmp.paging.compose.UiRefreshSlot
 import kotlinx.coroutines.flow.filter
 
 @Composable
