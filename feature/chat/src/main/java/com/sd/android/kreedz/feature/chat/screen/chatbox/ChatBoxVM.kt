@@ -13,8 +13,7 @@ import com.sd.android.kreedz.data.repository.AccountRepository
 import com.sd.android.kreedz.data.repository.ChatBoxRepository
 import com.sd.android.kreedz.data.repository.OnlineRepository
 import com.sd.lib.compose.input.fSetMaxLength
-import com.sd.lib.coroutines.FLoader
-import com.sd.lib.coroutines.tryLoad
+import com.sd.lib.kmp.coroutines.FLoader
 import com.sd.lib.paging.DefaultPagingDataHandler
 import com.sd.lib.paging.FPaging
 import com.sd.lib.paging.LoadParams

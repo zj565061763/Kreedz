@@ -4,8 +4,8 @@ import androidx.compose.runtime.Immutable
 import com.sd.android.kreedz.core.base.BaseViewModel
 import com.sd.android.kreedz.data.model.CountryRankingModel
 import com.sd.android.kreedz.data.repository.RankingRepository
-import com.sd.lib.coroutines.FLoader
 import com.sd.lib.date.FDate
+import com.sd.lib.kmp.coroutines.FLoader
 
 internal class CountryRankingVM : BaseViewModel<CountryRankingVM.State, Any>(State()) {
   private val _repository = RankingRepository()

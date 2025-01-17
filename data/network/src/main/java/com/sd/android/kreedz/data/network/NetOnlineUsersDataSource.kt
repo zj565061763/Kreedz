@@ -1,8 +1,8 @@
 package com.sd.android.kreedz.data.network
 
 import com.sd.android.kreedz.data.network.model.NetOnlineUsers
-import com.sd.lib.coroutines.FLoader
-import com.sd.lib.coroutines.fGlobalLaunch
+import com.sd.lib.kmp.coroutines.FLoader
+import com.sd.lib.kmp.coroutines.fGlobalLaunch
 import com.sd.lib.lifecycle.fAppOnStart
 import com.sd.lib.lifecycle.fAppOnStop
 import com.sd.lib.lifecycle.fAwaitAppStarted

@@ -9,8 +9,8 @@ import com.sd.android.kreedz.data.network.model.NetRecord
 import com.sd.android.kreedz.data.repository.dao.DaoMapRepository
 import com.sd.android.kreedz.data.repository.dao.DaoRecordRepository
 import com.sd.android.kreedz.data.repository.dao.DaoUserRepository
-import com.sd.lib.coroutines.FSyncable
-import com.sd.lib.coroutines.syncOrThrow
+import com.sd.lib.kmp.coroutines.FSyncable
+import com.sd.lib.kmp.coroutines.syncOrThrow
 import com.sd.lib.lifecycle.fAppLifecycleScope
 import com.sd.lib.retry.ktx.fNetRetry
 import com.sd.lib.xlog.FLogger

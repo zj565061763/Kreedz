@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import com.sd.android.kreedz.core.base.BaseViewModel
 import com.sd.android.kreedz.data.model.GroupedLJRecordsModel
 import com.sd.android.kreedz.data.repository.LJRecordsRepository
-import com.sd.lib.coroutines.FLoader
+import com.sd.lib.kmp.coroutines.FLoader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext

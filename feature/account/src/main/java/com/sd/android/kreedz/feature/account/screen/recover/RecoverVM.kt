@@ -2,8 +2,7 @@ package com.sd.android.kreedz.feature.account.screen.recover
 
 import androidx.compose.foundation.text.input.TextFieldState
 import com.sd.android.kreedz.core.base.BaseViewModel
-import com.sd.lib.coroutines.FLoader
-import com.sd.lib.coroutines.tryLoad
+import com.sd.lib.kmp.coroutines.FLoader
 
 internal abstract class RecoverVM : BaseViewModel<RecoverVM.State, Any>(State()) {
   private val _loader = FLoader()

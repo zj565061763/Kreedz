@@ -3,7 +3,7 @@ package com.sd.android.kreedz.feature.more.screen.favmaps
 import com.sd.android.kreedz.core.base.BaseViewModel
 import com.sd.android.kreedz.data.model.MapRecordModel
 import com.sd.android.kreedz.data.repository.FavoriteMapRepository
-import com.sd.lib.coroutines.FLoader
+import com.sd.lib.kmp.coroutines.FLoader
 import kotlinx.coroutines.delay
 
 internal class FavoriteMapsVM : BaseViewModel<FavoriteMapsVM.State, Unit>(State()) {

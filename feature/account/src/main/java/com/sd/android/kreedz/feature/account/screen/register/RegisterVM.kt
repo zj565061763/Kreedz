@@ -4,7 +4,7 @@ import androidx.compose.foundation.text.input.TextFieldState
 import com.sd.android.kreedz.core.base.BaseViewModel
 import com.sd.android.kreedz.core.utils.AppUtils
 import com.sd.android.kreedz.data.repository.AccountRepository
-import com.sd.lib.coroutines.FLoader
+import com.sd.lib.kmp.coroutines.FLoader
 
 internal class RegisterVM : BaseViewModel<RegisterVM.State, Any>(State()) {
   private val _repository = AccountRepository()

@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import com.sd.android.kreedz.core.base.BaseViewModel
 import com.sd.android.kreedz.data.model.GameServerModel
 import com.sd.android.kreedz.data.repository.GameServerRepository
-import com.sd.lib.coroutines.FLoader
+import com.sd.lib.kmp.coroutines.FLoader
 
 class GameServerVM : BaseViewModel<GameServerVM.State, Any>(State()) {
   private val _repository = GameServerRepository()

@@ -10,11 +10,10 @@ import com.sd.android.kreedz.data.network.NetDataSource
 import com.sd.android.kreedz.data.network.event.EHttpUnauthorized
 import com.sd.android.kreedz.data.network.model.NetLogin
 import com.sd.android.kreedz.data.network.model.NetUserProfile
-import com.sd.lib.coroutines.FSyncable
-import com.sd.lib.coroutines.awaitIdle
-import com.sd.lib.coroutines.fGlobalLaunch
-import com.sd.lib.coroutines.syncOrThrow
 import com.sd.lib.event.FEvent
+import com.sd.lib.kmp.coroutines.FSyncable
+import com.sd.lib.kmp.coroutines.fGlobalLaunch
+import com.sd.lib.kmp.coroutines.syncOrThrow
 import com.sd.lib.retry.ktx.fNetRetry
 import com.sd.lib.xlog.FLogger
 import com.sd.lib.xlog.li

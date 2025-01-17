@@ -7,7 +7,7 @@ import com.sd.android.kreedz.data.model.UserIconsModel
 import com.sd.android.kreedz.data.model.UserWithIconsModel
 import com.sd.android.kreedz.data.network.NetOnlineUsersDataSource
 import com.sd.android.kreedz.data.network.model.NetOnlineUser
-import com.sd.lib.coroutines.fGlobalLaunch
+import com.sd.lib.kmp.coroutines.fGlobalLaunch
 import com.sd.lib.xlog.FLogger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

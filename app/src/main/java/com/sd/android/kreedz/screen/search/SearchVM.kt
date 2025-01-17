@@ -6,8 +6,7 @@ import com.sd.android.kreedz.core.base.BaseViewModel
 import com.sd.android.kreedz.data.model.SearchNewsModel
 import com.sd.android.kreedz.data.model.SearchUserModel
 import com.sd.android.kreedz.data.repository.SearchRepository
-import com.sd.lib.coroutines.FLoader
-import com.sd.lib.coroutines.tryLoad
+import com.sd.lib.kmp.coroutines.FLoader
 import com.sd.lib.retry.ktx.fNetRetry
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce

@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import com.sd.android.kreedz.core.base.BaseViewModel
 import com.sd.android.kreedz.data.model.UserWithIconsModel
 import com.sd.android.kreedz.data.repository.NewsRepository
-import com.sd.lib.coroutines.FLoader
+import com.sd.lib.kmp.coroutines.FLoader
 
 open class NewsVM : BaseViewModel<NewsVM.State, Any>(State()) {
   private val _repository by lazy { newsRepository() }

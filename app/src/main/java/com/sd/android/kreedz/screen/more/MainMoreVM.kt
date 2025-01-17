@@ -4,7 +4,7 @@ import com.sd.android.kreedz.BuildConfig
 import com.sd.android.kreedz.core.base.BaseViewModel
 import com.sd.android.kreedz.data.model.UserIconsModel
 import com.sd.android.kreedz.data.repository.AccountRepository
-import com.sd.lib.coroutines.FLoader
+import com.sd.lib.kmp.coroutines.FLoader
 
 class MainMoreVM : BaseViewModel<MainMoreVM.State, Any>(State()) {
   private val _accountRepository = AccountRepository()

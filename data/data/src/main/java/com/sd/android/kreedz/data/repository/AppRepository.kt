@@ -1,7 +1,7 @@
 package com.sd.android.kreedz.data.repository
 
 import com.sd.android.kreedz.data.local.LocalAppConfig
-import com.sd.lib.coroutines.fGlobalLaunch
+import com.sd.lib.kmp.coroutines.fGlobalLaunch
 import com.sd.lib.lifecycle.fAppOnStart
 import com.sd.lib.lifecycle.fAppOnStop
 import com.sd.lib.xlog.FLogger

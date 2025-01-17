@@ -10,8 +10,7 @@ import com.sd.android.kreedz.data.model.NewsCommentModel
 import com.sd.android.kreedz.data.repository.AccountRepository
 import com.sd.android.kreedz.data.repository.NewsRepository
 import com.sd.lib.compose.input.fSetMaxLength
-import com.sd.lib.coroutines.FLoader
-import com.sd.lib.coroutines.tryLoad
+import com.sd.lib.kmp.coroutines.FLoader
 import com.sd.lib.retry.ktx.fNetRetry
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged

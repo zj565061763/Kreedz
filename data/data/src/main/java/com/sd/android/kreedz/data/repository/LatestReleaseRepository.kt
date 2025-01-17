@@ -12,10 +12,10 @@ import com.sd.android.kreedz.data.network.model.NetLatestRelease
 import com.sd.android.kreedz.data.repository.dao.DaoMapRepository
 import com.sd.android.kreedz.data.repository.dao.DaoRecordRepository
 import com.sd.android.kreedz.data.repository.dao.DaoUserRepository
-import com.sd.lib.coroutines.FLoader
-import com.sd.lib.coroutines.FSyncable
-import com.sd.lib.coroutines.fGlobalLaunch
-import com.sd.lib.coroutines.syncOrThrow
+import com.sd.lib.kmp.coroutines.FLoader
+import com.sd.lib.kmp.coroutines.FSyncable
+import com.sd.lib.kmp.coroutines.fGlobalLaunch
+import com.sd.lib.kmp.coroutines.syncOrThrow
 import com.sd.lib.retry.ktx.fNetRetry
 import com.sd.lib.xlog.FLogger
 import kotlinx.coroutines.Dispatchers

@@ -6,7 +6,7 @@ import androidx.compose.runtime.snapshotFlow
 import com.sd.android.kreedz.core.base.BaseViewModel
 import com.sd.android.kreedz.data.model.MapRecordModel
 import com.sd.android.kreedz.data.repository.MapRecordRepository
-import com.sd.lib.coroutines.FLoader
+import com.sd.lib.kmp.coroutines.FLoader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.combine

@@ -3,8 +3,8 @@ package com.sd.android.kreedz.data
 import android.content.Context
 import com.sd.android.kreedz.data.database.ModuleDatabase
 import com.sd.android.kreedz.data.network.ModuleNetwork
-import com.sd.lib.coroutines.fGlobalLaunch
 import com.sd.lib.datastore.FDatastore
+import com.sd.lib.kmp.coroutines.fGlobalLaunch
 import com.sd.lib.xlog.FLogger
 import com.sd.lib.xlog.lw
 

@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import com.sd.android.kreedz.core.base.BaseViewModel
 import com.sd.android.kreedz.data.model.LatestRecordGroupModel
 import com.sd.android.kreedz.data.repository.LatestReleaseRepository
-import com.sd.lib.coroutines.FLoader
+import com.sd.lib.kmp.coroutines.FLoader
 
 class LatestReleaseVM : BaseViewModel<LatestReleaseVM.State, Any>(State()) {
   private val _repository = LatestReleaseRepository()

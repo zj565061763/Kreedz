@@ -5,7 +5,7 @@ import com.sd.android.kreedz.core.base.BaseViewModel
 import com.sd.android.kreedz.data.model.TopCountryRankingModel
 import com.sd.android.kreedz.data.model.TopPlayerRankingModel
 import com.sd.android.kreedz.data.repository.TopRankingRepository
-import com.sd.lib.coroutines.FLoader
+import com.sd.lib.kmp.coroutines.FLoader
 
 class TopRankingVM : BaseViewModel<TopRankingVM.State, Any>(State()) {
   private val _repository = TopRankingRepository()

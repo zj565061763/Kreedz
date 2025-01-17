@@ -7,7 +7,7 @@ import com.sd.android.kreedz.data.model.UserModel
 import com.sd.android.kreedz.data.repository.FavoriteMapRepository
 import com.sd.android.kreedz.data.repository.MapImageRepository
 import com.sd.android.kreedz.data.repository.MapRepository
-import com.sd.lib.coroutines.FLoader
+import com.sd.lib.kmp.coroutines.FLoader
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged

@@ -8,7 +8,7 @@ import com.sd.android.kreedz.data.model.UserRecentActivityModel
 import com.sd.android.kreedz.data.model.UserRecentRecordModel
 import com.sd.android.kreedz.data.model.UserRecordStatsModel
 import com.sd.android.kreedz.data.repository.UserRepository
-import com.sd.lib.coroutines.FLoader
+import com.sd.lib.kmp.coroutines.FLoader
 import com.sd.lib.retry.ktx.fNetRetry
 import kotlinx.coroutines.delay
 

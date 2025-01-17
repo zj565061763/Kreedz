@@ -5,8 +5,8 @@ import com.sd.android.kreedz.data.model.TopPlayerRankingModel
 import com.sd.android.kreedz.data.network.NetDataSource
 import com.sd.android.kreedz.data.network.model.NetTopCountryRanking
 import com.sd.android.kreedz.data.network.model.NetTopPlayerRanking
-import com.sd.lib.coroutines.FSyncable
-import com.sd.lib.coroutines.syncOrThrow
+import com.sd.lib.kmp.coroutines.FSyncable
+import com.sd.lib.kmp.coroutines.syncOrThrow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
