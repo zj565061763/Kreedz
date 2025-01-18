@@ -22,9 +22,9 @@ import com.sd.android.kreedz.feature.news.screen.release.LatestReleaseScreen
 import com.sd.android.kreedz.feature.ranking.screen.top.TopRankingScreen
 import com.sd.android.kreedz.screen.servers.GameServerScreen
 import com.sd.android.kreedz.screen.team.TeamScreen
-import com.sd.lib.compose.active.FActiveOnceContent
-import com.sd.lib.compose.active.FSetActivePager
 import com.sd.lib.compose.utils.FCurrentPage
+import com.sd.lib.kmp.compose_active.FActiveContent
+import com.sd.lib.kmp.compose_active.FSetActivePager
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -82,7 +82,7 @@ fun MainHomeScreen(
 private fun TabContent(
   tab: MainHomeTab,
 ) {
-  FActiveOnceContent {
+  FActiveContent {
     when (tab) {
       MainHomeTab.News -> LatestNewsScreen()
       MainHomeTab.Release -> LatestReleaseScreen()

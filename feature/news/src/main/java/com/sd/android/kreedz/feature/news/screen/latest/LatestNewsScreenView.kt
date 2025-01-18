@@ -10,9 +10,9 @@ import com.sd.android.kreedz.data.event.ReClickMainNavigation
 import com.sd.android.kreedz.data.model.MainNavigation
 import com.sd.android.kreedz.data.model.NewsModel
 import com.sd.android.kreedz.feature.common.ui.ComErrorView
-import com.sd.lib.compose.active.fIsActive
 import com.sd.lib.event.FEvent
 import com.sd.lib.event.flowOf
+import com.sd.lib.kmp.compose_active.fIsActive
 import com.sd.lib.kmp.paging.compose.PagingPresenter
 import com.sd.lib.kmp.paging.compose.UiRefreshSlot
 import kotlinx.coroutines.flow.filter

@@ -9,11 +9,11 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sd.android.kreedz.core.ui.AppTheme
 import com.sd.android.kreedz.data.repository.AppRepository
-import com.sd.lib.compose.active.FSetActive
 import com.sd.lib.compose.layer.LayerContainer
 import com.sd.lib.compose.systemui.FStatusBarDark
 import com.sd.lib.compose.systemui.FStatusBarLight
 import com.sd.lib.compose.systemui.FSystemUI
+import com.sd.lib.kmp.compose_active.FSetActive
 
 abstract class BaseActivity : ComponentActivity() {
   private val _appRepository = AppRepository()

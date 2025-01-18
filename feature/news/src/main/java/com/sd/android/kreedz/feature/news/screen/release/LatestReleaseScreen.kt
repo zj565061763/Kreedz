@@ -41,10 +41,10 @@ import com.sd.android.kreedz.feature.common.ui.ComEffect
 import com.sd.android.kreedz.feature.news.screen.comments.NewsCommentOperateScreen
 import com.sd.android.kreedz.feature.news.screen.comments.NewsCommentVM
 import com.sd.android.kreedz.feature.news.screen.comments.newsCommentsView
-import com.sd.lib.compose.active.fIsActive
 import com.sd.lib.compose.utils.fClick
 import com.sd.lib.event.FEvent
 import com.sd.lib.event.flowOf
+import com.sd.lib.kmp.compose_active.fIsActive
 import kotlinx.coroutines.flow.filter
 
 @Composable
