@@ -42,9 +42,9 @@ import com.sd.android.kreedz.feature.news.screen.comments.NewsCommentOperateScre
 import com.sd.android.kreedz.feature.news.screen.comments.NewsCommentVM
 import com.sd.android.kreedz.feature.news.screen.comments.newsCommentsView
 import com.sd.lib.compose.utils.fClick
-import com.sd.lib.event.FEvent
-import com.sd.lib.event.flowOf
 import com.sd.lib.kmp.compose_active.fIsActive
+import com.sd.lib.kmp.coroutines.FEvent
+import com.sd.lib.kmp.coroutines.flowOf
 import kotlinx.coroutines.flow.filter
 
 @Composable

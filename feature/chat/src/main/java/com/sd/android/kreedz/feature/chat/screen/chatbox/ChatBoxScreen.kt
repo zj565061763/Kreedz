@@ -40,8 +40,8 @@ import com.sd.android.kreedz.feature.common.ui.ComEffect
 import com.sd.android.kreedz.feature.common.ui.ComErrorView
 import com.sd.android.kreedz.feature.common.ui.ComInputLayer
 import com.sd.android.kreedz.feature.common.ui.ComLoadingLayer
-import com.sd.lib.event.FEvent
-import com.sd.lib.event.flowOf
+import com.sd.lib.kmp.coroutines.FEvent
+import com.sd.lib.kmp.coroutines.flowOf
 import com.sd.lib.kmp.paging.compose.PagingPresenter
 import com.sd.lib.kmp.paging.compose.UiRefreshSlot
 import com.sd.lib.kmp.paging.compose.presenter

@@ -33,10 +33,10 @@ import com.sd.android.kreedz.data.model.MainNavigation
 import com.sd.android.kreedz.data.model.MapRecordModel
 import com.sd.android.kreedz.data.model.UserModel
 import com.sd.android.kreedz.feature.common.ui.ComEffect
-import com.sd.lib.event.FEvent
-import com.sd.lib.event.flowOf
 import com.sd.lib.kmp.compose_refresh.FRefreshContainer
 import com.sd.lib.kmp.compose_refresh.rememberRefreshStateTop
+import com.sd.lib.kmp.coroutines.FEvent
+import com.sd.lib.kmp.coroutines.flowOf
 import kotlinx.coroutines.flow.filter
 
 @OptIn(ExperimentalMaterial3Api::class)

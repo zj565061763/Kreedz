@@ -33,7 +33,6 @@ dependencies {
   implementation(libs.sd.xlog)
   implementation(libs.sd.coroutines)
   implementation(libs.sd.retryKtx)
-  implementation(libs.sd.event)
   implementation(libs.sd.datastore)
   implementation(libs.sd.lifecycle)
 }

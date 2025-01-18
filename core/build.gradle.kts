@@ -63,7 +63,6 @@ dependencies {
   api(libs.sd.datastore)
   api(libs.sd.xlog)
   api(libs.sd.moshi)
-  api(libs.sd.event)
   api(libs.sd.paging)
   api(libs.sd.date)
 }

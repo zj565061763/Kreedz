@@ -21,8 +21,8 @@ import com.sd.android.kreedz.feature.records.screen.map.MapRecordsScreen
 import com.sd.android.kreedz.screen.home.MainHomeScreen
 import com.sd.android.kreedz.screen.more.MainMoreScreen
 import com.sd.lib.compose.tab.container.TabContainer
-import com.sd.lib.event.FEvent
-import com.sd.lib.event.post
+import com.sd.lib.kmp.coroutines.FEvent
+import com.sd.lib.kmp.coroutines.post
 
 @Composable
 fun MainScreen(

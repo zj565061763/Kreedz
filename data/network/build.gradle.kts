@@ -34,5 +34,4 @@ dependencies {
   implementation(libs.sd.coroutines)
   implementation(libs.sd.lifecycle)
   implementation(libs.sd.retryKtx)
-  implementation(libs.sd.event)
 }

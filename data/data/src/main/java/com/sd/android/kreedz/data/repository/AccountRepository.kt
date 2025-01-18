@@ -10,7 +10,7 @@ import com.sd.android.kreedz.data.network.NetDataSource
 import com.sd.android.kreedz.data.network.event.EHttpUnauthorized
 import com.sd.android.kreedz.data.network.model.NetLogin
 import com.sd.android.kreedz.data.network.model.NetUserProfile
-import com.sd.lib.event.FEvent
+import com.sd.lib.kmp.coroutines.FEvent
 import com.sd.lib.kmp.coroutines.FSyncable
 import com.sd.lib.kmp.coroutines.fGlobalLaunch
 import com.sd.lib.kmp.coroutines.syncOrThrow
