@@ -75,7 +75,7 @@ sd-xlog = "com.github.zj565061763:xlog:1.1.0"
 sd-moshi = "com.github.zj565061763:moshi:1.0.0"
 sd-date = "com.github.zj565061763:date:1.0.1"
 sd-coroutines = "io.github.zj565061763.kmp:coroutines:1.0.1"
-sd-paging = "io.github.zj565061763.kmp:paging:1.0.0-alpha01"
+sd-paging = "io.github.zj565061763.kmp:paging:1.0.0-alpha02"
 
 [plugins]
 
