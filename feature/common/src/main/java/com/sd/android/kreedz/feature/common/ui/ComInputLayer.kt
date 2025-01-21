@@ -30,8 +30,8 @@ import androidx.constraintlayout.compose.Dimension
 import com.sd.android.kreedz.core.ui.AppTextColor
 import com.sd.android.kreedz.core.ui.AppTheme
 import com.sd.lib.compose.constraintlayout.goneIf
-import com.sd.lib.compose.input.FTextField
 import com.sd.lib.compose.layer.Layer
+import com.sd.lib.kmp.compose_input.FTextField
 
 @Composable
 fun ComInputLayer(

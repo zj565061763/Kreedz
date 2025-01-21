@@ -31,10 +31,10 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.sd.android.kreedz.core.ui.AppTextColor
 import com.sd.android.kreedz.core.ui.AppTheme
-import com.sd.lib.compose.input.FSecureTextField
-import com.sd.lib.compose.input.FTextField
-import com.sd.lib.compose.input.FTextFieldIconClear
-import com.sd.lib.compose.input.fSecure
+import com.sd.lib.kmp.compose_input.FSecureTextField
+import com.sd.lib.kmp.compose_input.FTextField
+import com.sd.lib.kmp.compose_input.FTextFieldIconClear
+import com.sd.lib.kmp.compose_input.fSecure
 
 @Composable
 internal fun RegisterInputView(
@@ -106,7 +106,7 @@ private fun InputEmailView(
       fontSize = 16.sp,
       lineHeight = (1.5).em,
     ),
-    label = {
+    placeholder = {
       Text(text = "Email")
     },
     keyboardOptions = KeyboardOptions.Default.copy(
@@ -130,7 +130,7 @@ private fun InputNicknameView(
       fontSize = 16.sp,
       lineHeight = (1.5).em,
     ),
-    label = {
+    placeholder = {
       Text(text = "Nickname")
     },
     keyboardOptions = KeyboardOptions.Default.copy(
@@ -154,7 +154,7 @@ private fun InputUsernameView(
       fontSize = 16.sp,
       lineHeight = (1.5).em,
     ),
-    label = {
+    placeholder = {
       Text(text = "Username")
     },
     keyboardOptions = KeyboardOptions.Default.copy(
@@ -184,7 +184,7 @@ private fun InputPasswordView(
     keyboardOptions = KeyboardOptions.fSecure().copy(
       imeAction = ImeAction.Next,
     ),
-    label = {
+    placeholder = {
       Text(text = "Password")
     },
     trailingIcon = {
@@ -221,7 +221,7 @@ private fun InputConfirmPasswordView(
     onKeyboardAction = {
       onKeyboardDone()
     },
-    label = {
+    placeholder = {
       Text(text = "Confirm password")
     },
     trailingIcon = {

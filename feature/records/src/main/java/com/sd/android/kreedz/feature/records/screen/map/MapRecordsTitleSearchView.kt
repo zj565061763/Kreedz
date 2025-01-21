@@ -19,10 +19,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.sd.android.kreedz.core.ui.AppTheme
-import com.sd.lib.compose.input.FTextField
-import com.sd.lib.compose.input.FTextFieldIconClear
-import com.sd.lib.compose.input.FTextFieldIconContainer
-import com.sd.lib.compose.input.FTextFieldIndicatorOutline
+import com.sd.lib.kmp.compose_input.FTextField
+import com.sd.lib.kmp.compose_input.FTextFieldIconClear
+import com.sd.lib.kmp.compose_input.FTextFieldIconContainer
+import com.sd.lib.kmp.compose_input.FTextFieldIndicatorOutline
 
 @Composable
 internal fun MapRecordsTitleSearchView(

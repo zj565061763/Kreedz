@@ -33,10 +33,10 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.sd.android.kreedz.core.ui.AppTextColor
 import com.sd.android.kreedz.core.ui.AppTheme
-import com.sd.lib.compose.input.FSecureTextField
-import com.sd.lib.compose.input.FTextField
-import com.sd.lib.compose.input.FTextFieldIconClear
-import com.sd.lib.compose.input.fSecure
+import com.sd.lib.kmp.compose_input.FSecureTextField
+import com.sd.lib.kmp.compose_input.FTextField
+import com.sd.lib.kmp.compose_input.FTextFieldIconClear
+import com.sd.lib.kmp.compose_input.fSecure
 
 @Composable
 internal fun LoginInputView(
@@ -105,7 +105,7 @@ private fun InputUsernameView(
     keyboardOptions = KeyboardOptions.Default.copy(
       imeAction = ImeAction.Next,
     ),
-    label = {
+    placeholder = {
       Text(text = "Username")
     },
     trailingIcon = {
@@ -136,7 +136,7 @@ private fun InputPasswordView(
     onKeyboardAction = {
       onKeyboardDone()
     },
-    label = {
+    placeholder = {
       Text(text = "Password")
     },
     trailingIcon = {

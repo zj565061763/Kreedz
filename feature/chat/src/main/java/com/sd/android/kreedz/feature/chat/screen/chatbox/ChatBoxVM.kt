@@ -12,7 +12,7 @@ import com.sd.android.kreedz.data.model.UserWithIconsModel
 import com.sd.android.kreedz.data.repository.AccountRepository
 import com.sd.android.kreedz.data.repository.ChatBoxRepository
 import com.sd.android.kreedz.data.repository.OnlineRepository
-import com.sd.lib.compose.input.fSetMaxLength
+import com.sd.lib.kmp.compose_input.fSetMaxLength
 import com.sd.lib.kmp.coroutines.FLoader
 import com.sd.lib.kmp.paging.DefaultPagingDataHandler
 import com.sd.lib.kmp.paging.FPaging
