@@ -9,7 +9,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.style.TextDecoration
 import com.sd.android.kreedz.core.export.fsUri
-import com.sd.lib.compose.annotated.fAnnotatedWithRegex
+import com.sd.lib.kmp.compose_annotated.annotatedWithRegex
 
 @Composable
 fun CharSequence.comAnnotatedLink(): AnnotatedString {
@@ -18,7 +18,7 @@ fun CharSequence.comAnnotatedLink(): AnnotatedString {
     color = MaterialTheme.colorScheme.primary,
     textDecoration = TextDecoration.Underline,
   )
-  return fAnnotatedWithRegex(
+  return annotatedWithRegex(
     regex = UrlRegex,
     onTarget = { result ->
       val link = LinkAnnotation.Url(

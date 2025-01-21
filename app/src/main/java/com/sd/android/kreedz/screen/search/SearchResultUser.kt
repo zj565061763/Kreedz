@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sd.android.kreedz.data.model.SearchUserModel
 import com.sd.android.kreedz.feature.common.ui.ComCountryTextViewSmall
-import com.sd.lib.compose.annotated.fAnnotatedWithTarget
+import com.sd.lib.kmp.compose_annotated.annotatedWithTarget
 
 fun LazyListScope.searchResultUser(
   keyword: String,
@@ -50,7 +50,7 @@ private fun ItemView(
   ComCountryTextViewSmall(
     modifier = modifier,
     country = country,
-    text = nickname.fAnnotatedWithTarget(keyword, ignoreCase = true),
+    text = nickname.annotatedWithTarget(keyword, ignoreCase = true),
   )
 }
 

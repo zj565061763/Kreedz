@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sd.android.kreedz.core.ui.AppTextColor
 import com.sd.android.kreedz.data.model.SearchNewsModel
-import com.sd.lib.compose.annotated.fAnnotatedWithTarget
+import com.sd.lib.kmp.compose_annotated.annotatedWithTarget
 
 fun LazyListScope.searchResultNews(
   keyword: String,
@@ -70,7 +70,7 @@ private fun ItemView(
       fontSize = 12.sp,
     )
     Text(
-      text = extract.fAnnotatedWithTarget(keyword, ignoreCase = true),
+      text = extract.annotatedWithTarget(keyword, ignoreCase = true),
       fontSize = 12.sp,
       lineHeight = 18.sp,
       color = AppTextColor.medium,

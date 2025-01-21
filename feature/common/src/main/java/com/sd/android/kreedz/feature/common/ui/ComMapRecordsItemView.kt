@@ -17,9 +17,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.sd.android.kreedz.core.ui.AppTextColor
 import com.sd.android.kreedz.core.ui.AppTheme
 import com.sd.android.kreedz.data.model.MapRecordModel
-import com.sd.lib.compose.annotated.fAnnotatedWithTarget
-import com.sd.lib.compose.annotated.fAnnotatedWithTargets
 import com.sd.lib.compose.constraintlayout.goneIf
+import com.sd.lib.kmp.compose_annotated.annotatedWithTarget
+import com.sd.lib.kmp.compose_annotated.annotatedWithTargets
 
 @Composable
 fun ComMapRecordsItemView(
@@ -33,10 +33,10 @@ fun ComMapRecordsItemView(
   val player = record?.player
   ItemView(
     modifier = modifier,
-    mapName = map.name.fAnnotatedWithTargets(keywords, ignoreCase = true),
+    mapName = map.name.annotatedWithTargets(keywords, ignoreCase = true),
     time = record?.timeStr,
     country = player?.country,
-    playerName = player?.nickname?.fAnnotatedWithTargets(keywords, ignoreCase = true),
+    playerName = player?.nickname?.annotatedWithTargets(keywords, ignoreCase = true),
     date = record?.dateStr,
     youtubeLink = record?.youtubeLink,
     onClickPlayer = onClickPlayer,
@@ -130,10 +130,10 @@ private fun Preview() {
   AppTheme {
     Card(shape = MaterialTheme.shapes.small) {
       ItemView(
-        mapName = "bkz_goldbhop".fAnnotatedWithTarget("kz"),
+        mapName = "bkz_goldbhop".annotatedWithTarget("kz"),
         time = "01:25.25",
         country = "cn",
-        playerName = "zhengjun".fAnnotatedWithTarget("gj"),
+        playerName = "zhengjun".annotatedWithTarget("gj"),
         youtubeLink = "link",
         date = "2024-10-11",
         onClickPlayer = {},
