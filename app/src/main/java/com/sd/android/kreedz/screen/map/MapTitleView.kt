@@ -26,8 +26,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sd.android.kreedz.core.ui.AppTheme
-import com.sd.lib.compose.utils.fClick
-import com.sd.lib.compose.utils.fEnabled
+import com.sd.lib.kmp.compose_utils.fClick
+import com.sd.lib.kmp.compose_utils.fEnabled
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

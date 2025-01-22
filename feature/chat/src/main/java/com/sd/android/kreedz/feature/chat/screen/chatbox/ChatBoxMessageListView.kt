@@ -28,7 +28,7 @@ import com.sd.android.kreedz.data.model.UserIconsModel
 import com.sd.android.kreedz.feature.common.ui.ComCountryTextViewLarge
 import com.sd.android.kreedz.feature.common.ui.ComUserIconsView
 import com.sd.android.kreedz.feature.common.ui.comAnnotatedLink
-import com.sd.lib.compose.utils.fClick
+import com.sd.lib.kmp.compose_utils.fClick
 import com.sd.lib.kmp.paging.compose.PagingPresenter
 import com.sd.lib.kmp.paging.compose.pagingItemAppend
 import com.sd.lib.kmp.paging.compose.pagingItems

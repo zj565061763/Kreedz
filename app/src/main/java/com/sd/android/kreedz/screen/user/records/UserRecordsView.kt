@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sd.android.kreedz.core.ui.AppTheme
 import com.sd.android.kreedz.data.model.UserRecordModel
-import com.sd.lib.compose.utils.FSettledPage
+import com.sd.lib.kmp.compose_pager.FOnSettledPage
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,7 +53,7 @@ fun UserRecordsView(
   val scope = rememberCoroutineScope()
   val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
   val pagerState = rememberPagerState { tabs.size }
-  pagerState.FSettledPage { selectedTabIndex = it }
+  pagerState.FOnSettledPage { selectedTabIndex = it }
 
   ModalBottomSheet(
     modifier = modifier.fillMaxSize(),

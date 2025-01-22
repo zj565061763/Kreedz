@@ -54,6 +54,7 @@ dependencies {
   api(libs.sd.compose.constraintlayout)
   api(libs.sd.compose.wheelPicker)
   api(libs.sd.compose.annotated)
+  api(libs.sd.compose.pager)
   api(libs.sd.compose.html)
   api(libs.sd.compose.utils)
 

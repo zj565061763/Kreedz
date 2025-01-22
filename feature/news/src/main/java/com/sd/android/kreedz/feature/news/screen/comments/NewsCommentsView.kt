@@ -39,7 +39,7 @@ import com.sd.android.kreedz.data.model.UserWithIconsModel
 import com.sd.android.kreedz.feature.common.ui.ComCountryTextViewSmall
 import com.sd.android.kreedz.feature.common.ui.ComUserIconsView
 import com.sd.android.kreedz.feature.common.ui.comAnnotatedLink
-import com.sd.lib.compose.utils.fClick
+import com.sd.lib.kmp.compose_utils.fClick
 
 internal fun LazyListScope.newsCommentsView(
   isLoadingComments: Boolean,

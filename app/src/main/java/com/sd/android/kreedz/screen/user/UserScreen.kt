@@ -40,7 +40,7 @@ import com.sd.android.kreedz.data.model.UserRecordStatsModel
 import com.sd.android.kreedz.feature.common.ui.ComErrorView
 import com.sd.android.kreedz.feature.common.ui.ComResultBox
 import com.sd.android.kreedz.screen.user.records.UserRecordsView
-import com.sd.lib.compose.utils.fEnabled
+import com.sd.lib.kmp.compose_utils.fEnabled
 
 @Composable
 fun UserScreen(

@@ -41,7 +41,7 @@ import com.sd.android.kreedz.core.ui.AppTheme
 import com.sd.android.kreedz.data.model.UserIconsModel
 import com.sd.android.kreedz.feature.common.ui.ComBrightnessModeView
 import com.sd.android.kreedz.feature.more.R
-import com.sd.lib.compose.utils.fClick
+import com.sd.lib.kmp.compose_utils.fClick
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

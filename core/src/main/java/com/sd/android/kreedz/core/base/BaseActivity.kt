@@ -21,24 +21,23 @@ abstract class BaseActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge()
-    setContent { Content() }
   }
 
-  @Composable
-  private fun Content() {
-    val isLight by _appRepository.isLightModeFlow().collectAsStateWithLifecycle()
-    AppTheme(isLight = isLight) {
-      FSystemUI {
-        if (isLight) FStatusBarLight() else FStatusBarDark()
-        FSetActive(true) {
-          LayerContainer {
-            ContentImpl()
+  protected fun setPageContent(
+    content: @Composable () -> Unit,
+  ) {
+    setContent {
+      val isLight by _appRepository.isLightModeFlow().collectAsStateWithLifecycle()
+      AppTheme(isLight = isLight) {
+        FSystemUI {
+          if (isLight) FStatusBarLight() else FStatusBarDark()
+          FSetActive(true) {
+            LayerContainer {
+              content()
+            }
           }
         }
       }
     }
   }
-
-  @Composable
-  protected abstract fun ContentImpl()
 }

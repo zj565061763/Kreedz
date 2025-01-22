@@ -48,7 +48,7 @@ import com.sd.lib.compose.html.ComposeHtml
 import com.sd.lib.compose.html.Factory
 import com.sd.lib.compose.html.rememberComposeHtml
 import com.sd.lib.compose.html.tags.Tag_img
-import com.sd.lib.compose.utils.fEnabled
+import com.sd.lib.kmp.compose_utils.fEnabled
 import com.sd.lib.xlog.fDebug
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

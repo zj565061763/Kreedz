@@ -1,7 +1,7 @@
 package com.sd.android.kreedz.feature.account.screen.recover
 
+import android.os.Bundle
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -14,36 +14,38 @@ import com.sd.android.kreedz.feature.common.ui.ComEffect
 
 @Router(path = AppRouter.RECOVER_PASSWORD)
 internal class RecoverPasswordActivity : BaseActivity() {
-  @Composable
-  override fun ContentImpl() {
-    val vm = viewModel<RecoverPasswordVM>()
-    val state by vm.stateFlow.collectAsStateWithLifecycle()
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setPageContent {
+      val vm = viewModel<RecoverPasswordVM>()
+      val state by vm.stateFlow.collectAsStateWithLifecycle()
 
-    RecoverScreenView(
-      title = "Recover Password",
-      emailState = vm.emailState,
-      isLoading = state.isLoading,
-      onCancelLoading = { vm.cancelRecover() },
-      onClickBack = {
-        finish()
-      },
-      onClickRecover = {
-        vm.recover()
-      },
-    )
-
-    if (state.isLoadingSuccess) {
-      ComAlertDialog(
-        onDismissRequest = { finish() },
-        text = {
-          Text(
-            text = "Password recover asked - check your mail (and spams)"
-          )
+      RecoverScreenView(
+        title = "Recover Password",
+        emailState = vm.emailState,
+        isLoading = state.isLoading,
+        onCancelLoading = { vm.cancelRecover() },
+        onClickBack = {
+          finish()
+        },
+        onClickRecover = {
+          vm.recover()
         },
       )
-    }
 
-    vm.effectFlow.ComEffect()
+      if (state.isLoadingSuccess) {
+        ComAlertDialog(
+          onDismissRequest = { finish() },
+          text = {
+            Text(
+              text = "Password recover asked - check your mail (and spams)"
+            )
+          },
+        )
+      }
+
+      vm.effectFlow.ComEffect()
+    }
   }
 }
 

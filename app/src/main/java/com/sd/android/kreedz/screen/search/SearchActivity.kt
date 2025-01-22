@@ -1,18 +1,18 @@
 package com.sd.android.kreedz.screen.search
 
-import androidx.compose.runtime.Composable
+import android.os.Bundle
 import com.didi.drouter.annotation.Router
 import com.sd.android.kreedz.core.base.BaseActivity
 import com.sd.android.kreedz.core.router.AppRouter
 
 @Router(path = AppRouter.SEARCH)
 class SearchActivity : BaseActivity() {
-  @Composable
-  override fun ContentImpl() {
-    SearchScreen(
-      onClickBack = {
-        finish()
-      },
-    )
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setPageContent {
+      SearchScreen(
+        onClickBack = { finish() },
+      )
+    }
   }
 }

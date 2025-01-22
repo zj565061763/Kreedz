@@ -22,9 +22,9 @@ import com.sd.android.kreedz.feature.news.screen.release.LatestReleaseScreen
 import com.sd.android.kreedz.feature.ranking.screen.top.TopRankingScreen
 import com.sd.android.kreedz.screen.servers.GameServerScreen
 import com.sd.android.kreedz.screen.team.TeamScreen
-import com.sd.lib.compose.utils.FCurrentPage
 import com.sd.lib.kmp.compose_active.FActiveContent
 import com.sd.lib.kmp.compose_active.FSetActivePager
+import com.sd.lib.kmp.compose_pager.FOnCurrentPage
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,7 +38,7 @@ fun MainHomeScreen(
   val context = LocalContext.current
 
   val pagerState = rememberPagerState { state.tabs.size }
-  pagerState.FCurrentPage { vm.selectTab(it) }
+  pagerState.FOnCurrentPage { vm.selectTab(it) }
 
   Scaffold(
     modifier = modifier.fillMaxSize(),

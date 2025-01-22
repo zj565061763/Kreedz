@@ -1,34 +1,29 @@
 package com.sd.android.kreedz.feature.news.screen.news
 
-import androidx.compose.runtime.Composable
+import android.os.Bundle
 import androidx.compose.ui.platform.LocalUriHandler
 import com.didi.drouter.annotation.Router
 import com.sd.android.kreedz.core.base.BaseActivity
 import com.sd.android.kreedz.core.export.fsUri
 import com.sd.android.kreedz.core.router.AppRouter
-import com.sd.lib.compose.utils.FFinish
-import com.sd.lib.compose.utils.fIntentExtra
 
 @Router(path = AppRouter.NEWS)
 internal class NewsActivity : BaseActivity() {
-  @Composable
-  override fun ContentImpl() {
-    val id = fIntentExtra { it.getStringExtra("id") }
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    val id = intent.getStringExtra("id")
     if (id.isNullOrBlank()) {
-      FFinish()
+      finish()
       return
     }
 
-    val uriHandler = LocalUriHandler.current
-
-    NewsScreen(
-      id = id,
-      onClickBack = {
-        finish()
-      },
-      onClickOpenUri = {
-        fsUri.openNewsUri(it, uriHandler)
-      }
-    )
+    setPageContent {
+      val uriHandler = LocalUriHandler.current
+      NewsScreen(
+        id = id,
+        onClickBack = { finish() },
+        onClickOpenUri = { fsUri.openNewsUri(it, uriHandler) },
+      )
+    }
   }
 }

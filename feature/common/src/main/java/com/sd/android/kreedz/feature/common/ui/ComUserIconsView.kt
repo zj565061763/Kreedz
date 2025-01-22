@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.sd.android.kreedz.data.model.UserIconsModel
 import com.sd.android.kreedz.feature.common.R
-import com.sd.lib.compose.utils.fEnabled
+import com.sd.lib.kmp.compose_utils.fEnabled
 
 @Composable
 fun ComUserIconsView(

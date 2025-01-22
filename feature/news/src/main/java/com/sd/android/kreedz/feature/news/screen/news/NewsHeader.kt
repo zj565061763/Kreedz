@@ -2,7 +2,7 @@ package com.sd.android.kreedz.feature.news.screen.news
 
 import androidx.compose.foundation.lazy.LazyListScope
 import com.sd.android.kreedz.data.model.UserIconsModel
-import com.sd.lib.compose.utils.fPin
+import com.sd.lib.kmp.compose_utils.fPin
 
 internal fun LazyListScope.newsTitleView(
   title: String,
