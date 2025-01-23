@@ -31,11 +31,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sd.android.kreedz.core.ui.AppTheme
-import com.sd.lib.compose.layer.Directions
-import com.sd.lib.compose.layer.LayerTarget
-import com.sd.lib.compose.layer.TargetAlignment
-import com.sd.lib.compose.layer.TargetLayer
-import com.sd.lib.compose.layer.layerTag
+import com.sd.lib.kmp.compose_layer.Directions
+import com.sd.lib.kmp.compose_layer.LayerTarget.Tag
+import com.sd.lib.kmp.compose_layer.TargetAlignment
+import com.sd.lib.kmp.compose_layer.TargetLayer
+import com.sd.lib.kmp.compose_layer.layerTag
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -80,7 +80,7 @@ internal fun LJRecordsTitleView(
   )
 
   TargetLayer(
-    target = LayerTarget.Tag(EXPAND_TAB_TAG),
+    target = Tag(EXPAND_TAB_TAG),
     attach = showExpandedLayer,
     onDetachRequest = { showExpandedLayer = false },
     alignment = TargetAlignment.BottomCenter,

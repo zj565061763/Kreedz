@@ -17,11 +17,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sd.android.kreedz.core.ui.AppTextColor
 import com.sd.android.kreedz.core.ui.AppTheme
-import com.sd.lib.compose.layer.LayerTarget
-import com.sd.lib.compose.layer.TargetAlignment
-import com.sd.lib.compose.layer.TargetAlignmentOffset
-import com.sd.lib.compose.layer.TargetLayer
-import com.sd.lib.compose.layer.relativeAlignment
+import com.sd.lib.kmp.compose_layer.LayerTarget
+import com.sd.lib.kmp.compose_layer.TargetAlignment
+import com.sd.lib.kmp.compose_layer.TargetAlignmentOffset
+import com.sd.lib.kmp.compose_layer.TargetLayer
+import com.sd.lib.kmp.compose_layer.relativeAlignment
 
 @Composable
 internal fun MapRecordsTitleMoreLayer(

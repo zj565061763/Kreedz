@@ -56,12 +56,12 @@ ext-persistentCookieJar = "com.github.franmontiel:PersistentCookieJar:v1.0.1"
 
 
 sd-compose-systemui = "com.github.zj565061763:compose-systemui:1.2.0"
-sd-compose-layer = "com.github.zj565061763:compose-layer:1.5.0"
 sd-compose-constraintlayout = "com.github.zj565061763:compose-constraintlayout:1.1.0"
 sd-compose-wheelPicker = "com.github.zj565061763:compose-wheel-picker:1.0.0-rc02"
 sd-compose-html = "com.github.zj565061763:compose-html:1.0.0-alpha03"
 sd-compose-active = "io.github.zj565061763.kmp:compose-active:1.0.0"
 sd-compose-refresh = "io.github.zj565061763.kmp:compose-refresh:1.0.0"
+sd-compose-layer = "io.github.zj565061763.kmp:compose-layer:local"
 sd-compose-input = "io.github.zj565061763.kmp:compose-input:1.0.0"
 sd-compose-tabContainer = "io.github.zj565061763.kmp:compose-tab-container:1.0.0"
 sd-compose-annotated = "io.github.zj565061763.kmp:compose-annotated:1.0.0"

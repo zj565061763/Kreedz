@@ -23,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.sd.android.kreedz.core.ui.AppTheme
-import com.sd.lib.compose.layer.layerTag
+import com.sd.lib.kmp.compose_layer.layerTag
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

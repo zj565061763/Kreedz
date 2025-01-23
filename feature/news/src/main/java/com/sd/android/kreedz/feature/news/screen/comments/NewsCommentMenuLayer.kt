@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sd.android.kreedz.core.ui.AppTheme
-import com.sd.lib.compose.layer.Layer
+import com.sd.lib.kmp.compose_layer.Layer
 
 @Composable
 internal fun NewsCommentMenuLayer(

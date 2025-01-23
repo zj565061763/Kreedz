@@ -8,8 +8,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.sd.android.kreedz.core.ui.AppTheme
-import com.sd.lib.compose.layer.Layer
-import com.sd.lib.compose.layer.LayerContainer
+import com.sd.lib.kmp.compose_layer.Layer
+import com.sd.lib.kmp.compose_layer.LayerContainer
 
 @Composable
 fun ComLoadingLayer(
